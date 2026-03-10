@@ -1,15 +1,17 @@
-<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="630" fill="#070B14"/>
-  <circle cx="910" cy="146" r="148" fill="#DDE5FF" fill-opacity="0.08"/>
-  <circle cx="910" cy="146" r="96" fill="#DDE5FF" fill-opacity="0.12"/>
-  <g opacity="0.75">
-    <circle cx="844" cy="114" r="4" fill="#EEF2FF"/>
-    <circle cx="950" cy="168" r="5" fill="#EEF2FF"/>
-    <circle cx="882" cy="234" r="4" fill="#EEF2FF"/>
-    <path d="M844 114L950 168L882 234" stroke="#AAB7FF" stroke-width="2" stroke-linecap="round"/>
-  </g>
-  <text x="96" y="238" fill="#EEF2FF" font-family="Inter, Arial, sans-serif" font-size="84" font-weight="700">Lepus Lab</text>
-  <text x="96" y="310" fill="#C7D2F7" font-family="Inter, Arial, sans-serif" font-size="30">Enterprise Infrastructure Architecture</text>
-  <text x="96" y="370" fill="#C7D2F7" font-family="Inter, Arial, sans-serif" font-size="30">for server, storage, cloud, embedded, and physical AI systems</text>
-  <text x="96" y="470" fill="#EEF2FF" font-family="Inter, Arial, sans-serif" font-size="28">lepuslab.dev</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0a0d17"/>
+      <stop offset="100%" stop-color="#101626"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <circle cx="180" cy="120" r="3" fill="#ffffff"/>
+  <circle cx="280" cy="90" r="2.4" fill="#dbe3ff"/>
+  <circle cx="420" cy="150" r="2.8" fill="#ffffff"/>
+  <circle cx="520" cy="260" r="2.3" fill="#dbe3ff"/>
+  <circle cx="340" cy="290" r="2.5" fill="#ffffff"/>
+  <path d="M180 120L280 90L420 150L520 260L340 290Z" fill="none" stroke="#b9c7ff" stroke-width="1.6" opacity="0.8"/>
+  <text x="120" y="360" fill="#eef2ff" font-family="Arial, Helvetica, sans-serif" font-size="74" font-weight="700">LEPUS LAB</text>
+  <text x="120" y="425" fill="#cfd8ff" font-family="Arial, Helvetica, sans-serif" font-size="30">Embedded Vision Edge AI to Cloud Infrastructure</text>
 </svg>
