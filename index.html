@@ -19,6 +19,25 @@
   <meta name="twitter:description" content="Embedded Vision Edge AI to Cloud Infrastructure Architecture">
   <meta name="twitter:image" content="https://lepuslab.dev/og-image.svg">
 
+  <script>
+    (function () {
+      var savedThemePreference = "system";
+      try {
+        var savedValue = localStorage.getItem("theme-preference");
+        if (savedValue === "system" || savedValue === "light" || savedValue === "dark") {
+          savedThemePreference = savedValue;
+        }
+      } catch (err) {
+        savedThemePreference = "system";
+      }
+      var prefersLight = typeof window.matchMedia === "function" && window.matchMedia("(prefers-color-scheme: light)").matches;
+      var resolvedTheme = savedThemePreference === "system"
+        ? (prefersLight ? "light" : "dark")
+        : savedThemePreference;
+      document.documentElement.setAttribute("data-theme", resolvedTheme);
+      document.documentElement.setAttribute("data-theme-preference", savedThemePreference);
+    })();
+  </script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -28,18 +47,25 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="logo" href="/">LEPUS LAB</a>
-      <nav class="nav" aria-label="Primary">
-        <a href="#expertise">Expertise</a>
-        <a href="#systems">Systems</a>
-        <a href="#brand">Brand</a>
-        <a href="#contact">Contact</a>
-      </nav>
+      <div class="header-actions">
+        <nav class="nav" aria-label="Primary">
+          <a href="#expertise">Expertise</a>
+          <a href="#systems">Systems</a>
+          <a href="#brand">Brand</a>
+          <a href="#ci">CI</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-live="polite">
+          <span class="theme-toggle-icon" aria-hidden="true"></span>
+          <span class="theme-toggle-label">Theme: System</span>
+        </button>
+      </div>
     </div>
   </header>
 
   <main>
     <section class="hero container">
-      <p class="eyebrow">Enterprise Architecture Studio</p>
+      <p class="eyebrow">End-to-End Systems Architecture Studio</p>
       <h1>Embedded Vision Edge AI<br><span>to Cloud Infrastructure</span></h1>
       <p class="subtitle">
         레퍼스랩은 임베디드 비전·센서 기반 엣지 AI 시스템부터
@@ -124,6 +150,47 @@
         much like system architecture.
       </p>
       <p class="lead ko">레퍼스랩의 BI/CI는 별자리처럼 연결된 시스템 아키텍처를 상징합니다.</p>
+    </section>
+
+    <section id="ci" class="section container ci-section">
+      <div class="section-head">
+        <p class="eyebrow">Lepus Lab CI</p>
+        <h2>Corporate identity that aligns symbol, language, and architecture intent.</h2>
+      </div>
+
+      <div class="grid grid-3 ci-grid">
+        <article class="card ci-card">
+          <h3>Primary Mark</h3>
+          <div class="ci-mark-wrap">
+            <img src="/favicon.svg" alt="Lepus Lab CI mark">
+            <p>Constellation-inspired symbol expressing structured connectivity across system layers.</p>
+          </div>
+        </article>
+
+        <article class="card ci-card">
+          <h3>Wordmark Principle</h3>
+          <p class="ci-copy"><strong>LEPUS LAB</strong> represents precise architecture thinking, calm engineering tone, and accountable execution.</p>
+          <p class="ci-copy ko">명확한 구조, 절제된 기술 감각, 끝까지 책임지는 아키텍처 실행을 CI의 기본 원칙으로 삼습니다.</p>
+        </article>
+
+        <article class="card ci-card">
+          <h3>Core CI Colors</h3>
+          <div class="ci-swatches" aria-label="Lepus Lab core color swatches">
+            <div class="swatch-item">
+              <span class="swatch swatch-navy" aria-hidden="true"></span>
+              <p>Nebula Navy <span>#090B12</span></p>
+            </div>
+            <div class="swatch-item">
+              <span class="swatch swatch-cloud" aria-hidden="true"></span>
+              <p>Cloud Silver <span>#EEF2FF</span></p>
+            </div>
+            <div class="swatch-item">
+              <span class="swatch swatch-signal" aria-hidden="true"></span>
+              <p>Signal Blue <span>#C6D2FF</span></p>
+            </div>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section id="contact" class="section container center-section contact-section">
