@@ -210,6 +210,7 @@ body {
 .contact-sec h2 {
   font-family: 'Josefin Sans', sans-serif;
   font-size: clamp(32px, 4.5vw, 52px); font-weight: 300; letter-spacing: .04em; line-height: 1.1;
+  color: #ffffff;
 }
 .contact-right { display: grid; gap: 12px; }
 .em-link {
