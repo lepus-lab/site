@@ -221,11 +221,12 @@ body {
 .loc { font-size: 13px; color: var(--soft); line-height: 1.7; }
 .bl {
   font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 300;
-  color: var(--soft); text-decoration: none; letter-spacing: .06em;
-  border-bottom: 1px solid var(--line); padding-bottom: 2px;
-  transition: color .2s; display: inline-block; margin-top: 8px;
+  color: var(--accent); text-decoration: none; letter-spacing: .06em;
+  border-bottom: 1px solid var(--accent); padding-bottom: 2px;
+  transition: color .2s, border-color .2s; display: inline-block; margin-top: 8px;
+  opacity: .75;
 }
-.bl:hover { color: var(--text); }
+.bl:hover { color: var(--text); border-color: var(--text); opacity: 1; }
 
 /* Footer */
 footer {
