@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LEPUS LAB — Brand Identity</title>
+
+  <link rel="canonical" href="https://lepuslab.dev/brand">
+  <meta name="description" content="LEPUS LAB 브랜드 아이덴티티 가이드라인. 심볼, 워드마크, 컬러 팔레트.">
+
+  <script>
+    (function () {
+      var savedThemePreference = "system";
+      try {
+        var savedValue = localStorage.getItem("theme-preference");
+        if (savedValue === "system" || savedValue === "light" || savedValue === "dark") {
+          savedThemePreference = savedValue;
+        }
+      } catch (err) {
+        savedThemePreference = "system";
+      }
+      var prefersLight = typeof window.matchMedia === "function" && window.matchMedia("(prefers-color-scheme: light)").matches;
+      var resolvedTheme = savedThemePreference === "system"
+        ? (prefersLight ? "light" : "dark")
+        : savedThemePreference;
+      document.documentElement.setAttribute("data-theme", resolvedTheme);
+      document.documentElement.setAttribute("data-theme-preference", savedThemePreference);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .brand-page-hero {
+      padding: 96px 0 72px;
+    }
+
+    .brand-page-hero h1 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 100;
+      letter-spacing: .06em;
+      line-height: 1.1;
+      margin-top: 10px;
+    }
+
+    .brand-page-hero p {
+      margin-top: 14px;
+      font-size: 16px;
+      color: var(--muted);
+    }
+
+    .brand-section {
+      padding: 64px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .brand-section-label {
+      font-family: 'DM Mono', ui-monospace, monospace;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    /* Primary Mark */
+    .mark-row {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .mark-display {
+      width: 100px;
+      height: 100px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--panel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .mark-note {
+      max-width: 440px;
+    }
+
+    .mark-note h3 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 300;
+      letter-spacing: .04em;
+      margin-bottom: 10px;
+    }
+
+    .mark-note p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* Wordmark */
+    .wordmark-display {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(36px, 7vw, 72px);
+      font-weight: 100;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .wordmark-spec {
+      font-family: 'DM Mono', ui-monospace, monospace;
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--soft);
+      line-height: 2.2;
+      letter-spacing: .04em;
+    }
+
+    /* Color Palette */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .color-card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .color-swatch {
+      height: 100px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+    }
+
+    .color-card h4 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: .06em;
+    }
+
+    .color-card code {
+      display: block;
+      font-family: 'DM Mono', ui-monospace, monospace;
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--accent);
+      letter-spacing: .04em;
+      margin: 2px 0 4px;
+    }
+
+    .color-card span {
+      font-size: 12px;
+      color: var(--soft);
+    }
+
+    /* Constellation */
+    .constellation-note {
+      max-width: 600px;
+    }
+
+    .constellation-note h3 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 20px;
+      font-weight: 300;
+      letter-spacing: .04em;
+      margin-bottom: 12px;
+    }
+
+    .constellation-note p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .mark-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+      }
+
+      .color-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="starfield" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="/">LEPUS LAB</a>
+      <div class="header-actions">
+        <nav class="nav" aria-label="Primary">
+          <a href="/">← Home</a>
+        </nav>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-live="polite">
+          <span class="theme-toggle-icon" aria-hidden="true"></span>
+          <span class="theme-toggle-label">Theme: System</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="brand-page-hero container">
+      <p class="eyebrow">Brand Identity</p>
+      <h1>시각 아이덴티티 가이드라인</h1>
+      <p>LEPUS LAB의 브랜드 요소와 사용 원칙.</p>
+    </section>
+
+    <!-- ── Primary Mark ── -->
+    <section class="brand-section container">
+      <p class="brand-section-label">Primary Mark</p>
+      <div class="mark-row">
+        <div class="mark-display">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Lepus Lab constellation symbol">
+            <!-- dim stars -->
+            <circle cx="5"    cy="21.5" r="1.5" fill="#C6D2FF" opacity=".55"/>
+            <circle cx="46.8" cy="17.1" r="1.5" fill="#C6D2FF" opacity=".55"/>
+            <circle cx="51.5" cy="12.3" r="1.2" fill="#C6D2FF" opacity=".55"/>
+            <!-- bright stars -->
+            <circle cx="13.3" cy="19.1" r="2"   fill="#EEF2FF"/>
+            <circle cx="22.8" cy="21.5" r="2"   fill="#EEF2FF"/>
+            <circle cx="32.4" cy="28.5" r="3"   fill="#EEF2FF"/>
+            <circle cx="40.9" cy="14.6" r="2.2" fill="#EEF2FF"/>
+            <circle cx="44.6" cy="26.1" r="2"   fill="#EEF2FF"/>
+            <circle cx="17.8" cy="37.1" r="2"   fill="#EEF2FF"/>
+            <circle cx="22.8" cy="41.8" r="2"   fill="#EEF2FF"/>
+            <circle cx="34.5" cy="37.1" r="2"   fill="#EEF2FF"/>
+            <circle cx="51.5" cy="41.8" r="2"   fill="#EEF2FF"/>
+          </svg>
+        </div>
+        <div class="mark-note">
+          <h3>Lepus Constellation Symbol</h3>
+          <p>LEPUS 별자리를 모티프로 한 주요 심볼. 별자리의 연결선은 시스템 컴포넌트 간의 데이터 경로를 은유합니다. 점은 노드(컴포넌트), 선은 데이터 흐름(인터페이스)을 나타냅니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Wordmark ── -->
+    <section class="brand-section container">
+      <p class="brand-section-label">Wordmark</p>
+      <div class="wordmark-display">LEPUS LAB</div>
+      <div class="wordmark-spec">
+        <div>font-weight: 700</div>
+        <div>letter-spacing: 0.12em</div>
+        <div>text-transform: uppercase</div>
+        <div>font: -apple-system, BlinkMacSystemFont, system-ui, sans-serif</div>
+      </div>
+    </section>
+
+    <!-- ── Color Palette ── -->
+    <section class="brand-section container">
+      <p class="brand-section-label">Color Palette</p>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background:#090b12;" aria-label="Nebula Navy swatch"></div>
+          <div>
+            <h4>Nebula Navy</h4>
+            <code>#090B12</code>
+            <span>Primary Background · Dark canvas of deep space</span>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#eef2ff; border-color: rgba(18,27,46,.12);" aria-label="Cloud Silver swatch"></div>
+          <div>
+            <h4>Cloud Silver</h4>
+            <code>#EEF2FF</code>
+            <span>Primary Text · Star light on dark field</span>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#c6d2ff;" aria-label="Signal Blue swatch"></div>
+          <div>
+            <h4>Signal Blue</h4>
+            <code>#C6D2FF</code>
+            <span>Accent · Links · Constellation connections</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Constellation Metaphor ── -->
+    <section class="brand-section container">
+      <p class="brand-section-label">Design Metaphor</p>
+      <div class="constellation-note">
+        <h3>Constellation as System Architecture</h3>
+        <p>별자리는 독립된 점들 사이의 구조적 관계를 나타냅니다. 이는 시스템 아키텍처와 정확히 같습니다. 각 별은 시스템 컴포넌트이고, 연결선은 인터페이스와 데이터 경로입니다.</p>
+        <p>LEPUS LAB의 비주얼 아이덴티티는 이 별자리 메타포를 전 브랜드에 일관되게 적용합니다. 배경의 움직이는 별들과 연결선은 이 메타포를 인터랙티브하게 구현한 것입니다.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span class="footer-logo">LEPUS LAB</span>
+      <span>© 2026 LEPUS LAB. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

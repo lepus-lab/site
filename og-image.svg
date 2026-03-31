@@ -1,17 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
     <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0%" stop-color="#0a0d17"/>
-      <stop offset="100%" stop-color="#101626"/>
+      <stop offset="0%" stop-color="#060708"/>
+      <stop offset="100%" stop-color="#0b0f1a"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#g)"/>
-  <circle cx="180" cy="120" r="3" fill="#ffffff"/>
-  <circle cx="280" cy="90" r="2.4" fill="#dbe3ff"/>
-  <circle cx="420" cy="150" r="2.8" fill="#ffffff"/>
-  <circle cx="520" cy="260" r="2.3" fill="#dbe3ff"/>
-  <circle cx="340" cy="290" r="2.5" fill="#ffffff"/>
-  <path d="M180 120L280 90L420 150L520 260L340 290Z" fill="none" stroke="#b9c7ff" stroke-width="1.6" opacity="0.8"/>
-  <text x="120" y="360" fill="#eef2ff" font-family="Arial, Helvetica, sans-serif" font-size="74" font-weight="700">LEPUS LAB</text>
-  <text x="120" y="425" fill="#cfd8ff" font-family="Arial, Helvetica, sans-serif" font-size="30">Embedded Vision Edge AI to Cloud Infrastructure</text>
+  <!-- 12-star constellation (no lines), scaled to upper region -->
+  <!-- dim stars -->
+  <circle cx="120"  cy="185" r="3"   fill="#C6D2FF" opacity=".55"/>
+  <circle cx="528"  cy="148" r="3"   fill="#C6D2FF" opacity=".55"/>
+  <circle cx="573"  cy="108" r="2.4" fill="#C6D2FF" opacity=".55"/>
+  <!-- bright stars -->
+  <circle cx="204"  cy="163" r="4"   fill="#EEF2FF"/>
+  <circle cx="308"  cy="185" r="4"   fill="#EEF2FF"/>
+  <circle cx="416"  cy="258" r="6"   fill="#EEF2FF"/>
+  <circle cx="500"  cy="126" r="4.5" fill="#EEF2FF"/>
+  <circle cx="540"  cy="232" r="4"   fill="#EEF2FF"/>
+  <circle cx="236"  cy="333" r="4"   fill="#EEF2FF"/>
+  <circle cx="308"  cy="385" r="4"   fill="#EEF2FF"/>
+  <circle cx="452"  cy="333" r="4"   fill="#EEF2FF"/>
+  <circle cx="573"  cy="385" r="4"   fill="#EEF2FF"/>
+  <!-- wordmark + tagline -->
+  <text x="120" y="470" fill="#EEF2FF" font-family="Arial, Helvetica, sans-serif" font-size="82" font-weight="200" letter-spacing="16">LEPUS LAB</text>
+  <text x="122" y="530" fill="#C6D2FF" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="300" letter-spacing="4">Architecture for Applied AI Systems</text>
 </svg>

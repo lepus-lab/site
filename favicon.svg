@@ -1,12 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56">
   <rect width="56" height="56" rx="12" fill="#060708"/>
-  <circle cx="28" cy="28" r="3.2" fill="#EEF2FF"/>
-  <circle cx="12" cy="15" r="2" fill="#C6D2FF"/>
-  <circle cx="44" cy="19" r="2" fill="#C6D2FF"/>
-  <circle cx="15" cy="43" r="2" fill="#C6D2FF"/>
-  <circle cx="44" cy="40" r="1.6" fill="#C6D2FF" opacity=".65"/>
-  <line x1="28" y1="28" x2="12" y2="15" stroke="#C6D2FF" stroke-width=".9" opacity=".5"/>
-  <line x1="28" y1="28" x2="44" y2="19" stroke="#C6D2FF" stroke-width=".9" opacity=".5"/>
-  <line x1="28" y1="28" x2="15" y2="43" stroke="#C6D2FF" stroke-width=".9" opacity=".5"/>
-  <line x1="15" y1="43" x2="44" y2="40" stroke="#C6D2FF" stroke-width=".9" opacity=".4"/>
+  <!-- dim stars -->
+  <circle cx="5"    cy="21.5" r="1.5" fill="#C6D2FF" opacity=".55"/>
+  <circle cx="46.8" cy="17.1" r="1.5" fill="#C6D2FF" opacity=".55"/>
+  <circle cx="51.5" cy="12.3" r="1.2" fill="#C6D2FF" opacity=".55"/>
+  <!-- bright stars -->
+  <circle cx="13.3" cy="19.1" r="2"   fill="#EEF2FF"/>
+  <circle cx="22.8" cy="21.5" r="2"   fill="#EEF2FF"/>
+  <circle cx="32.4" cy="28.5" r="3"   fill="#EEF2FF"/>
+  <circle cx="40.9" cy="14.6" r="2.2" fill="#EEF2FF"/>
+  <circle cx="44.6" cy="26.1" r="2"   fill="#EEF2FF"/>
+  <circle cx="17.8" cy="37.1" r="2"   fill="#EEF2FF"/>
+  <circle cx="22.8" cy="41.8" r="2"   fill="#EEF2FF"/>
+  <circle cx="34.5" cy="37.1" r="2"   fill="#EEF2FF"/>
+  <circle cx="51.5" cy="41.8" r="2"   fill="#EEF2FF"/>
 </svg>
