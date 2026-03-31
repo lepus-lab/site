@@ -6,22 +6,22 @@
     </linearGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#g)"/>
-  <!-- 12-star constellation (no lines), scaled to upper region -->
-  <!-- dim stars -->
-  <circle cx="120"  cy="185" r="3"   fill="#C6D2FF" opacity=".55"/>
-  <circle cx="528"  cy="148" r="3"   fill="#C6D2FF" opacity=".55"/>
-  <circle cx="573"  cy="108" r="2.4" fill="#C6D2FF" opacity=".55"/>
-  <!-- bright stars -->
-  <circle cx="204"  cy="163" r="4"   fill="#EEF2FF"/>
-  <circle cx="308"  cy="185" r="4"   fill="#EEF2FF"/>
-  <circle cx="416"  cy="258" r="6"   fill="#EEF2FF"/>
-  <circle cx="500"  cy="126" r="4.5" fill="#EEF2FF"/>
-  <circle cx="540"  cy="232" r="4"   fill="#EEF2FF"/>
-  <circle cx="236"  cy="333" r="4"   fill="#EEF2FF"/>
-  <circle cx="308"  cy="385" r="4"   fill="#EEF2FF"/>
-  <circle cx="452"  cy="333" r="4"   fill="#EEF2FF"/>
-  <circle cx="573"  cy="385" r="4"   fill="#EEF2FF"/>
+  <!-- constellation lines: Lepus topology scaled to og canvas -->
+  <line x1="130" y1="195" x2="310" y2="255" stroke="#C6D2FF" stroke-width="1.4" opacity=".45"/>
+  <line x1="310" y1="255" x2="490" y2="215" stroke="#C6D2FF" stroke-width="1.4" opacity=".45"/>
+  <line x1="490" y1="215" x2="640" y2="155" stroke="#C6D2FF" stroke-width="1.4" opacity=".35"/>
+  <line x1="130" y1="195" x2="365" y2="320" stroke="#C6D2FF" stroke-width="1.4" opacity=".35"/>
+  <line x1="365" y1="320" x2="490" y2="215" stroke="#C6D2FF" stroke-width="1.4" opacity=".35"/>
+  <line x1="365" y1="320" x2="660" y2="305" stroke="#C6D2FF" stroke-width="1.4" opacity=".28"/>
+  <!-- stars -->
+  <circle cx="130" cy="195" r="5.5" fill="#EEF2FF"/>
+  <circle cx="310" cy="255" r="7"   fill="#ffffff"/>
+  <circle cx="365" cy="320" r="4.5" fill="#EEF2FF" opacity=".9"/>
+  <circle cx="490" cy="215" r="4.5" fill="#EEF2FF" opacity=".9"/>
+  <circle cx="660" cy="305" r="3.8" fill="#C6D2FF" opacity=".75"/>
+  <circle cx="640" cy="155" r="3.8" fill="#C6D2FF" opacity=".75"/>
+  <circle cx="430" cy="130" r="3"   fill="#C6D2FF" opacity=".6"/>
   <!-- wordmark + tagline -->
-  <text x="120" y="470" fill="#EEF2FF" font-family="Arial, Helvetica, sans-serif" font-size="82" font-weight="200" letter-spacing="16">LEPUS LAB</text>
-  <text x="122" y="530" fill="#C6D2FF" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="300" letter-spacing="4">Architecture for Applied AI Systems</text>
+  <text x="120" y="490" fill="#EEF2FF" font-family="Arial, Helvetica, sans-serif" font-size="82" font-weight="200" letter-spacing="16">LEPUS LAB</text>
+  <text x="122" y="548" fill="#C6D2FF" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="300" letter-spacing="4">Architecture for Applied AI Systems</text>
 </svg>
