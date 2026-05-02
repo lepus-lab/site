@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LEPUS LAB — Career</title>
+
+  <link rel="canonical" href="https://lepuslab.dev/career">
+  <meta name="description" content="Hardware & System Architect, 20+ years — SmartNIC, FPGA, Embedded, Cloud Infrastructure. Kakao Enterprise / KakaoCloud.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lepuslab.dev/career">
+  <meta property="og:title" content="LEPUS LAB — Career">
+  <meta property="og:description" content="Hardware & System Architect with 20+ years in SmartNIC, FPGA, and embedded system design.">
+  <meta property="og:image" content="https://lepuslab.dev/og-image.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="main.css">
+
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --bg-soft:    rgba(240,242,255,.05);
+      --accent-soft: rgba(198,210,255,.10);
+      /* Body text: 60% opacity → ~6.5:1 contrast (WCAG AA pass) */
+      --body:       rgba(240,242,255,.62);
+      /* Metadata: period / team labels — softer on purpose */
+      --meta:       rgba(240,242,255,.44);
+    }
+    [data-theme="light"] {
+      --bg-soft:    rgba(8,10,18,.04);
+      --accent-soft: rgba(48,64,168,.08);
+      --body:       rgba(8,10,18,.62);
+      --meta:       rgba(8,10,18,.46);
+    }
+
+    /* ── Hero ── */
+    .career-hero {
+      padding: 120px 0 64px;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 40px; align-items: end;
+      border-bottom: 1px solid var(--line);
+    }
+    .career-hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 300; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+    }
+    .career-hero h1 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(40px, 6vw, 80px); font-weight: 100;
+      letter-spacing: .06em; line-height: 1;
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .career-hero-sub {
+      font-size: clamp(15px, 1.6vw, 18px);
+      color: var(--muted); line-height: 1.78; max-width: 540px;
+      font-weight: 300;
+    }
+    .career-contact-block { text-align: right; }
+    .career-contact-block a {
+      display: block; font-family: 'DM Mono', monospace;
+      font-size: 12px; font-weight: 300; letter-spacing: .06em;
+      color: var(--accent); text-decoration: none; margin-bottom: 4px;
+      transition: color .2s;
+    }
+    .career-contact-block a:hover { color: var(--text); }
+    .career-contact-block .loc-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 300; letter-spacing: .06em;
+      color: var(--meta); margin-top: 8px; display: block;
+    }
+
+    /* ── Layout ── */
+    .career-body {
+      display: grid; grid-template-columns: 240px 1fr;
+      gap: 64px; padding: 64px 0 80px; align-items: start;
+    }
+    .career-sidebar { position: sticky; top: 80px; }
+    .career-main { min-width: 0; }
+
+    /* ── Sidebar ── */
+    .sidebar-nav {
+      display: flex; flex-direction: column; gap: 2px; margin-bottom: 40px;
+    }
+    .sidebar-nav a {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 300; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--meta);
+      text-decoration: none; padding: 7px 0; transition: color .2s;
+      border-bottom: 1px solid transparent;
+    }
+    .sidebar-nav a:hover { color: var(--accent); }
+
+    .skill-group { margin-bottom: 24px; }
+    .skill-group-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; font-weight: 400; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--meta); margin-bottom: 9px;
+    }
+    .skill-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+    .skill-chip {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 300; letter-spacing: .03em;
+      color: var(--accent); background: var(--accent-soft);
+      padding: 4px 9px; border-radius: 2px;
+    }
+
+    /* ── Section labels ── */
+    .rs-section { margin-bottom: 56px; }
+    .rs-section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; font-weight: 400; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 28px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    /* ── Experience entries ── */
+    .exp-entry { padding: 32px 0; border-bottom: 1px solid var(--line); }
+    .exp-entry:first-of-type { padding-top: 0; }
+    .exp-entry:last-child { border-bottom: none; }
+    .exp-meta {
+      display: flex; justify-content: space-between;
+      align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 4px;
+    }
+    .exp-company {
+      font-family: 'Josefin Sans', sans-serif;
+      /* weight 400 at 18px — readable heading */
+      font-size: 18px; font-weight: 400; letter-spacing: .03em; color: var(--text);
+    }
+    .exp-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 300; letter-spacing: .08em;
+      color: var(--meta); white-space: nowrap;
+    }
+    .exp-team {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 300; letter-spacing: .06em;
+      color: var(--meta); margin-bottom: 18px;
+    }
+
+    /* ── Sub-projects ── */
+    .exp-projects { display: flex; flex-direction: column; gap: 0; }
+    .exp-project {
+      padding: 16px 0 16px 16px;
+      border-top: 1px solid var(--line);
+      border-left: 2px solid transparent;
+      transition: border-color .2s;
+    }
+    .exp-project:first-child { border-top: none; padding-top: 0; }
+    .exp-project:hover { border-left-color: var(--accent); }
+
+    .exp-project-header {
+      display: flex; justify-content: space-between;
+      align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px;
+    }
+    .exp-project-name {
+      font-family: 'Josefin Sans', sans-serif;
+      /* 15px/400 — visible heading level */
+      font-size: 15px; font-weight: 400; letter-spacing: .03em; color: var(--text);
+    }
+    .exp-project-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; font-weight: 300; letter-spacing: .08em; color: var(--meta);
+    }
+    .exp-project-role {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 300; letter-spacing: .08em;
+      color: var(--accent); margin-bottom: 10px;
+    }
+    .exp-bullets {
+      list-style: none; display: flex; flex-direction: column; gap: 6px;
+      margin-bottom: 12px;
+    }
+    .exp-bullets li {
+      /* 14px/400/--body → ~6.5:1 contrast, comfortably readable */
+      font-size: 14px; font-weight: 400; color: var(--body);
+      line-height: 1.78; padding-left: 16px; position: relative;
+    }
+    .exp-bullets li::before {
+      content: '–'; position: absolute; left: 0; color: var(--accent);
+      font-size: 13px; line-height: 1.85;
+    }
+    .exp-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .exp-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 300; letter-spacing: .04em;
+      color: var(--body); background: var(--bg-soft);
+      border: 1px solid var(--line-med); padding: 3px 9px;
+    }
+
+    /* ── Domain grid ── */
+    .domain-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+      background: var(--line); border: 1px solid var(--line);
+    }
+    .domain-card { background: var(--bg); padding: 24px 22px; }
+    .domain-card h3 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 15px; font-weight: 400; letter-spacing: .03em;
+      color: var(--text); margin-bottom: 10px;
+    }
+    /* 13px/400/--body — 2 steps up from original 12px/300/--soft */
+    .domain-card p { font-size: 13px; font-weight: 400; color: var(--body); line-height: 1.78; }
+
+    /* ── Education ── */
+    .edu-entry { padding: 16px 0; border-bottom: 1px solid var(--line); }
+    .edu-entry:last-child { border-bottom: none; }
+    .edu-school {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 16px; font-weight: 400; color: var(--text); margin-bottom: 4px;
+    }
+    .edu-detail { font-size: 14px; font-weight: 400; color: var(--body); line-height: 1.65; }
+
+    @media (max-width: 900px) {
+      .career-body { grid-template-columns: 1fr; gap: 40px; }
+      .career-sidebar { position: static; }
+      .career-hero { grid-template-columns: 1fr; }
+      .career-contact-block { text-align: left; }
+    }
+    @media (max-width: 600px) {
+      .domain-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="starfield" aria-hidden="true"></canvas>
+
+  <header class="hd">
+    <div class="w hd-in">
+      <a class="logo" href="/">LEPUS LAB</a>
+      <div class="hnav">
+        <a href="/">Home</a>
+        <a href="/datacenter">Datacenter</a>
+        <a href="/brand">Brand</a>
+        <button class="tbtn" data-theme-toggle>
+          <span class="theme-toggle-label">Theme: System</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ── HERO ── -->
+    <section class="w career-hero">
+      <div>
+        <div class="career-hero-eyebrow">Profile / Career</div>
+        <h1>Hardware &<br>System<br>Architect</h1>
+        <p class="career-hero-sub">
+          SmartNIC, FPGA, 임베디드 시스템 설계에서 클라우드 인프라까지, 20년+ 경력.
+          KakaoCloud에서 SmartNIC 혁신 프로젝트를 주도하며 AMD 전 제품군을 실서비스에 적용한 경험을 보유합니다.
+        </p>
+      </div>
+      <div class="career-contact-block">
+        <a href="mailto:closeye@gmail.com">closeye@gmail.com</a>
+        <a href="https://lepuslab.dev">lepuslab.dev</a>
+        <span class="loc-text">Seoul, Korea</span>
+      </div>
+    </section>
+
+    <div class="w career-body">
+
+      <!-- ── SIDEBAR ── -->
+      <aside class="career-sidebar">
+        <nav class="sidebar-nav">
+          <a href="#experience">Experience</a>
+          <a href="#domains">Domains</a>
+          <a href="#education">Education</a>
+          <a href="#stack">Stack</a>
+        </nav>
+
+        <div class="skill-group">
+          <div class="skill-group-title">SmartNIC & FPGA</div>
+          <div class="skill-chips">
+            <span class="skill-chip">AMD U25N</span>
+            <span class="skill-chip">AMD U45N</span>
+            <span class="skill-chip">Xilinx Alveo</span>
+            <span class="skill-chip">Versal</span>
+            <span class="skill-chip">Kria-SOM</span>
+            <span class="skill-chip">Altera FPGA</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">AMD Platform</div>
+          <div class="skill-chips">
+            <span class="skill-chip">EPYC Milan/Genoa</span>
+            <span class="skill-chip">EPYC Siena</span>
+            <span class="skill-chip">Instinct GPU</span>
+            <span class="skill-chip">Pensando DPU</span>
+            <span class="skill-chip">Solarflare</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Network & Fabric</div>
+          <div class="skill-chips">
+            <span class="skill-chip">OvS Offload</span>
+            <span class="skill-chip">RoCEv2</span>
+            <span class="skill-chip">RDMA</span>
+            <span class="skill-chip">PCIe</span>
+            <span class="skill-chip">25G / 100G NIC</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Cloud / Storage</div>
+          <div class="skill-chips">
+            <span class="skill-chip">KakaoCloud</span>
+            <span class="skill-chip">Ceph OSD</span>
+            <span class="skill-chip">NVMe</span>
+            <span class="skill-chip">KVM / libvirt</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">HW Design</div>
+          <div class="skill-chips">
+            <span class="skill-chip">Cadence</span>
+            <span class="skill-chip">Mentor</span>
+            <span class="skill-chip">PADS</span>
+            <span class="skill-chip">PCB Layout</span>
+            <span class="skill-chip">KC / FCC / CE</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Languages</div>
+          <div class="skill-chips">
+            <span class="skill-chip">C</span>
+            <span class="skill-chip">C++</span>
+            <span class="skill-chip">VHDL / Verilog</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ── MAIN ── -->
+      <div class="career-main">
+
+        <!-- Experience -->
+        <section id="experience" class="rs-section">
+          <div class="rs-section-label">Work Experience</div>
+
+          <!-- LEPUS LAB -->
+          <div class="exp-entry">
+            <div class="exp-meta">
+              <span class="exp-company">LEPUS LAB</span>
+              <span class="exp-period">2024 – Present</span>
+            </div>
+            <div class="exp-team">Founder / Independent Research</div>
+            <div class="exp-projects">
+              <div class="exp-project">
+                <ul class="exp-bullets">
+                  <li>레거시 데이터센터 에어쿨링 효율화 전략 연구 — OCP 기반 PSU 중앙화, 19인치 버스바 레트로핏 아키텍처</li>
+                  <li>AI 인프라 전 계층(Edge → Network → Compute → Storage) 아키텍처 탐구 및 문서화</li>
+                  <li>CPU 기반 인퍼런스 최적화 및 Edge AI 시스템 설계 연구</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">DC Power Architecture</span>
+                  <span class="exp-tag">OCP / ORV3</span>
+                  <span class="exp-tag">Edge AI</span>
+                  <span class="exp-tag">AI Infrastructure</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kakao Enterprise -->
+          <div class="exp-entry">
+            <div class="exp-meta">
+              <span class="exp-company">Kakao Enterprise</span>
+              <span class="exp-period">2019.12 – Present</span>
+            </div>
+            <div class="exp-team">Hardware Architecture Development Team · KakaoCloud</div>
+            <div class="exp-projects">
+
+              <div class="exp-project">
+                <div class="exp-project-header">
+                  <span class="exp-project-name">SmartNIC for OvS</span>
+                  <span class="exp-project-period">2021 – 2025</span>
+                </div>
+                <div class="exp-project-role">Project Lead</div>
+                <ul class="exp-bullets">
+                  <li>1세대 Dual-Port 25G NIC 개발 주도, 2세대 FPGA + embedded x86 설계</li>
+                  <li>OvS를 SmartNIC 하드웨어로 오프로드하여 CapEx/OpEx 절감 달성</li>
+                  <li>AMD U25N 초기 하드웨어 이슈 디버깅 및 RMA 조율</li>
+                  <li>2×25G line-rate 솔루션 출시 및 커널 드라이버 유지보수</li>
+                  <li>ConTrack#, Port Mirroring 등 추가 기능 정의 및 팔로우업</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">AMD U25N</span><span class="exp-tag">FPGA</span>
+                  <span class="exp-tag">OvS Offload</span><span class="exp-tag">25G NIC</span>
+                  <span class="exp-tag">Kernel Driver</span>
+                </div>
+              </div>
+
+              <div class="exp-project">
+                <div class="exp-project-header">
+                  <span class="exp-project-name">SmartNIC for Storage</span>
+                  <span class="exp-project-period">2024 – Present</span>
+                </div>
+                <ul class="exp-bullets">
+                  <li>Ceph 기반 블록/오브젝트 스토리지 SmartNIC 컨셉 설계</li>
+                  <li>AMD U45N Dual 100G NIC 아키텍처 설계</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">AMD U45N</span><span class="exp-tag">100G NIC</span>
+                  <span class="exp-tag">Ceph</span><span class="exp-tag">Storage Offload</span>
+                </div>
+              </div>
+
+              <div class="exp-project">
+                <div class="exp-project-header">
+                  <span class="exp-project-name">SmartNIC for RDMA</span>
+                  <span class="exp-project-period">2024 – Present</span>
+                </div>
+                <ul class="exp-bullets">
+                  <li>NPU/GPU 클러스터용 RoCEv2 오프로딩 아키텍처 설계</li>
+                  <li>KakaoCloud 커스터마이즈드 AMD-ARNIC & MangoBoost 솔루션 제안</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">RoCEv2</span><span class="exp-tag">RDMA</span>
+                  <span class="exp-tag">AMD-ARNIC</span><span class="exp-tag">GPU Cluster</span>
+                </div>
+              </div>
+
+              <div class="exp-project">
+                <div class="exp-project-header">
+                  <span class="exp-project-name">SmartNIC for Controller</span>
+                  <span class="exp-project-period">2024 – 2025</span>
+                </div>
+                <ul class="exp-bullets">
+                  <li>Versal/Loche 기반 Cloud Control Plane 오프로딩 아키텍처 설계</li>
+                  <li>회로 설계 완료 (조직 개편 후 프로젝트 중단)</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">Versal</span><span class="exp-tag">Control Plane</span>
+                  <span class="exp-tag">Cloud Offload</span>
+                </div>
+              </div>
+
+              <div class="exp-project">
+                <div class="exp-project-header">
+                  <span class="exp-project-name">Performance Engineering</span>
+                  <span class="exp-project-period">2023 – 2025</span>
+                </div>
+                <ul class="exp-bullets">
+                  <li>AMD EPYC Milan/Genoa 하이퍼바이저 성능 최적화 (BIOS/OS 튜닝, KVM/libvirt 설정)</li>
+                  <li>AMD 프로파일링 툴 기반 시스템 레벨 이슈 추적</li>
+                  <li>AMD EPYC Siena 기반 Ceph OSD 노드 최적화 (Single Socket + 10 NVMe, 암호화 환경)</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">EPYC Milan/Genoa/Siena</span>
+                  <span class="exp-tag">KVM / libvirt</span><span class="exp-tag">Ceph OSD</span>
+                  <span class="exp-tag">NUMA Tuning</span>
+                </div>
+              </div>
+
+              <div class="exp-project">
+                <div class="exp-project-header">
+                  <span class="exp-project-name">AMD Alveo U30 · MA35d · V70</span>
+                  <span class="exp-project-period">2021 – 2025</span>
+                </div>
+                <ul class="exp-bullets">
+                  <li>ML Instance 서버 스펙 정의, PoC, PCIe 트러블슈팅 및 퀄리피케이션</li>
+                  <li>KakaoCloud VT1 Instance (U30) 출시</li>
+                  <li>VT2 Instance (MA35d) 설계 및 검증, AMD R&D와 FFmpeg 최적화 협업</li>
+                  <li>V70 성능 검증</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">Alveo U30</span><span class="exp-tag">MA35d</span>
+                  <span class="exp-tag">V70</span><span class="exp-tag">PCIe Qualification</span>
+                  <span class="exp-tag">FFmpeg</span>
+                </div>
+              </div>
+
+              <div class="exp-project">
+                <div class="exp-project-header">
+                  <span class="exp-project-name">SmartCamera</span>
+                  <span class="exp-project-period">2021 – 2025</span>
+                </div>
+                <ul class="exp-bullets">
+                  <li>AMD Kria-SOM 기반 데이터센터 보안용 AI SmartCamera 설계</li>
+                  <li>프로토타입 하드웨어 & 기구 설계, 내부 데모 완료 (thermal/성능 이슈로 중단)</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">Kria-SOM</span><span class="exp-tag">Edge AI</span>
+                  <span class="exp-tag">HW Prototype</span>
+                </div>
+              </div>
+
+              <div class="exp-project">
+                <div class="exp-project-header">
+                  <span class="exp-project-name">Kakao Mini HEXA</span>
+                  <span class="exp-project-period">2018 – 2020</span>
+                </div>
+                <ul class="exp-bullets">
+                  <li>Qualcomm 기반 스마트 스피커 하드웨어 개발</li>
+                  <li>중국 양산 라인 지원 및 EMC 디버깅 · KC 인증 관리</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">Qualcomm</span><span class="exp-tag">Smart Speaker</span>
+                  <span class="exp-tag">Mass Production</span><span class="exp-tag">KC Certification</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Kakao Corp -->
+          <div class="exp-entry">
+            <div class="exp-meta">
+              <span class="exp-company">Kakao Corp.</span>
+              <span class="exp-period">2014.11 – 2019.11</span>
+            </div>
+            <div class="exp-team">Device Development Team</div>
+            <div class="exp-projects">
+
+              <div class="exp-project">
+                <div class="exp-project-header">
+                  <span class="exp-project-name">Kakao Mini</span>
+                  <span class="exp-project-period">2016 – 2019</span>
+                </div>
+                <div class="exp-project-role">Lead Embedded Developer</div>
+                <ul class="exp-bullets">
+                  <li>Samsung Exynos 기반 스마트 스피커 하드웨어 개발 (회로/PCB 설계, 인증, 양산)</li>
+                  <li>노이즈 캔슬링 솔루션 튜닝 및 자동화 테스트 시나리오 구축</li>
+                  <li>출시 후 리비전 관리 (thermal, flash fault 수정)</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">Samsung Exynos</span><span class="exp-tag">PCB Design</span>
+                  <span class="exp-tag">Noise Cancelling</span><span class="exp-tag">Mass Production</span>
+                </div>
+              </div>
+
+              <div class="exp-project">
+                <div class="exp-project-header">
+                  <span class="exp-project-name">FPGA Video Transcoding Accelerator</span>
+                  <span class="exp-project-period">2017 – 2018</span>
+                </div>
+                <ul class="exp-bullets">
+                  <li>KakaoTalk/DaumTV 트랜스코딩용 FPGA IP 및 PCIe 가속기 보드 설계</li>
+                  <li>"Faster Than Real-Time" 멀티채널 아키텍처 제안 (후에 Xilinx Alveo U30으로 실현)</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">FPGA IP</span><span class="exp-tag">PCIe Accelerator</span>
+                  <span class="exp-tag">Video Transcoding</span>
+                </div>
+              </div>
+
+              <div class="exp-project">
+                <div class="exp-project-header">
+                  <span class="exp-project-name">AMD ARM Processor Evaluation</span>
+                  <span class="exp-project-period">2015 – 2016</span>
+                </div>
+                <ul class="exp-bullets">
+                  <li>AMD Hierofalcon (A57 ARM 기반 엔터프라이즈 CPU) 플랫폼 평가</li>
+                  <li>CRB 성능 분석 및 엔터프라이즈 워크로드 도입 검토</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">AMD Hierofalcon</span><span class="exp-tag">ARM A57</span>
+                  <span class="exp-tag">Platform Evaluation</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Daum Communications -->
+          <div class="exp-entry">
+            <div class="exp-meta">
+              <span class="exp-company">Daum Communications</span>
+              <span class="exp-period">2010.11 – 2014.10</span>
+            </div>
+            <div class="exp-team">Local Development 6 Team</div>
+            <div class="exp-projects">
+
+              <div class="exp-project">
+                <div class="exp-project-header">
+                  <span class="exp-project-name">Audio Crawling Server</span>
+                  <span class="exp-project-period">2010 – 2014</span>
+                </div>
+                <ul class="exp-bullets">
+                  <li>TV/라디오 실시간 크롤링용 Exynos 기반 랙마운트 서버 개발</li>
+                  <li>DTV 튜너 및 FM 라디오 RF 보드 설계, 3회 리비전 지원 (서비스 2025년까지 운영)</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">Exynos</span><span class="exp-tag">RF Board</span>
+                  <span class="exp-tag">Rackmount Server</span>
+                </div>
+              </div>
+
+              <div class="exp-project">
+                <div class="exp-project-header">
+                  <span class="exp-project-name">Roadview Capture System</span>
+                  <span class="exp-project-period">2010 – 2014</span>
+                </div>
+                <div class="exp-project-role">Lead Developer</div>
+                <ul class="exp-bullets">
+                  <li>1세대 DSLR 기반 파노라마 캡처 시스템 구축</li>
+                  <li>2세대 FPGA 기반 IP 카메라 시스템 개발</li>
+                  <li>카메라 & INS 지오메트리 동기화 시스템 통합</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">FPGA</span><span class="exp-tag">IP Camera</span>
+                  <span class="exp-tag">INS / Geometry Sync</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ImageOn -->
+          <div class="exp-entry">
+            <div class="exp-meta">
+              <span class="exp-company">ImageOn</span>
+              <span class="exp-period">2008.11 – 2010.11</span>
+            </div>
+            <div class="exp-team">Device Development Team</div>
+            <div class="exp-projects">
+              <div class="exp-project">
+                <ul class="exp-bullets">
+                  <li>Roadview 캡처 시스템 프로토타입 구축 (1세대 DSLR 기반)</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">DSLR Panorama</span><span class="exp-tag">HW Prototype</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Jcast -->
+          <div class="exp-entry">
+            <div class="exp-meta">
+              <span class="exp-company">Jcast</span>
+              <span class="exp-period">2006.08 – 2008.10</span>
+            </div>
+            <div class="exp-team">R&D Lab</div>
+            <div class="exp-projects">
+              <div class="exp-project">
+                <ul class="exp-bullets">
+                  <li>WCDMA 중계기 RF 하드웨어 개발</li>
+                  <li>기지국 안테나 모니터링 시스템 설계 (Altera FPGA)</li>
+                  <li>400MHz RF 모뎀 개발 (하드웨어 + 펌웨어, 단독 개발)</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">WCDMA RF</span><span class="exp-tag">Altera FPGA</span>
+                  <span class="exp-tag">RF Modem</span><span class="exp-tag">Firmware</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- NeedsTech -->
+          <div class="exp-entry">
+            <div class="exp-meta">
+              <span class="exp-company">NeedsTech</span>
+              <span class="exp-period">2003.12 – 2006.07</span>
+            </div>
+            <div class="exp-team">R&D Lab</div>
+            <div class="exp-projects">
+              <div class="exp-project">
+                <ul class="exp-bullets">
+                  <li>WCDMA 중계기 RF 시스템 설계</li>
+                  <li>안테나 모니터링 시스템 개발 (FPGA 기반)</li>
+                  <li>400MHz RF 모뎀 개발 (하드웨어 베이스밴드 + RF + 펌웨어 전 주기)</li>
+                </ul>
+                <div class="exp-tags">
+                  <span class="exp-tag">WCDMA RF</span><span class="exp-tag">FPGA</span>
+                  <span class="exp-tag">RF Modem</span><span class="exp-tag">Baseband</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- Domain Expertise -->
+        <section id="domains" class="rs-section">
+          <div class="rs-section-label">Domain Expertise</div>
+          <div class="domain-grid">
+            <div class="domain-card">
+              <h3>SmartNIC Architecture</h3>
+              <p>OvS, Storage, RDMA, Control Plane 오프로딩까지 SmartNIC 전 영역. AMD U25N/U45N, FPGA + embedded x86 하이브리드 설계.</p>
+            </div>
+            <div class="domain-card">
+              <h3>FPGA / Board Design</h3>
+              <p>IP 설계부터 PCIe 가속기 보드 레이아웃까지. E-CAD (Cadence, Mentor, PADS) 기반 회로·PCB 설계, KC/FCC/CE 인증 관리.</p>
+            </div>
+            <div class="domain-card">
+              <h3>AMD Platform Expertise</h3>
+              <p>EPYC CPU (Milan/Genoa/Siena), Instinct GPU, Alveo/MA35d/V70, Pensando DPU, Kria-SOM. 실서비스(KakaoCloud) 적용 경험.</p>
+            </div>
+            <div class="domain-card">
+              <h3>Cloud Infrastructure</h3>
+              <p>KakaoCloud CSP 환경에서 서버 퀄리피케이션, BIOS/OS 튜닝, KVM/libvirt 최적화, Ceph OSD 성능 엔지니어링.</p>
+            </div>
+            <div class="domain-card">
+              <h3>Embedded HW Development</h3>
+              <p>SoC 선정부터 양산까지 풀 사이클. Samsung Exynos·Qualcomm·ARM 기반 소비자 제품, 자동화 테스트, 양산 지원.</p>
+            </div>
+            <div class="domain-card">
+              <h3>DC Power Architecture</h3>
+              <p>OCP 기반 PSU 중앙화 N+1, 19인치 버스바 레트로핏, 12V→48V 전환 전략. 레거시 랙 PUE 30~45% 절감 아키텍처 연구.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Education -->
+        <section id="education" class="rs-section">
+          <div class="rs-section-label">Education</div>
+          <div class="edu-entry">
+            <div class="edu-school">Kangnam University</div>
+            <div class="edu-detail">B.S. Electronic Engineering & Computer Science (Double Major) · 1997 – 2004</div>
+          </div>
+          <div class="edu-entry">
+            <div class="edu-school">Republic of Korea Army</div>
+            <div class="edu-detail">Military Service · 1998 – 2000 · Honorably discharged</div>
+          </div>
+        </section>
+
+        <!-- Stack -->
+        <section id="stack" class="rs-section">
+          <div class="rs-section-label">Tech Stack</div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+            <div>
+              <div class="skill-group-title">SmartNIC & FPGA</div>
+              <div class="exp-tags" style="gap: 5px; margin-top: 8px;">
+                <span class="exp-tag">AMD U25N / U45N</span>
+                <span class="exp-tag">Xilinx Alveo</span>
+                <span class="exp-tag">Versal / Loche</span>
+                <span class="exp-tag">Kria-SOM</span>
+                <span class="exp-tag">Altera FPGA</span>
+              </div>
+            </div>
+            <div>
+              <div class="skill-group-title">AMD Platform</div>
+              <div class="exp-tags" style="gap: 5px; margin-top: 8px;">
+                <span class="exp-tag">EPYC Milan / Genoa / Siena</span>
+                <span class="exp-tag">Instinct GPU</span>
+                <span class="exp-tag">Alveo U30 / MA35d / V70</span>
+                <span class="exp-tag">Pensando / Solarflare</span>
+              </div>
+            </div>
+            <div>
+              <div class="skill-group-title">Network & Cloud</div>
+              <div class="exp-tags" style="gap: 5px; margin-top: 8px;">
+                <span class="exp-tag">OvS Offload</span>
+                <span class="exp-tag">RoCEv2 / RDMA</span>
+                <span class="exp-tag">KVM / libvirt</span>
+                <span class="exp-tag">Ceph</span>
+                <span class="exp-tag">NVMe</span>
+              </div>
+            </div>
+            <div>
+              <div class="skill-group-title">HW Design Tools</div>
+              <div class="exp-tags" style="gap: 5px; margin-top: 8px;">
+                <span class="exp-tag">Cadence</span>
+                <span class="exp-tag">Mentor</span>
+                <span class="exp-tag">PADS</span>
+                <span class="exp-tag">KC / FCC / CE</span>
+              </div>
+            </div>
+            <div>
+              <div class="skill-group-title">Embedded Platforms</div>
+              <div class="exp-tags" style="gap: 5px; margin-top: 8px;">
+                <span class="exp-tag">Samsung Exynos</span>
+                <span class="exp-tag">Qualcomm</span>
+                <span class="exp-tag">ARM A57</span>
+                <span class="exp-tag">MCU / SoC Bootloader</span>
+              </div>
+            </div>
+            <div>
+              <div class="skill-group-title">Languages</div>
+              <div class="exp-tags" style="gap: 5px; margin-top: 8px;">
+                <span class="exp-tag">C</span>
+                <span class="exp-tag">C++</span>
+                <span class="exp-tag">VHDL / Verilog</span>
+                <span class="exp-tag">Python</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="w ft">
+      <span class="ft-logo">LEPUS LAB</span>
+      <span>© 2026 LEPUS LAB. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
