@@ -4,4 +4,16 @@
     <loc>https://lepuslab.dev/</loc>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://lepuslab.dev/brand</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://lepuslab.dev/datacenter</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lepuslab.dev/career</loc>
+    <priority>0.7</priority>
+  </url>
 </urlset>

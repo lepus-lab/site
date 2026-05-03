@@ -3,6 +3,8 @@
   --text: #f0f2ff;
   --muted: rgba(240,242,255,.65);
   --soft: rgba(240,242,255,.38);
+  --body: rgba(240,242,255,.62);  /* content text — ~6.5:1, WCAG AA */
+  --meta: rgba(240,242,255,.44);  /* metadata/labels — ~4.5:1 */
   --accent: #c6d2ff;
   --line: rgba(255,255,255,.07);
   --line-med: rgba(255,255,255,.14);
@@ -14,6 +16,8 @@
   --text: #080a12;
   --muted: rgba(8,10,18,.65);
   --soft: rgba(8,10,18,.38);
+  --body: rgba(8,10,18,.62);
+  --meta: rgba(8,10,18,.46);
   --accent: #3040a8;
   --line: rgba(8,10,18,.08);
   --line-med: rgba(8,10,18,.16);
@@ -55,14 +59,14 @@ body {
 .hnav { display: flex; align-items: center; gap: 24px; }
 .hnav a {
   font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 300;
-  letter-spacing: .1em; color: var(--soft); text-decoration: none; transition: color .2s;
+  letter-spacing: .1em; color: var(--meta); text-decoration: none; transition: color .2s;
 }
 .hnav a:hover { color: var(--text); }
 .tbtn {
   font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 300;
   letter-spacing: .06em; padding: 5px 12px; border-radius: 999px;
   border: 1px solid var(--line); background: transparent;
-  color: var(--soft); cursor: pointer;
+  color: var(--meta); cursor: pointer;
 }
 
 /* Hero */
@@ -80,7 +84,7 @@ body {
 }
 .hero-year {
   font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 300;
-  letter-spacing: .1em; color: var(--soft);
+  letter-spacing: .1em; color: var(--meta);
 }
 .hero-constellation {
   flex: 1; min-height: 140px; position: relative; overflow: hidden;
@@ -111,7 +115,7 @@ body {
 .hero-tags { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
 .hero-tags span {
   font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 300;
-  letter-spacing: .08em; color: var(--soft); text-align: right;
+  letter-spacing: .08em; color: var(--body); text-align: right;
 }
 
 /* Section structure */
@@ -123,7 +127,7 @@ body {
 }
 .ch-title {
   font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 300;
-  letter-spacing: .2em; text-transform: uppercase; color: var(--soft);
+  letter-spacing: .2em; text-transform: uppercase; color: var(--meta);
 }
 .ch-rule { flex: 1; border: none; border-top: 1px solid var(--line); }
 
@@ -142,7 +146,7 @@ body {
 .exp-row-desc { font-size: 15px; color: var(--muted); line-height: 1.72; }
 .exp-row-stack {
   font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 300;
-  letter-spacing: .06em; color: var(--soft); text-align: right;
+  letter-spacing: .06em; color: var(--meta); text-align: right;
   white-space: nowrap; line-height: 2;
 }
 
@@ -172,7 +176,7 @@ body {
   color: var(--accent); letter-spacing: .04em;
   display: flex; gap: 16px; flex-wrap: wrap; padding-top: 4px;
 }
-.pe-stack span { color: var(--soft); }
+.pe-stack span { color: var(--meta); }
 .pe-stack span + span::before { content: '·'; margin-right: 16px; color: var(--line-med); }
 
 /* Philosophy */
@@ -200,7 +204,7 @@ body {
   font-family: 'Josefin Sans', sans-serif;
   font-size: 15px; font-weight: 300; letter-spacing: .06em; margin-bottom: 6px;
 }
-.pp p { font-size: 14px; color: var(--soft); line-height: 1.75; }
+.pp p { font-size: 14px; font-weight: 400; color: var(--body); line-height: 1.78; }
 
 /* Contact */
 .contact-sec {
@@ -210,7 +214,7 @@ body {
 .contact-sec h2 {
   font-family: 'Josefin Sans', sans-serif;
   font-size: clamp(32px, 4.5vw, 52px); font-weight: 300; letter-spacing: .04em; line-height: 1.1;
-  color: #ffffff;
+  color: var(--text);
 }
 .contact-right { display: grid; gap: 12px; }
 .em-link {
@@ -218,7 +222,7 @@ body {
   color: var(--text); text-decoration: none; transition: color .2s;
 }
 .em-link:hover { color: var(--accent); }
-.loc { font-size: 13px; color: var(--soft); line-height: 1.7; }
+.loc { font-size: 14px; font-weight: 400; color: var(--body); line-height: 1.78; }
 .bl {
   font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 300;
   color: var(--accent); text-decoration: none; letter-spacing: .06em;
@@ -231,7 +235,7 @@ body {
 /* Footer */
 footer {
   padding: 28px 0 44px; margin-top: 48px;
-  border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
+  border-top: 1px solid var(--line); color: var(--meta); font-size: 13px;
 }
 .ft { display: flex; justify-content: space-between; align-items: center; }
 .ft-logo {
