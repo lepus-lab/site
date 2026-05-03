@@ -1,10 +1,13 @@
 :root {
-  --bg: #060708;
+  --bg: #090b12;
+  --bg-soft: #0f1220;
+  --bg-glow-1: rgba(117,132,255,.12);
+  --bg-glow-2: rgba(255,255,255,.06);
   --text: #f0f2ff;
   --muted: rgba(240,242,255,.65);
   --soft: rgba(240,242,255,.38);
-  --body: rgba(240,242,255,.62);  /* content text — ~6.5:1, WCAG AA */
-  --meta: rgba(240,242,255,.44);  /* metadata/labels — ~4.5:1 */
+  --body: rgba(240,242,255,.62);
+  --meta: rgba(240,242,255,.44);
   --accent: #c6d2ff;
   --line: rgba(255,255,255,.07);
   --line-med: rgba(255,255,255,.14);
@@ -12,7 +15,10 @@
   --link-rgb: 198,210,255;
 }
 [data-theme="light"] {
-  --bg: #fafbff;
+  --bg: #f4f7fd;
+  --bg-soft: #e8eef9;
+  --bg-glow-1: rgba(99,125,236,.16);
+  --bg-glow-2: rgba(255,255,255,.8);
   --text: #080a12;
   --muted: rgba(8,10,18,.65);
   --soft: rgba(8,10,18,.38);
@@ -32,24 +38,28 @@ body {
   font-weight: 300;
   font-size: 17px;
   line-height: 1.6;
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 50% 10%, var(--bg-glow-1), transparent 28%),
+    radial-gradient(circle at 80% 8%,  var(--bg-glow-2), transparent 18%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+  background-attachment: fixed;
   color: var(--text);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   transition: background .28s, color .28s;
 }
 
-#starfield { position: fixed; inset: 0; z-index: -1; opacity: .4; }
+#starfield { position: fixed; inset: 0; z-index: -1; }
 
 .w { width: min(1080px, calc(100% - 48px)); margin-inline: auto; }
 
 /* Header */
 .hd {
   position: sticky; top: 0; z-index: 20;
-  background: rgba(6,7,8,.8); backdrop-filter: blur(20px);
+  background: rgba(9,11,18,.82); backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--line); transition: background .28s;
 }
-[data-theme="light"] .hd { background: rgba(250,251,255,.88); }
+[data-theme="light"] .hd { background: rgba(244,247,253,.90); }
 .hd-in { display: flex; align-items: center; justify-content: space-between; height: 58px; }
 .logo {
   font-family: 'Josefin Sans', sans-serif; font-weight: 100;

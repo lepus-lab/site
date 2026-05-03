@@ -1,3 +1,12 @@
+// migrate old key from main.js era
+try {
+  const old = localStorage.getItem("lepuslab-theme");
+  if (old && !localStorage.getItem("theme-preference")) {
+    localStorage.setItem("theme-preference", old);
+    localStorage.removeItem("lepuslab-theme");
+  }
+} catch (_) {}
+
 const root = document.documentElement;
 const themeToggle = document.querySelector("[data-theme-toggle]");
 const THEME_PREFERENCE_KEY = "theme-preference";
