@@ -23,18 +23,10 @@
   <style>
     /* ── Design tokens ── */
     :root {
-      --bg-soft:    rgba(240,242,255,.05);
       --accent-soft: rgba(198,210,255,.10);
-      /* Body text: 60% opacity → ~6.5:1 contrast (WCAG AA pass) */
-      --body:       rgba(240,242,255,.62);
-      /* Metadata: period / team labels — softer on purpose */
-      --meta:       rgba(240,242,255,.44);
     }
     [data-theme="light"] {
-      --bg-soft:    rgba(8,10,18,.04);
       --accent-soft: rgba(48,64,168,.08);
-      --body:       rgba(8,10,18,.62);
-      --meta:       rgba(8,10,18,.46);
     }
 
     /* ── Hero ── */
@@ -189,7 +181,7 @@
     .exp-tag {
       font-family: 'DM Mono', monospace;
       font-size: 11px; font-weight: 300; letter-spacing: .04em;
-      color: var(--body); background: var(--bg-soft);
+      color: var(--body); background: transparent;
       border: 1px solid var(--line-med); padding: 3px 9px;
     }
 
