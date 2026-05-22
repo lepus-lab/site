@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" data-theme="dark">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +10,7 @@
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://lepuslab.dev">
-  <meta property="og:title" content="LEPUS LAB">
+  <meta property="og:title" content="LEPUS LAB — Architecture for Applied AI Systems">
   <meta property="og:description" content="하드웨어 아키텍처에서 AI 시스템까지, 기술의 전 계층을 탐구하고 설계하는 기술 연구소.">
   <meta property="og:image" content="https://lepuslab.dev/og-image.svg">
 
@@ -22,220 +22,910 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="stylesheet" href="main.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <style>
+    :root {
+      --bg:          #090b12;
+      --bg-mid:      #0d1020;
+      --text:        #f0f2ff;
+      --muted:       rgba(240,242,255,.55);
+      --soft:        rgba(240,242,255,.32);
+      --accent:      #c6d2ff;
+      --accent-glow: rgba(198,210,255,.12);
+      --line:        rgba(255,255,255,.07);
+      --line-med:    rgba(255,255,255,.13);
+      --w:           min(1160px, 100% - 48px);
+      --nav-h:       58px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html  { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Josefin Sans', system-ui, sans-serif;
+      font-weight: 300;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ──────────────────────────────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      background: rgba(9,11,18,.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-in {
+      width: var(--w);
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 0.32em;
+      color: var(--text);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      font-size: 10.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-right { display: flex; align-items: center; gap: 36px; }
+
+    .lang-switch {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: var(--soft);
+      border: 1px solid var(--line-med);
+      padding: 4px 10px;
+      transition: color .2s, border-color .2s;
+    }
+    .lang-switch:hover { color: var(--accent); border-color: rgba(198,210,255,.3); }
+
+    /* ── Hero ─────────────────────────────── */
+    .hero {
+      min-height: calc(100svh - var(--nav-h));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 45%,
+          rgba(100,120,255,.07), transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      font-size: 10.5px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 44px;
+      opacity: 0;
+      animation: fadeUp .9s .15s forwards;
+    }
+
+    .hero-word {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: clamp(48px, 10vw, 148px);
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      line-height: 1.0;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeUp .9s .3s forwards;
+    }
+
+    .hero-phrase {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: clamp(16px, 2.2vw, 28px);
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-top: 10px;
+      margin-bottom: 56px;
+      opacity: 0;
+      animation: fadeUp .9s .45s forwards;
+    }
+
+    .hero-vis {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto 52px;
+      opacity: 0;
+      animation: fadeUp 1s .65s forwards;
+    }
+
+    .hero-vis svg { width: 100%; height: auto; overflow: visible; }
+
+    .hero-desc {
+      font-size: clamp(13px, 1.3vw, 16px);
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.75;
+      opacity: 0;
+      animation: fadeUp .9s .85s forwards;
+    }
+
+    .hero-scroll {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 36px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--soft);
+      opacity: 0;
+      animation: fadeUp .9s 1s forwards;
+    }
+
+    .scroll-arrow { display: inline-block; animation: bounce 2s ease-in-out infinite; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(5px); }
+    }
+
+    /* ── Constellation SVG ────────────────── */
+    .cst-line {
+      stroke: var(--accent);
+      stroke-opacity: .22;
+      stroke-width: 1;
+      stroke-dasharray: 250;
+      stroke-dashoffset: 250;
+      animation: drawLine 1.2s ease forwards;
+    }
+    @keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+    .cst-node { opacity: 0; animation: starFade .4s ease forwards; }
+    @keyframes starFade { to { opacity: 1; } }
+
+    .cst-bright { fill: var(--accent); filter: drop-shadow(0 0 6px rgba(198,210,255,.7)); }
+    .cst-mid    { fill: var(--accent); filter: drop-shadow(0 0 3px rgba(198,210,255,.45)); }
+    .cst-dim    { fill: rgba(198,210,255,.38); }
+
+    .cst-pulse      { animation: starFade .4s ease forwards, starPulse 3.5s ease-in-out infinite; }
+    .cst-pulse-slow { animation: starFade .4s ease forwards, starPulse 5s ease-in-out infinite; }
+
+    @keyframes starPulse {
+      0%, 100% { opacity: .65; }
+      50%       { opacity: 1; }
+    }
+
+    /* ── Statement ────────────────────────── */
+    .statement {
+      padding: 128px 24px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .stmt-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 52px;
+    }
+
+    .stmt-text {
+      font-weight: 100;
+      font-size: clamp(26px, 4.2vw, 60px);
+      line-height: 1.2;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      max-width: 860px;
+      margin: 0 auto 72px;
+    }
+
+    .stmt-text em { font-style: normal; color: var(--accent); }
+
+    .metrics {
+      display: flex;
+      justify-content: center;
+      border: 1px solid var(--line-med);
+    }
+
+    .metric {
+      padding: 28px 56px;
+      text-align: center;
+      flex: 1;
+      max-width: 240px;
+    }
+    .metric + .metric { border-left: 1px solid var(--line-med); }
+
+    .metric-val {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(24px, 2.8vw, 40px);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .metric-lbl {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Section base ─────────────────────── */
+    .section { padding: 120px 24px; border-top: 1px solid var(--line); }
+    .sec-w   { width: var(--w); margin: 0 auto; }
+
+    .sec-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 56px;
+    }
+
+    .sec-num  { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; color: var(--accent); }
+    .sec-rule { height: 1px; width: 60px; background: var(--line-med); }
+    .sec-name { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+
+    .sec-title {
+      font-weight: 100;
+      font-size: clamp(30px, 3.8vw, 56px);
+      letter-spacing: 0.04em;
+      line-height: 1.15;
+      color: var(--text);
+      max-width: 680px;
+      margin-bottom: 72px;
+    }
+
+    /* ── Stack grid ───────────────────────── */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--line-med);
+      gap: 1px;
+      border: 1px solid var(--line-med);
+    }
+
+    .stack-col {
+      background: var(--bg);
+      padding: 40px 32px 44px;
+      transition: background .25s;
+    }
+    .stack-col:hover { background: rgba(13,16,28,.85); }
+
+    .stack-name {
+      font-weight: 100;
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      line-height: 1.25;
+      color: var(--text);
+      margin-bottom: 28px;
+    }
+
+    .stack-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    .stack-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      padding: 5px 10px;
+      border: 1px solid var(--line-med);
+    }
+
+    /* ── Burrow product ───────────────────── */
+    .product-wrap { padding: 0 24px 120px; }
+
+    .product-card {
+      width: var(--w);
+      margin: 0 auto;
+      background: rgba(198,210,255,.035);
+      border: 1px solid rgba(198,210,255,.14);
+      padding: 72px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .product-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .product-name {
+      font-weight: 100;
+      font-size: clamp(52px, 7vw, 96px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 28px;
+    }
+
+    .product-desc {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--muted);
+      margin-bottom: 40px;
+      max-width: 420px;
+    }
+
+    .product-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      transition: opacity .2s;
+    }
+    .product-cta:hover { opacity: .7; }
+
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(198,210,255,.13);
+    }
+
+    .spec-cell { background: rgba(9,11,18,.88); padding: 28px 32px; }
+
+    .spec-val {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(20px, 2vw, 30px);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .spec-key {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Work list ────────────────────────── */
+    .work-list { display: flex; flex-direction: column; }
+
+    .work-row {
+      display: grid;
+      grid-template-columns: 72px 1fr auto auto;
+      gap: 32px;
+      align-items: center;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+      transition: opacity .2s;
+    }
+    .work-row:hover { opacity: .72; }
+
+    .work-idx { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: var(--soft); }
+    .work-name { font-weight: 300; font-size: clamp(16px, 1.8vw, 22px); letter-spacing: 0.04em; }
+    .work-cat  { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--muted); text-align: right; }
+    .work-yr   { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--soft); min-width: 60px; text-align: right; }
+
+    /* ── Contact ──────────────────────────── */
+    .contact {
+      padding: 160px 24px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .contact-title {
+      font-weight: 100;
+      font-size: clamp(36px, 5.5vw, 88px);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 48px;
+    }
+
+    .contact-email {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(13px, 1.4vw, 18px);
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      border-bottom: 1px solid rgba(198,210,255,.3);
+      padding-bottom: 2px;
+      transition: opacity .2s;
+    }
+    .contact-email:hover { opacity: .7; }
+
+    /* ── Footer ───────────────────────────── */
+    footer { padding: 28px 24px; border-top: 1px solid var(--line); }
+    .footer-in {
+      width: var(--w);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+    }
+    .footer-copy { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: var(--soft); }
+
+    /* ── Scroll reveal ────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .75s, transform .75s;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ── Responsive ───────────────────────── */
+    @media (max-width: 900px) {
+      .stack-grid   { grid-template-columns: repeat(2, 1fr); }
+      .product-card { grid-template-columns: 1fr; gap: 48px; padding: 48px 36px; }
+      .work-row     { grid-template-columns: 52px 1fr; }
+      .work-cat, .work-yr { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .stack-grid { grid-template-columns: 1fr; }
+      .metrics    { flex-direction: column; }
+      .metric + .metric { border-left: none; border-top: 1px solid var(--line-med); }
+      .nav-links  { gap: 20px; }
+      .nav-links li:nth-child(n+4) { display: none; }
+    }
+
+    /* ── Stack intro ─────────────────────── */
+    .stack-intro {
+      font-size: 14px; line-height: 1.85;
+      color: var(--muted); max-width: 720px;
+      margin-bottom: 36px; word-break: keep-all;
+    }
+
+    .keyword-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 56px; }
+
+    .keyword-pill {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.14em; color: var(--accent);
+      padding: 5px 12px;
+      border: 1px solid rgba(198,210,255,.22);
+      background: rgba(198,210,255,.04);
+    }
+
+    /* ── Capability detail cards ─────────── */
+    .cap-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      background: var(--line-med);
+      gap: 1px;
+      border: 1px solid var(--line-med);
+      margin-top: 1px;
+    }
+
+    .cap-card {
+      background: var(--bg);
+      padding: 40px 36px;
+      transition: background .25s;
+    }
+    .cap-card:hover { background: rgba(13,16,28,.85); }
+
+    .cap-card-wide {
+      grid-column: span 2;
+      background: rgba(198,210,255,.03);
+    }
+
+    .cap-idx {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--accent);
+      display: block; margin-bottom: 14px;
+    }
+
+    .cap-h3 {
+      font-weight: 100;
+      font-size: clamp(17px, 1.8vw, 22px);
+      letter-spacing: 0.04em; line-height: 1.2;
+      color: var(--text); margin-bottom: 14px;
+    }
+
+    .cap-p {
+      font-size: 13px; line-height: 1.85;
+      color: var(--muted); word-break: keep-all;
+      margin-bottom: 20px;
+    }
+
+    .cap-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    .cap-chip {
+      font-family: 'DM Mono', monospace; font-size: 9.5px;
+      letter-spacing: 0.12em; color: var(--muted);
+      padding: 4px 10px; border: 1px solid var(--line-med);
+    }
+
+    /* ── Product coming soon ─────────────── */
+    .product-coming {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--soft);
+    }
+    .product-coming::before {
+      content: ''; display: block;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(198,210,255,.4);
+      animation: blink 2.5s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: .3; }
+      50%       { opacity: 1; }
+    }
+
+    @media (max-width: 900px) {
+      .cap-detail-grid { grid-template-columns: 1fr; }
+      .cap-card-wide   { grid-column: span 1; }
+    }
+  </style>
 </head>
 <body>
-  <canvas id="starfield" aria-hidden="true"></canvas>
 
-  <header class="hd">
-    <div class="w hd-in">
-      <a class="logo" href="/">LEPUS LAB</a>
-      <div class="hnav">
-        <a href="#expertise">Expertise</a>
-        <a href="#projects">Selected Work</a>
-        <a href="#philosophy">Approach</a>
-        <a href="/datacenter">Datacenter</a>
-        <a href="/career">Career</a>
-        <a href="#contact">Contact</a>
-        <button class="tbtn" data-theme-toggle>
-          <span class="theme-toggle-label">Theme: System</span>
-        </button>
+  <!-- ── Nav ── -->
+  <header class="nav" role="banner">
+    <div class="nav-in">
+      <a class="nav-logo" href="/">LEPUS LAB</a>
+      <div class="nav-right">
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="#stack">Stack</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="datacenter.html">Datacenter</a></li>
+            <li><a href="career.html">Career</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <a class="lang-switch" href="concept-v1-ko.html">한국어</a>
       </div>
     </div>
   </header>
 
   <main>
 
-    <!-- ── HERO ── -->
-    <section class="w hero">
-      <div class="hero-top">
-        <div class="hero-meta">
-          Architecture for Applied AI<br>
-          Edge-to-Cloud Systems<br>
-          Compute · Network · Storage
-        </div>
-        <span class="hero-year">Est. 2024 — Seoul</span>
-      </div>
+    <!-- ── Hero ── -->
+    <section class="hero" aria-labelledby="hero-h1">
+      <p class="hero-eyebrow">Architecture Research Lab · Yongin-si Gogi-ri</p>
 
-      <!-- Constellation — full-width spread, namecard front structure -->
-      <div class="hero-constellation">
-        <svg viewBox="0 0 855 475" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
-          <g transform="translate(75, -18) scale(1.18)">
-            <circle class="sym-star-dim" cx="80"  cy="170" r="1.4"/>
-            <circle class="sym-star"     cx="150" cy="150" r="1.9"/>
-            <circle class="sym-star"     cx="230" cy="170" r="1.9"/>
-            <circle class="sym-star"     cx="310" cy="230" r="2.8"/>
-            <circle class="sym-star"     cx="380" cy="130" r="2.1"/>
-            <circle class="sym-star-dim" cx="430" cy="150" r="1.4"/>
-            <circle class="sym-star-dim" cx="470" cy="110" r="1.1"/>
-            <circle class="sym-star"     cx="410" cy="210" r="1.9"/>
-            <circle class="sym-star"     cx="230" cy="340" r="1.9"/>
-            <circle class="sym-star"     cx="180" cy="300" r="1.9"/>
-            <circle class="sym-star"     cx="330" cy="300" r="1.9"/>
-            <circle class="sym-star"     cx="470" cy="340" r="1.9"/>
+      <h1 id="hero-h1" class="hero-word">Architecture</h1>
+      <p class="hero-phrase">for Applied AI Systems</p>
+
+      <div class="hero-vis" aria-hidden="true">
+        <svg viewBox="0 0 580 310" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(20, -80) scale(1.1)">
+            <line class="cst-line" x1="80"  y1="170" x2="150" y2="150" style="animation-delay:1.0s"/>
+            <line class="cst-line" x1="150" y1="150" x2="230" y2="170" style="animation-delay:1.3s"/>
+            <line class="cst-line" x1="230" y1="170" x2="310" y2="230" style="animation-delay:1.6s"/>
+            <line class="cst-line" x1="310" y1="230" x2="410" y2="210" style="animation-delay:1.9s"/>
+            <line class="cst-line" x1="380" y1="130" x2="410" y2="210" style="animation-delay:2.2s"/>
+            <line class="cst-line" x1="310" y1="230" x2="330" y2="300" style="animation-delay:2.5s"/>
+            <line class="cst-line" x1="330" y1="300" x2="470" y2="340" style="animation-delay:2.8s"/>
+            <line class="cst-line" x1="180" y1="300" x2="230" y2="340" style="animation-delay:3.1s"/>
+            <line class="cst-line" x1="230" y1="340" x2="330" y2="300" style="animation-delay:3.4s"/>
+
+            <circle class="cst-node cst-dim"                cx="80"  cy="170" r="1.5"  style="animation-delay:2.5s"/>
+            <circle class="cst-node cst-mid cst-pulse"      cx="150" cy="150" r="2.2"  style="animation-delay:2.6s"/>
+            <circle class="cst-node cst-mid cst-pulse"      cx="230" cy="170" r="2.2"  style="animation-delay:2.7s"/>
+            <circle class="cst-node cst-bright cst-pulse"   cx="310" cy="230" r="3.5"  style="animation-delay:2.5s"/>
+            <circle class="cst-node cst-mid cst-pulse-slow" cx="380" cy="130" r="2.5"  style="animation-delay:2.8s"/>
+            <circle class="cst-node cst-dim"                cx="430" cy="150" r="1.5"  style="animation-delay:2.9s"/>
+            <circle class="cst-node cst-dim"                cx="470" cy="110" r="1.2"  style="animation-delay:2.9s"/>
+            <circle class="cst-node cst-mid cst-pulse"      cx="410" cy="210" r="2.2"  style="animation-delay:2.65s"/>
+            <circle class="cst-node cst-mid cst-pulse"      cx="230" cy="340" r="2.2"  style="animation-delay:3.0s"/>
+            <circle class="cst-node cst-mid cst-pulse"      cx="180" cy="300" r="2.2"  style="animation-delay:3.0s"/>
+            <circle class="cst-node cst-mid cst-pulse-slow" cx="330" cy="300" r="2.2"  style="animation-delay:2.9s"/>
+            <circle class="cst-node cst-mid cst-pulse"      cx="470" cy="340" r="2.2"  style="animation-delay:3.1s"/>
           </g>
         </svg>
       </div>
 
-      <!-- Horizontal wordmark — overlaps constellation bottom -->
-      <div class="hero-bottom">
-        <div class="hero-wordmark">LEPUS LAB</div>
-        <hr class="hero-rule">
-        <div class="hero-foot">
-          <p class="hero-desc">데이터가 생성되고 처리되며 전달되어 저장되기까지,<br>AI 시스템의 엣지부터 클라우드까지의 아키텍처와<br>더 효율적인 클라우드 인프라, 그리고 CPU 기반 인퍼런스까지 확장 가능한 방향을 함께 고민합니다.</p>
-          <div class="hero-tags">
-            <span>Embedded Systems</span>
-            <span>Edge AI</span>
-            <span>Data Path Architecture</span>
-            <span>Compute · Network · Storage</span>
-            <span>SmartNIC · EPYC Tuning · CPU Inference</span>
+      <p class="hero-desc">We design the underlying systems that carry intelligent applications from edge to cloud — across compute, network, and storage.</p>
+      <a class="hero-scroll" href="#statement">Scroll to explore <span class="scroll-arrow">↓</span></a>
+    </section>
+
+    <!-- ── Problem statement ── -->
+    <section id="statement" class="statement">
+      <p class="stmt-label reveal">The challenge</p>
+      <h2 class="stmt-text reveal">
+        Most AI deployments fail at the <em>architecture layer</em> — not the model.
+      </h2>
+      <div class="metrics reveal">
+        <div class="metric">
+          <span class="metric-val">Infra</span>
+          <span class="metric-lbl">Datacenter &amp; network layer</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val">Edge</span>
+          <span class="metric-lbl">Device &amp; hardware layer</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val">Arch</span>
+          <span class="metric-lbl">The design between both</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── The Stack ── -->
+    <section id="stack" class="section">
+      <div class="sec-w">
+        <div class="sec-meta reveal">
+          <span class="sec-num">01</span>
+          <div class="sec-rule"></div>
+          <span class="sec-name">The Stack</span>
+        </div>
+        <h2 class="sec-title reveal">We build where most teams stop — at the system layer beneath the model.</h2>
+
+        <p class="stack-intro reveal">데이터가 생성되고 처리되며 전달되어 저장되기까지, AI 시스템의 엣지부터 클라우드까지의 아키텍처와 더 효율적인 클라우드 인프라, 그리고 CPU 기반 인퍼런스까지 확장 가능한 방향을 함께 고민합니다.</p>
+
+        <div class="keyword-strip reveal">
+          <span class="keyword-pill">Embedded Systems</span>
+          <span class="keyword-pill">Edge AI</span>
+          <span class="keyword-pill">Data Path Architecture</span>
+          <span class="keyword-pill">Compute · Network · Storage</span>
+          <span class="keyword-pill">SmartNIC · EPYC Tuning · CPU Inference</span>
+        </div>
+
+        <!-- Layer overview -->
+        <div class="stack-grid reveal">
+          <div class="stack-col">
+            <h3 class="stack-name">Hardware<br>&amp; Edge</h3>
+            <div class="stack-tags">
+              <span class="stack-tag">Jetson Orin</span>
+              <span class="stack-tag">TensorRT</span>
+              <span class="stack-tag">CUDA</span>
+              <span class="stack-tag">MIPI / CSI</span>
+              <span class="stack-tag">Real-Time Vision</span>
+            </div>
+          </div>
+          <div class="stack-col">
+            <h3 class="stack-name">Network<br>Fabric</h3>
+            <div class="stack-tags">
+              <span class="stack-tag">BlueField DPU</span>
+              <span class="stack-tag">RDMA / RoCE</span>
+              <span class="stack-tag">DOCA</span>
+              <span class="stack-tag">PCIe / Ethernet</span>
+              <span class="stack-tag">SmartNIC</span>
+            </div>
+          </div>
+          <div class="stack-col">
+            <h3 class="stack-name">Compute<br>&amp; Storage</h3>
+            <div class="stack-tags">
+              <span class="stack-tag">NVMe-oF</span>
+              <span class="stack-tag">JBOF</span>
+              <span class="stack-tag">AMD EPYC</span>
+              <span class="stack-tag">NUMA Tuning</span>
+              <span class="stack-tag">Disaggregated</span>
+            </div>
+          </div>
+          <div class="stack-col">
+            <h3 class="stack-name">Applied<br>AI</h3>
+            <div class="stack-tags">
+              <span class="stack-tag">On-device AI</span>
+              <span class="stack-tag">Core ML</span>
+              <span class="stack-tag">TensorRT</span>
+              <span class="stack-tag">iOS</span>
+              <span class="stack-tag">API Systems</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Capability detail -->
+        <div class="cap-detail-grid reveal">
+          <div class="cap-card">
+            <span class="cap-idx">A1</span>
+            <h3 class="cap-h3">Embedded &amp; Edge Systems</h3>
+            <p class="cap-p">센서 입력부터 실시간 추론까지, 엣지 환경에서 동작하는 AI 시스템의 입력 경로와 처리 구조를 설계하고 최적화합니다.</p>
+            <div class="cap-chips">
+              <span class="cap-chip">Jetson Orin</span>
+              <span class="cap-chip">TensorRT</span>
+              <span class="cap-chip">CUDA</span>
+              <span class="cap-chip">MIPI / CSI</span>
+            </div>
+          </div>
+          <div class="cap-card">
+            <span class="cap-idx">A2</span>
+            <h3 class="cap-h3">Compute &amp; Network Infrastructure</h3>
+            <p class="cap-p">엣지에서 생성된 데이터가 클라우드 컴퓨트와 GPU 자원으로 자연스럽게 이어지도록, 네트워크와 시스템 구조를 설계합니다.</p>
+            <div class="cap-chips">
+              <span class="cap-chip">BlueField DPU</span>
+              <span class="cap-chip">RDMA / RoCE</span>
+              <span class="cap-chip">DOCA</span>
+              <span class="cap-chip">PCIe / Ethernet</span>
+            </div>
+          </div>
+          <div class="cap-card">
+            <span class="cap-idx">A3</span>
+            <h3 class="cap-h3">Storage Architecture</h3>
+            <p class="cap-p">AI 워크로드의 흐름을 기준으로, 컴퓨트와 스토리지 사이의 구조와 병목을 분석하고 운영 가능한 아키텍처로 정리합니다.</p>
+            <div class="cap-chips">
+              <span class="cap-chip">NVMe-oF</span>
+              <span class="cap-chip">JBOF</span>
+              <span class="cap-chip">Disaggregated Storage</span>
+              <span class="cap-chip">Performance Modeling</span>
+            </div>
+          </div>
+          <div class="cap-card">
+            <span class="cap-idx">A4</span>
+            <h3 class="cap-h3">Infrastructure Optimization</h3>
+            <p class="cap-p">SmartNIC 개발과 AMD EPYC 기반 성능 엔지니어링 경험을 바탕으로, 인프라 고도화와 시스템 튜닝, 그리고 최근 확대되는 CPU 기반 인퍼런스 환경까지 현실적인 방향으로 설계합니다.</p>
+            <div class="cap-chips">
+              <span class="cap-chip">SmartNIC</span>
+              <span class="cap-chip">AMD EPYC</span>
+              <span class="cap-chip">NUMA / PCIe Tuning</span>
+              <span class="cap-chip">CPU Inference</span>
+            </div>
+          </div>
+          <div class="cap-card cap-card-wide">
+            <span class="cap-idx">A5</span>
+            <h3 class="cap-h3">Applied AI Products</h3>
+            <p class="cap-p">온디바이스 추론부터 서비스 레벨 시스템까지, 실제 제품과 사용자 경험으로 이어지는 AI 구조를 설계합니다.</p>
+            <div class="cap-chips">
+              <span class="cap-chip">On-device AI</span>
+              <span class="cap-chip">Core ML</span>
+              <span class="cap-chip">iOS</span>
+              <span class="cap-chip">API Integration</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ── 01 EXPERTISE ── -->
-    <section id="expertise" class="w ch">
-      <div class="ch-label">
-        <span class="ch-num">01</span>
-        <span class="ch-title">Capabilities</span>
-        <hr class="ch-rule">
-      </div>
-      <div class="exp-rows">
-        <div class="exp-row">
-          <div class="exp-row-title">Embedded & Edge Systems</div>
-          <div class="exp-row-desc">센서 입력부터 실시간 추론까지, 엣지 환경에서 동작하는 AI 시스템의 입력 경로와 처리 구조를 설계하고 최적화합니다.</div>
-          <div class="exp-row-stack">Jetson Orin<br>TensorRT<br>CUDA<br>MIPI / CSI</div>
+    <!-- ── Burrow product ── -->
+    <section id="products" class="product-wrap">
+      <div class="product-card reveal">
+        <div>
+          <p class="product-tag">Project · 2026</p>
+          <h2 class="product-name">Burrow</h2>
+          <p class="product-desc">An LLM-based agent that bridges embedded system architecture to hardware design level — rapidly. Built for teams who need to move from concept to implementation without losing technical fidelity.</p>
+          <span class="product-coming">Coming Soon</span>
         </div>
-        <div class="exp-row">
-          <div class="exp-row-title">Compute & Network Infrastructure</div>
-          <div class="exp-row-desc">엣지에서 생성된 데이터가 클라우드 컴퓨트와 GPU 자원으로 자연스럽게 이어지도록, 네트워크와 시스템 구조를 설계합니다.</div>
-          <div class="exp-row-stack">BlueField DPU<br>RDMA / RoCE<br>DOCA<br>PCIe / Ethernet</div>
-        </div>
-        <div class="exp-row">
-          <div class="exp-row-title">Storage Architecture</div>
-          <div class="exp-row-desc">AI 워크로드의 흐름을 기준으로, 컴퓨트와 스토리지 사이의 구조와 병목을 분석하고 운영 가능한 아키텍처로 정리합니다.</div>
-          <div class="exp-row-stack">NVMe-oF<br>JBOF<br>Disaggregated Storage<br>Performance Modeling</div>
-        </div>
-        <div class="exp-row">
-          <div class="exp-row-title">Infrastructure Optimization</div>
-          <div class="exp-row-desc">SmartNIC 개발과 AMD EPYC 기반 성능 엔지니어링 경험을 바탕으로, 인프라 고도화와 시스템 튜닝, 그리고 최근 확대되는 CPU 기반 인퍼런스 환경까지 현실적인 방향으로 설계합니다.</div>
-          <div class="exp-row-stack">SmartNIC<br>AMD EPYC<br>NUMA / PCIe Tuning<br>CPU Inference</div>
-        </div>
-        <div class="exp-row">
-          <div class="exp-row-title">Applied AI Products</div>
-          <div class="exp-row-desc">온디바이스 추론부터 서비스 레벨 시스템까지, 실제 제품과 사용자 경험으로 이어지는 AI 구조를 설계합니다.</div>
-          <div class="exp-row-stack">On-device AI<br>Core ML<br>iOS<br>API Integration</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── 02 PROJECTS ── -->
-    <section id="projects" class="w ch">
-      <div class="ch-label">
-        <span class="ch-num">02</span>
-        <span class="ch-title">Selected Work</span>
-        <hr class="ch-rule">
-      </div>
-      <div class="proj-entries">
-        <div class="proj-entry">
-          <span class="pe-num">001</span>
-          <div class="pe-body">
-            <span class="pe-tag">Embedded Vision · Edge AI · 2025 – 2026</span>
-            <h3>Real-Time Vision Systems</h3>
-            <p>센서 입력부터 추론, 인코딩, 스트리밍까지 이어지는 실시간 비전 워크로드를 하나의 시스템 아키텍처로 통합했습니다.</p>
-            <div class="pe-stack">
-              <span>C++</span><span>CUDA</span><span>TensorRT</span><span>OpenCV</span><span>Video Pipeline</span>
-            </div>
+        <div class="spec-grid">
+          <div class="spec-cell">
+            <span class="spec-val">LLM</span>
+            <span class="spec-key">Agent-powered</span>
           </div>
-        </div>
-        <div class="proj-entry">
-          <span class="pe-num">002</span>
-          <div class="pe-body">
-            <span class="pe-tag">On-device AI · Mobile · 2025</span>
-            <h3>On-Device AI Experiences</h3>
-            <p>온디바이스 추론을 중심으로, 모바일 환경에서 동작하는 AI 제품 구조와 서비스 연계 방식을 함께 설계했습니다.</p>
-            <div class="pe-stack">
-              <span>iOS</span><span>On-device AI</span><span>Core ML</span><span>Product Architecture</span>
-            </div>
+          <div class="spec-cell">
+            <span class="spec-val">Embedded</span>
+            <span class="spec-key">Systems focus</span>
           </div>
-        </div>
-        <div class="proj-entry">
-          <span class="pe-num">003</span>
-          <div class="pe-body">
-            <span class="pe-tag">Systems Engineering · Performance · 2024 – 2025</span>
-            <h3>Platform Performance Engineering</h3>
-            <p>고성능 네트워크와 서버 플랫폼을 다루는 과정에서, SmartNIC와 AMD EPYC 기반 시스템의 성능 특성을 분석하고 인프라 고도화를 위한 튜닝 관점을 축적했습니다.</p>
-            <div class="pe-stack">
-              <span>SmartNIC</span><span>AMD EPYC</span><span>NUMA</span><span>PCIe</span><span>System Tuning</span>
-            </div>
+          <div class="spec-cell">
+            <span class="spec-val">Arch</span>
+            <span class="spec-key">→ HW handoff</span>
           </div>
-        </div>
-        <div class="proj-entry">
-          <span class="pe-num">004</span>
-          <div class="pe-body">
-            <span class="pe-tag">Infrastructure Research · 2024 – 2026</span>
-            <h3>AI Infrastructure & Storage</h3>
-            <p>AI 워크로드의 흐름을 기준으로, 컴퓨트·네트워크·스토리지를 함께 고려한 인프라 아키텍처를 연구하고 정리했습니다.</p>
-            <div class="pe-stack">
-              <span>DPU</span><span>NVMe-oF</span><span>JBOF</span><span>RDMA</span><span>GPU Infrastructure</span>
-            </div>
+          <div class="spec-cell">
+            <span class="spec-val">Rapid</span>
+            <span class="spec-key">Iteration cycle</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ── 03 PHILOSOPHY ── -->
-    <section id="philosophy" class="w phil">
-      <div class="ch-label">
-        <span class="ch-num">03</span>
-        <span class="ch-title">Approach</span>
-        <hr class="ch-rule">
-      </div>
-      <div class="phil-quote">
-        Clarity<em>First</em>
-      </div>
-      <div class="phil-body">
-        <p class="phil-intro">구현보다 먼저 구조의 명확성을 확보합니다. Sensor와 SoC에서 시작된 데이터가 네트워크를 지나 Compute와 Storage에 도달하기까지, 전체 시스템의 관계를 먼저 정리합니다.</p>
-        <div class="phil-pillars">
-          <div class="pp">
-            <span class="pp-n">01</span>
-            <div><h4>End-to-End Perspective</h4><p>Sensor -&gt; Edge -&gt; Network -&gt; Compute -&gt; Storage로 이어지는 흐름을 하나의 시스템 관점에서 다룹니다.</p></div>
+    <!-- ── Selected Work ── -->
+    <section id="work" class="section">
+      <div class="sec-w">
+        <div class="sec-meta reveal">
+          <span class="sec-num">02</span>
+          <div class="sec-rule"></div>
+          <span class="sec-name">Selected Work</span>
+        </div>
+        <h2 class="sec-title reveal">Different layers. Different problems.</h2>
+        <div class="work-list reveal">
+          <div class="work-row">
+            <span class="work-idx">001</span>
+            <span class="work-name">Real-Time Vision Systems</span>
+            <span class="work-cat">Embedded · Edge AI</span>
+            <span class="work-yr">2025–26</span>
           </div>
-          <div class="pp">
-            <span class="pp-n">02</span>
-            <div><h4>Connected System Design</h4><p>엣지 추론, 전송, 클라우드 처리, 저장소 연결이 분절되지 않도록 각 레이어의 역할과 경계를 설계합니다.</p></div>
+          <div class="work-row">
+            <span class="work-idx">002</span>
+            <span class="work-name">On-Device AI Products</span>
+            <span class="work-cat">Applied AI · iOS</span>
+            <span class="work-yr">2025</span>
           </div>
-          <div class="pp">
-            <span class="pp-n">03</span>
-            <div><h4>Workload-Grounded Architecture</h4><p>실제 워크로드와 병목을 기준으로 구조를 검증하고, 운영 가능한 형태의 레퍼런스 아키텍처로 정리합니다.</p></div>
+          <div class="work-row">
+            <span class="work-idx">003</span>
+            <span class="work-name">AI Datacenter Network Architecture</span>
+            <span class="work-cat">Network · Infrastructure</span>
+            <span class="work-yr">2024–25</span>
+          </div>
+          <div class="work-row">
+            <span class="work-idx">004</span>
+            <span class="work-name">Platform Performance Engineering</span>
+            <span class="work-cat">SmartNIC · AMD EPYC</span>
+            <span class="work-yr">2024–25</span>
+          </div>
+          <div class="work-row">
+            <span class="work-idx">005</span>
+            <span class="work-name">AI Infrastructure &amp; Storage</span>
+            <span class="work-cat">Storage · Optimization</span>
+            <span class="work-yr">2024–26</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ── 04 CONTACT ── -->
-    <div id="contact" class="w contact-sec">
-      <h2>Let's Talk Architecture<br>for Applied AI Systems</h2>
-      <div class="contact-right">
-        <a class="em-link" href="mailto:contact@lepuslab.dev">contact@lepuslab.dev</a>
-        <p class="loc">Seoul, Republic of Korea</p>
-        <p class="loc">Partnership, consulting, and architecture discussions across edge systems, infrastructure optimization, and AI deployment strategy.</p>
-        <a href="/brand" class="bl">Brand Identity →</a>
-      </div>
-    </div>
+    <!-- ── Contact ── -->
+    <section id="contact" class="contact">
+      <h2 class="contact-title reveal">Let's build<br>what's next</h2>
+      <a class="contact-email reveal" href="mailto:contact@lepuslab.dev">contact@lepuslab.dev</a>
+    </section>
 
   </main>
 
+  <!-- ── Footer ── -->
   <footer>
-    <div class="w ft">
-      <span class="ft-logo">LEPUS LAB</span>
-      <span>© 2026 LEPUS LAB. All rights reserved.</span>
+    <div class="footer-in">
+      <span class="footer-copy">© 2026 LEPUS LAB</span>
+      <span class="footer-copy">Yongin-si, Korea</span>
     </div>
   </footer>
 
-  <script src="script.js"></script>
-
+  <script>
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>

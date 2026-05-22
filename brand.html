@@ -11,183 +11,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    .brand-page-hero {
-      padding: 96px 0 72px;
-    }
-
-    .brand-page-hero h1 {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: clamp(32px, 5vw, 56px);
-      font-weight: 100;
-      letter-spacing: .06em;
-      line-height: 1.1;
-      margin-top: 10px;
-    }
-
-    .brand-page-hero p {
-      margin-top: 14px;
-      font-size: 16px;
-      color: var(--muted);
-    }
-
-    .brand-section {
-      padding: 64px 0;
-      border-top: 1px solid var(--line);
-    }
-
-    .brand-section-label {
-      font-family: 'DM Mono', ui-monospace, monospace;
-      font-size: 10px;
-      font-weight: 300;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 32px;
-    }
-
-    /* Primary Mark */
-    .mark-row {
-      display: flex;
-      align-items: center;
-      gap: 40px;
-    }
-
-    .mark-display {
-      width: 160px;
-      height: 160px;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      background: var(--panel);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .mark-note {
-      max-width: 440px;
-    }
-
-    .mark-note h3 {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 18px;
-      font-weight: 300;
-      letter-spacing: .04em;
-      margin-bottom: 10px;
-    }
-
-    .mark-note p {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.75;
-    }
-
-    /* Wordmark */
-    .wordmark-display {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: clamp(36px, 7vw, 72px);
-      font-weight: 100;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      line-height: 1;
-      margin-bottom: 16px;
-    }
-
-    .wordmark-spec {
-      font-family: 'DM Mono', ui-monospace, monospace;
-      font-size: 11px;
-      font-weight: 300;
-      color: var(--soft);
-      line-height: 2.2;
-      letter-spacing: .04em;
-    }
-
-    /* Color Palette */
-    .color-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-    }
-
-    .color-card {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .color-swatch {
-      height: 100px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-    }
-
-    .color-card h4 {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 300;
-      letter-spacing: .06em;
-    }
-
-    .color-card code {
-      display: block;
-      font-family: 'DM Mono', ui-monospace, monospace;
-      font-size: 11px;
-      font-weight: 300;
-      color: var(--accent);
-      letter-spacing: .04em;
-      margin: 2px 0 4px;
-    }
-
-    .color-card span {
-      font-size: 12px;
-      color: var(--soft);
-    }
-
-    /* Constellation */
-    .constellation-note {
-      max-width: 600px;
-    }
-
-    .constellation-note h3 {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 20px;
-      font-weight: 300;
-      letter-spacing: .04em;
-      margin-bottom: 12px;
-    }
-
-    .constellation-note p {
-      font-size: 15px;
-      color: var(--muted);
-      line-height: 1.8;
-      margin-bottom: 12px;
-    }
-
-    @media (max-width: 640px) {
-      .mark-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 24px;
-      }
-
-      .color-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="brand.css">
 </head>
 <body>
   <canvas id="starfield" aria-hidden="true"></canvas>
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="/">LEPUS LAB</a>
+      <a class="logo" href="index.html">LEPUS LAB</a>
       <div class="header-actions">
         <nav class="nav" aria-label="Primary">
-          <a href="/">← Home</a>
+          <a href="index.html">← Home</a>
         </nav>
         <button class="theme-toggle" type="button" data-theme-toggle aria-live="polite">
           <span class="theme-toggle-icon" aria-hidden="true"></span>
@@ -250,7 +86,7 @@
       <p class="brand-section-label">Color Palette</p>
       <div class="color-grid">
         <div class="color-card">
-          <div class="color-swatch" style="background:#090b12;" aria-label="Nebula Navy swatch"></div>
+          <div class="color-swatch color-swatch-navy" aria-label="Nebula Navy swatch"></div>
           <div>
             <h4>Nebula Navy</h4>
             <code>#090B12</code>
@@ -258,7 +94,7 @@
           </div>
         </div>
         <div class="color-card">
-          <div class="color-swatch" style="background:#eef2ff; border-color: rgba(18,27,46,.12);" aria-label="Cloud Silver swatch"></div>
+          <div class="color-swatch color-swatch-silver" aria-label="Cloud Silver swatch"></div>
           <div>
             <h4>Cloud Silver</h4>
             <code>#EEF2FF</code>
@@ -266,7 +102,7 @@
           </div>
         </div>
         <div class="color-card">
-          <div class="color-swatch" style="background:#c6d2ff;" aria-label="Signal Blue swatch"></div>
+          <div class="color-swatch color-swatch-signal" aria-label="Signal Blue swatch"></div>
           <div>
             <h4>Signal Blue</h4>
             <code>#C6D2FF</code>

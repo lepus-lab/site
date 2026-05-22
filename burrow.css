@@ -1,0 +1,934 @@
+:root {
+  --burrow-panel: rgba(9, 11, 18, 0.72);
+  --burrow-panel-strong: rgba(12, 16, 28, 0.92);
+  --burrow-glow: rgba(198, 210, 255, 0.12);
+  --burrow-accent-soft: rgba(198, 210, 255, 0.08);
+}
+
+[data-theme="light"] {
+  --burrow-panel: rgba(255, 255, 255, 0.78);
+  --burrow-panel-strong: rgba(255, 255, 255, 0.94);
+  --burrow-glow: rgba(48, 64, 168, 0.12);
+  --burrow-accent-soft: rgba(48, 64, 168, 0.08);
+}
+
+.burrow-page main {
+  padding-bottom: 16px;
+}
+
+.burrow-hero {
+  padding: 28px 0 0;
+}
+
+.burrow-hero-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.92fr);
+  gap: 20px;
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 14% 12%, var(--burrow-glow), transparent 30%),
+    linear-gradient(180deg, rgba(255,255,255,.04), transparent 55%),
+    rgba(255,255,255,.02);
+  box-shadow: var(--shadow);
+}
+
+.burrow-hero-copy {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+}
+
+.burrow-eyebrow,
+.burrow-super,
+.burrow-preview-label,
+.burrow-kpi-label,
+.burrow-principle-num,
+.burrow-step-num,
+.burrow-deliverable-label,
+.burrow-output-eyebrow,
+.burrow-output-label,
+.burrow-design-note-label,
+.burrow-design-panel-label,
+.burrow-visual-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.burrow-eyebrow {
+  color: var(--accent);
+}
+
+.burrow-lockup {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.burrow-mark {
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--burrow-panel);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.burrow-mark svg {
+  width: 58%;
+  height: auto;
+}
+
+.burrow-mark-large {
+  width: 94px;
+  height: 94px;
+  border-radius: 24px;
+}
+
+.burrow-mark-large svg {
+  width: 62%;
+}
+
+.burrow-mark-line {
+  stroke: rgba(198, 210, 255, 0.42);
+  stroke-width: 1.15;
+  stroke-linecap: round;
+}
+
+.burrow-mark-line-dim {
+  opacity: .72;
+}
+
+.burrow-mark-dot {
+  fill: var(--text);
+}
+
+.burrow-mark-dot-dim {
+  fill: var(--accent);
+  opacity: .56;
+}
+
+.burrow-lockup-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.burrow-super,
+.burrow-subword {
+  color: var(--meta);
+}
+
+.burrow-word {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: clamp(34px, 4vw, 48px);
+  font-weight: 100;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--text);
+}
+
+.burrow-word-large {
+  font-size: clamp(44px, 6vw, 72px);
+}
+
+.burrow-subword {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: .08em;
+}
+
+.burrow-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: clamp(42px, 5.4vw, 72px);
+  font-weight: 100;
+  letter-spacing: .04em;
+  line-height: 1.04;
+  text-transform: uppercase;
+  max-width: 720px;
+}
+
+.burrow-sub {
+  max-width: 660px;
+  font-size: 16px;
+  line-height: 1.82;
+  color: var(--body);
+}
+
+.burrow-chip-row {
+  gap: 8px;
+}
+
+.burrow-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.burrow-primary-link {
+  color: var(--accent-strong);
+}
+
+.burrow-secondary-link {
+  color: var(--accent);
+}
+
+.burrow-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.burrow-kpi-card {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255,255,255,.02);
+}
+
+.burrow-kpi-label {
+  color: var(--meta);
+}
+
+.burrow-kpi-value {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: .04em;
+}
+
+.burrow-kpi-copy {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.burrow-hero-visual {
+  position: relative;
+  min-height: 100%;
+  padding: 22px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(9,11,18,.18), rgba(9,11,18,.02)),
+    linear-gradient(90deg, rgba(9,11,18,.44) 0%, rgba(9,11,18,.18) 34%, rgba(9,11,18,.08) 100%),
+    url("assets/home-galaxy-bg.png");
+  background-size: auto, auto, cover;
+  background-position: center, center, center;
+  overflow: hidden;
+}
+
+.burrow-hero-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255,255,255,.07), transparent 1px),
+    radial-gradient(circle at 32% 38%, rgba(255,255,255,.07), transparent 1px),
+    radial-gradient(circle at 68% 28%, rgba(255,255,255,.08), transparent 1px),
+    radial-gradient(circle at 82% 62%, rgba(255,255,255,.08), transparent 1px),
+    radial-gradient(circle at 52% 82%, rgba(255,255,255,.08), transparent 1px),
+    linear-gradient(180deg, rgba(9,11,18,.14), rgba(9,11,18,.36));
+  pointer-events: none;
+}
+
+.burrow-visual-label {
+  position: absolute;
+  z-index: 1;
+  color: rgba(240,242,255,.62);
+}
+
+.burrow-visual-label-top {
+  top: 20px;
+  right: 20px;
+}
+
+.burrow-visual-label-bottom {
+  bottom: 18px;
+  left: 20px;
+}
+
+.burrow-preview-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  min-height: 100%;
+}
+
+.burrow-preview {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 16px 16px 18px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  background: rgba(9,11,18,.62);
+  backdrop-filter: blur(16px);
+}
+
+.burrow-preview-label {
+  color: var(--accent);
+}
+
+.burrow-preview p,
+.burrow-preview li,
+.burrow-flow-steps span,
+.burrow-output-stack span {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  line-height: 1.72;
+  color: rgba(240,242,255,.84);
+}
+
+.burrow-preview-brief p {
+  color: rgba(240,242,255,.92);
+}
+
+.burrow-flow-steps {
+  display: grid;
+  gap: 8px;
+}
+
+.burrow-flow-steps span,
+.burrow-output-stack span {
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 999px;
+  background: rgba(255,255,255,.03);
+}
+
+.burrow-flow-steps span::before,
+.burrow-output-stack span::before {
+  content: "→";
+  margin-right: 10px;
+  color: var(--accent);
+}
+
+.burrow-preview-list {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+}
+
+.burrow-preview-list li {
+  display: grid;
+  gap: 3px;
+}
+
+.burrow-preview-list strong {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--accent-strong);
+}
+
+.burrow-preview-list span {
+  font-size: 11px;
+  color: rgba(240,242,255,.62);
+}
+
+.burrow-principle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.burrow-principle-card,
+.burrow-step-card,
+.burrow-deliverable-card {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.04), transparent 58%),
+    rgba(255,255,255,.02);
+}
+
+.burrow-principle-num {
+  color: var(--accent);
+}
+
+.burrow-principle-card h3,
+.burrow-step-card h3,
+.burrow-deliverable-card h3 {
+  margin: 14px 0 10px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: .04em;
+  line-height: 1.12;
+}
+
+.burrow-principle-card p,
+.burrow-step-card p,
+.burrow-deliverable-card p {
+  font-size: 14px;
+  line-height: 1.82;
+  color: var(--body);
+}
+
+.burrow-workflow-shell {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.burrow-workflow-track {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 34px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+}
+
+.burrow-step-card {
+  position: relative;
+  z-index: 1;
+  min-height: 214px;
+}
+
+.burrow-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--burrow-panel);
+  color: var(--accent);
+}
+
+.burrow-deliverable-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(320px, 0.98fr);
+  gap: 18px;
+}
+
+.burrow-deliverable-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.burrow-deliverable-label {
+  color: var(--meta);
+}
+
+.burrow-output-board {
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 84% 16%, var(--burrow-accent-soft), transparent 30%),
+    linear-gradient(180deg, rgba(255,255,255,.04), transparent 58%),
+    rgba(255,255,255,.02);
+}
+
+.burrow-output-eyebrow {
+  color: var(--accent);
+}
+
+.burrow-output-head h3 {
+  margin-top: 10px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 300;
+  letter-spacing: .04em;
+  line-height: 1.08;
+}
+
+.burrow-output-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.burrow-output-column {
+  padding: 16px 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255,255,255,.02);
+}
+
+.burrow-output-label {
+  color: var(--meta);
+}
+
+.burrow-output-column ul {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin-top: 16px;
+}
+
+.burrow-output-column li {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--body);
+}
+
+.burrow-output-column li::before {
+  content: "•";
+  margin-right: 8px;
+  color: var(--accent);
+}
+
+.burrow-design-stage {
+  padding: 26px 0 18px;
+}
+
+.burrow-design-shell {
+  position: relative;
+  width: min(1380px, calc(100% - 36px));
+  min-height: calc(100svh - 112px);
+  margin-inline: auto;
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(300px, 0.76fr) minmax(0, 1.24fr);
+  gap: 20px;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(198,210,255,.12), transparent 22%),
+    radial-gradient(circle at 84% 22%, rgba(255,255,255,.06), transparent 18%),
+    linear-gradient(180deg, rgba(255,255,255,.03), transparent 54%),
+    rgba(255,255,255,.02);
+  box-shadow: var(--shadow);
+}
+
+.burrow-design-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, transparent 1px 100%),
+    linear-gradient(180deg, rgba(255,255,255,.03) 0 1px, transparent 1px 100%);
+  background-size: 120px 120px;
+  opacity: .18;
+  pointer-events: none;
+}
+
+.burrow-design-copy,
+.burrow-design-board {
+  position: relative;
+  z-index: 1;
+}
+
+.burrow-design-copy {
+  display: grid;
+  align-content: center;
+  gap: 20px;
+  padding: 12px 4px 12px 2px;
+}
+
+.burrow-design-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: clamp(34px, 4.4vw, 62px);
+  font-weight: 100;
+  letter-spacing: .04em;
+  line-height: 1.04;
+  text-transform: uppercase;
+  max-width: 620px;
+}
+
+.burrow-design-body {
+  max-width: 560px;
+  font-size: 15px;
+  line-height: 1.94;
+  color: var(--body);
+}
+
+.burrow-design-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.burrow-design-tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255,255,255,.03);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: .08em;
+  color: var(--accent);
+}
+
+.burrow-design-notes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.burrow-design-notes article {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.04), transparent 58%),
+    rgba(255,255,255,.02);
+}
+
+.burrow-design-note-label,
+.burrow-design-panel-label {
+  color: var(--meta);
+}
+
+.burrow-design-notes h3 {
+  margin: 14px 0 10px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: .04em;
+  line-height: 1.12;
+}
+
+.burrow-design-notes p {
+  font-size: 14px;
+  line-height: 1.82;
+  color: var(--body);
+}
+
+.burrow-design-board {
+  min-height: 720px;
+  padding: 28px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 24px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.14fr) minmax(260px, 0.86fr);
+  grid-template-areas:
+    "brief options"
+    "diagram options"
+    "diagram outputs";
+  gap: 16px;
+  background:
+    linear-gradient(180deg, rgba(9,11,18,.14), rgba(9,11,18,.28)),
+    linear-gradient(90deg, rgba(9,11,18,.5), rgba(9,11,18,.14)),
+    url("assets/home-galaxy-bg.png");
+  background-size: auto, auto, cover;
+  background-position: center, center, center;
+}
+
+.burrow-design-orbit {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.burrow-design-orbit-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(198,210,255,.38), transparent);
+}
+
+.burrow-design-orbit-line-a {
+  left: 14%;
+  right: 16%;
+  top: 30%;
+  transform: rotate(-9deg);
+}
+
+.burrow-design-orbit-line-b {
+  left: 22%;
+  right: 22%;
+  bottom: 22%;
+  transform: rotate(11deg);
+}
+
+.burrow-design-orbit-dot {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(238,242,255,.84);
+  box-shadow: 0 0 0 7px rgba(198,210,255,.08);
+}
+
+.burrow-design-orbit-dot-a {
+  left: 12%;
+  top: 20%;
+}
+
+.burrow-design-orbit-dot-b {
+  left: 38%;
+  top: 26%;
+}
+
+.burrow-design-orbit-dot-c {
+  right: 20%;
+  top: 18%;
+}
+
+.burrow-design-orbit-dot-d {
+  left: 30%;
+  bottom: 24%;
+}
+
+.burrow-design-orbit-dot-e {
+  right: 16%;
+  bottom: 18%;
+}
+
+.burrow-design-panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  background: rgba(9,11,18,.62);
+  backdrop-filter: blur(16px);
+}
+
+.burrow-design-panel h3 {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 30px;
+  font-weight: 300;
+  letter-spacing: .04em;
+  line-height: 1.08;
+}
+
+.burrow-design-panel p {
+  font-size: 14px;
+  line-height: 1.82;
+  color: rgba(240,242,255,.72);
+}
+
+.burrow-design-panel-brief {
+  grid-area: brief;
+  align-content: center;
+  min-height: 176px;
+}
+
+.burrow-design-panel-options {
+  grid-area: options;
+}
+
+.burrow-design-panel-options ul {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+}
+
+.burrow-design-panel-options li {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 14px;
+  background: rgba(255,255,255,.03);
+}
+
+.burrow-design-panel-options strong {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--accent-strong);
+}
+
+.burrow-design-panel-options span {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  line-height: 1.72;
+  color: rgba(240,242,255,.62);
+}
+
+.burrow-design-panel-diagram {
+  grid-area: diagram;
+}
+
+.burrow-design-diagram {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  align-content: start;
+}
+
+.burrow-design-diagram span,
+.burrow-design-output-stack span {
+  display: flex;
+  align-items: center;
+  min-height: 54px;
+  padding: 0 14px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  background: rgba(255,255,255,.03);
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(240,242,255,.88);
+}
+
+.burrow-design-diagram span::before,
+.burrow-design-output-stack span::before {
+  content: "→";
+  margin-right: 10px;
+  color: var(--accent);
+}
+
+.burrow-design-panel-outputs {
+  grid-area: outputs;
+}
+
+.burrow-design-output-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.burrow-contact-shell {
+  background:
+    radial-gradient(circle at 85% 18%, var(--burrow-accent-soft), transparent 30%),
+    linear-gradient(180deg, rgba(255,255,255,.04), transparent 58%),
+    rgba(255,255,255,.02);
+}
+
+@media (max-width: 1100px) {
+  .burrow-hero-shell,
+  .burrow-deliverable-layout,
+  .burrow-design-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .burrow-kpi-grid,
+  .burrow-principle-grid,
+  .burrow-workflow-shell,
+  .burrow-output-columns,
+  .burrow-design-notes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .burrow-workflow-track {
+    display: none;
+  }
+
+  .burrow-step-card {
+    min-height: 0;
+  }
+
+  .burrow-design-shell {
+    min-height: 0;
+  }
+
+  .burrow-design-board {
+    min-height: 640px;
+  }
+}
+
+@media (max-width: 820px) {
+  .burrow-hero-shell {
+    padding: 22px;
+  }
+
+  .burrow-lockup {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .burrow-title {
+    font-size: clamp(34px, 9vw, 58px);
+  }
+
+  .burrow-preview-grid,
+  .burrow-deliverable-grid,
+  .burrow-kpi-grid,
+  .burrow-principle-grid,
+  .burrow-workflow-shell,
+  .burrow-output-columns,
+  .burrow-design-notes,
+  .burrow-design-diagram {
+    grid-template-columns: 1fr;
+  }
+
+  .burrow-hero-visual {
+    min-height: 0;
+  }
+
+  .burrow-design-shell {
+    width: min(1380px, calc(100% - 28px));
+    padding: 24px;
+  }
+
+  .burrow-design-board {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "brief"
+      "options"
+      "diagram"
+      "outputs";
+  }
+
+  .burrow-design-panel h3 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .burrow-hero {
+    padding-top: 18px;
+  }
+
+  .burrow-hero-shell,
+  .burrow-principle-card,
+  .burrow-step-card,
+  .burrow-deliverable-card,
+  .burrow-output-board,
+  .burrow-design-shell,
+  .burrow-design-board,
+  .burrow-design-notes article {
+    border-radius: 16px;
+  }
+
+  .burrow-sub,
+  .burrow-design-body {
+    font-size: 14px;
+  }
+
+  .burrow-design-stage {
+    padding-top: 20px;
+  }
+
+  .burrow-design-shell {
+    width: min(1380px, calc(100% - 20px));
+    padding: 18px;
+  }
+
+  .burrow-design-board {
+    padding: 18px;
+  }
+
+  .burrow-design-tags span {
+    min-height: 34px;
+    padding-inline: 12px;
+    font-size: 10px;
+  }
+}

@@ -6,7 +6,7 @@
   <title>LEPUS LAB — Legacy DC Efficiency Architecture</title>
 
   <link rel="canonical" href="https://lepuslab.dev/datacenter">
-  <meta name="description" content="레거시 에어쿨링 데이터센터의 전력 효율 개선 아이디어와 AC→DC 전환 아키텍처 방법론.">
+  <meta name="description" content="레거시 에어쿨링 데이터센터의 전력 효율 개선 — OCP 기반 PSU 중앙화, 버스바 레트로핏 아키텍처.">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://lepuslab.dev/datacenter">
@@ -16,693 +16,1002 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="stylesheet" href="main.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Josefin+Sans:wght@100;300;400&family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <style>
     :root {
-      --accent-soft: rgba(198,210,255,.10);
-      --line-strong: rgba(255,255,255,.14);
-    }
-    [data-theme="light"] {
-      --accent-soft: rgba(48,64,168,.08);
-      --line-strong: rgba(8,10,18,.16);
-    }
-
-    .dc-hero { padding: 120px 0 72px; }
-    .dc-hero-eyebrow {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px; font-weight: 300; letter-spacing: .2em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
-    }
-    .dc-hero h1 {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: clamp(36px, 6vw, 72px); font-weight: 100;
-      letter-spacing: .06em; line-height: 1.05; text-transform: uppercase;
-      margin-bottom: 24px;
-    }
-    .dc-hero-sub {
-      font-size: clamp(15px, 1.8vw, 18px);
-      color: var(--muted); line-height: 1.8; max-width: 640px;
-    }
-    .dc-hero-kpis { display: flex; gap: 40px; margin-top: 48px; flex-wrap: wrap; }
-    .kpi { display: flex; flex-direction: column; gap: 4px; }
-    .kpi-val {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: clamp(28px, 4vw, 48px); font-weight: 100;
-      letter-spacing: .04em; color: var(--accent); line-height: 1;
-    }
-    .kpi-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px; font-weight: 300; letter-spacing: .12em;
-      color: var(--meta); text-transform: uppercase;
+      --bg:       #090b12;
+      --text:     #f0f2ff;
+      --muted:    rgba(240,242,255,.55);
+      --soft:     rgba(240,242,255,.32);
+      --accent:   #c6d2ff;
+      --line:     rgba(255,255,255,.07);
+      --line-med: rgba(255,255,255,.13);
+      --w:        min(1160px, 100% - 48px);
+      --nav-h:    58px;
     }
 
-    .dc-section { padding: 72px 0; border-top: 1px solid var(--line); }
-    .dc-section-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px; font-weight: 300; letter-spacing: .2em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
-    }
-    .dc-section h2 {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: clamp(26px, 3.5vw, 44px); font-weight: 100;
-      letter-spacing: .05em; line-height: 1.1; text-transform: uppercase;
-      margin-bottom: 40px; color: var(--text);
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Josefin Sans', system-ui, sans-serif;
+      font-weight: 300;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    /* Problem grid */
-    .problem-grid {
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      height: var(--nav-h);
+      background: rgba(9,11,18,.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-in {
+      width: var(--w); margin: 0 auto; height: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex; align-items: center;
+      font-family: 'DM Mono', monospace; font-weight: 300;
+      font-size: 12px; letter-spacing: 0.28em; color: var(--muted);
+    }
+    .nav-brand-home { color: var(--text); }
+    .nav-brand-sep  { margin: 0 10px; color: var(--soft); }
+    .nav-brand-page { color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: 36px; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-family: 'DM Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-back {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.16em; color: var(--soft);
+      border: 1px solid var(--line-med); padding: 4px 10px;
+      transition: color .2s, border-color .2s;
+    }
+    .nav-back:hover { color: var(--accent); border-color: rgba(198,210,255,.3); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: calc(100svh - var(--nav-h));
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 80px 24px 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 55% at 50% 45%, rgba(100,120,255,.06), transparent 65%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 44px;
+      opacity: 0; animation: fadeUp .9s .15s forwards;
+    }
+    .hero-h1 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: clamp(40px, 7.5vw, 110px);
+      letter-spacing: 0.14em; text-transform: uppercase;
+      line-height: 1.05; color: var(--text);
+      margin-bottom: 12px;
+      opacity: 0; animation: fadeUp .9s .3s forwards;
+    }
+    .hero-phrase {
+      font-family: 'Josefin Sans', sans-serif; font-weight: 300;
+      font-size: clamp(14px, 1.8vw, 22px); letter-spacing: 0.12em;
+      color: var(--muted); margin-bottom: 64px;
+      opacity: 0; animation: fadeUp .9s .45s forwards;
+    }
+    .hero-metrics {
+      display: flex; justify-content: center;
+      border: 1px solid var(--line-med);
+      opacity: 0; animation: fadeUp .9s .6s forwards;
+    }
+    .hero-metric {
+      padding: 28px 52px; text-align: center; flex: 1; max-width: 240px;
+    }
+    .hero-metric + .hero-metric { border-left: 1px solid var(--line-med); }
+    .hm-val {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(22px, 2.8vw, 38px);
+      font-weight: 300; letter-spacing: 0.06em;
+      color: var(--accent); margin-bottom: 8px;
+    }
+    .hm-lbl {
+      font-family: 'DM Mono', monospace; font-size: 9.5px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+    }
+
+    /* ── Sections ── */
+    .section { padding: 120px 24px; border-top: 1px solid var(--line); }
+    .sec-w { width: var(--w); margin: 0 auto; }
+    .sec-meta {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 56px;
+    }
+    .sec-num  { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; color: var(--accent); }
+    .sec-rule { height: 1px; width: 60px; background: var(--line-med); }
+    .sec-name { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+    .sec-h2 {
+      font-weight: 100;
+      font-size: clamp(32px, 4.5vw, 64px);
+      letter-spacing: 0.08em; line-height: 1.1;
+      text-transform: uppercase; margin-bottom: 56px;
+    }
+    .sec-lead {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 15px; line-height: 1.85; color: var(--muted);
+      max-width: 760px; word-break: keep-all; margin-bottom: 64px;
+    }
+    .sec-lead strong { color: var(--text); font-weight: 400; }
+
+    /* ── 3-col problem grid ── */
+    .prob-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1px; background: var(--line); border: 1px solid var(--line);
+      background: var(--line-med); gap: 1px;
+      border: 1px solid var(--line-med); margin-bottom: 64px;
     }
-    .prob-card { background: var(--bg); padding: 32px 28px; }
-    .prob-card-num {
+    .prob-card { background: var(--bg); padding: 40px 32px; }
+    .prob-num {
+      display: block;
       font-family: 'DM Mono', monospace;
-      font-size: 11px; font-weight: 300; letter-spacing: .14em;
-      color: var(--accent); margin-bottom: 16px;
+      font-size: clamp(36px, 3vw, 52px); font-weight: 300;
+      letter-spacing: -0.02em; color: rgba(198,210,255,.1);
+      line-height: 1; margin-bottom: 20px;
     }
-    .prob-card h3 {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 16px; font-weight: 400; letter-spacing: .04em;
-      color: var(--text); margin-bottom: 12px; line-height: 1.3;
+    .prob-title {
+      font-weight: 100; font-size: 20px;
+      letter-spacing: 0.04em; margin-bottom: 14px;
     }
-    .prob-card p { font-size: 14px; font-weight: 400; color: var(--body); line-height: 1.78; }
-    .prob-card .stat {
-      margin-top: 16px; font-family: 'DM Mono', monospace;
-      font-size: 12px; font-weight: 300; color: var(--accent); letter-spacing: .06em;
+    .prob-desc {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13px; line-height: 1.8;
+      color: var(--muted); word-break: keep-all; margin-bottom: 20px;
+    }
+    .prob-stat {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.1em; color: var(--accent);
+      padding: 8px 12px;
+      border: 1px solid rgba(198,210,255,.18);
+      background: rgba(198,210,255,.04);
     }
 
-    /* Architecture */
-    .track-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-    .track-card {
-      background: var(--bg-soft); border: 1px solid var(--line);
-      padding: 32px; position: relative; overflow: hidden;
+    /* ── Callout box ── */
+    .callout {
+      border: 1px solid var(--line-med); padding: 48px 40px;
     }
+    .callout-label {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); display: block; margin-bottom: 32px;
+    }
+    .callout-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px 48px;
+    }
+    .callout-item-title {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted); display: block; margin-bottom: 8px;
+    }
+    .callout-item-body {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13px; line-height: 1.8;
+      color: var(--soft); word-break: keep-all;
+    }
+
+    /* ── 2-col track grid ── */
+    .track-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      background: var(--line-med); gap: 1px;
+      border: 1px solid var(--line-med);
+    }
+    .track-card { background: var(--bg); padding: 48px 40px; }
     .track-badge {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px; font-weight: 400; letter-spacing: .16em;
-      text-transform: uppercase; color: var(--bg);
-      background: var(--accent); padding: 4px 10px;
-      display: inline-block; margin-bottom: 20px;
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); display: block; margin-bottom: 20px;
     }
-    .track-card h3 {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 20px; font-weight: 400; letter-spacing: .04em;
-      color: var(--text); margin-bottom: 12px;
+    .track-title {
+      font-weight: 100;
+      font-size: clamp(22px, 2.5vw, 34px);
+      letter-spacing: 0.06em; margin-bottom: 16px;
     }
-    .track-card p { font-size: 14px; color: var(--muted); line-height: 1.78; margin-bottom: 20px; }
-    .track-items { display: flex; flex-direction: column; gap: 8px; }
+    .track-desc {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13px; line-height: 1.8;
+      color: var(--muted); word-break: keep-all; margin-bottom: 28px;
+    }
+    .track-list { display: flex; flex-direction: column; gap: 10px; }
     .track-item {
-      display: flex; align-items: flex-start; gap: 10px;
-      font-size: 14px; font-weight: 400; color: var(--body); line-height: 1.65;
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.1em; color: var(--soft);
+      padding-left: 18px; position: relative; line-height: 1.5;
     }
-    .track-item::before { content: '→'; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+    .track-item::before {
+      content: '→'; position: absolute; left: 0;
+      color: rgba(198,210,255,.35);
+    }
 
-    /* Power */
-    .power-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px; }
-    .pwr-box { border: 1px solid var(--line); padding: 28px; }
-    .pwr-box-label {
+    /* ── Power compare ── */
+    .power-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      background: var(--line-med); gap: 1px;
+      border: 1px solid var(--line-med); margin-bottom: 1px;
+    }
+    .pwr-card { background: var(--bg); padding: 48px 40px; }
+    .pwr-card-hi {
+      background: rgba(198,210,255,.035);
+    }
+    .pwr-label {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted); display: block; margin-bottom: 16px;
+    }
+    .pwr-title {
+      font-weight: 100;
+      font-size: clamp(20px, 2.2vw, 30px);
+      letter-spacing: 0.06em; margin-bottom: 32px;
+    }
+    .pwr-row {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .pwr-row-label {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.1em; color: var(--muted);
+    }
+    .pwr-row-val {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.1em; color: var(--soft);
+      text-align: right;
+    }
+    .pwr-row-val.good { color: var(--accent); }
+
+    /* ── 4-col metrics strip ── */
+    .dc-metrics {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      background: var(--line-med); gap: 1px;
+      border: 1px solid var(--line-med); border-top: none;
+    }
+    .dc-metric { background: var(--bg); padding: 32px 28px; }
+    .dc-metric-label {
+      font-family: 'DM Mono', monospace; font-size: 9.5px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted); display: block; margin-bottom: 10px;
+    }
+    .dc-metric-val {
+      display: block;
       font-family: 'DM Mono', monospace;
-      font-size: 10px; font-weight: 300; letter-spacing: .2em;
-      text-transform: uppercase; color: var(--meta); margin-bottom: 16px;
+      font-size: clamp(24px, 2.5vw, 36px); font-weight: 300;
+      letter-spacing: 0.06em; color: var(--accent); margin-bottom: 6px;
     }
-    .pwr-box h3 {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 17px; font-weight: 400; letter-spacing: .03em;
-      color: var(--text); margin-bottom: 16px;
+    .dc-metric-note {
+      font-family: 'DM Mono', monospace; font-size: 9.5px;
+      letter-spacing: 0.08em; color: var(--soft); line-height: 1.5;
     }
-    .pwr-box.highlight { border-color: var(--accent); background: var(--accent-soft); }
-    .pwr-stat-row {
-      display: flex; justify-content: space-between; align-items: baseline;
-      padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 14px;
-    }
-    .pwr-stat-row:last-child { border-bottom: none; }
-    .pwr-stat-row .label { color: var(--body); font-weight: 400; }
-    .pwr-stat-row .val { font-family: 'DM Mono', monospace; font-weight: 300; color: var(--text); }
-    .pwr-stat-row .val.good { color: var(--accent); }
 
-    /* Voltage table */
-    .voltage-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .voltage-table th {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px; font-weight: 300; letter-spacing: .14em;
-      text-transform: uppercase; color: var(--meta);
-      padding: 10px 16px; text-align: left;
-      border-bottom: 1px solid var(--line-strong);
+    /* ── Tables ── */
+    .dc-table { width: 100%; border-collapse: collapse; margin-bottom: 64px; }
+    .dc-table th {
+      text-align: left; padding: 14px 20px;
+      border-bottom: 1px solid var(--line-med);
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--accent); font-weight: 300;
     }
-    .voltage-table td {
-      padding: 13px 16px; color: var(--body); font-weight: 400;
-      border-bottom: 1px solid var(--line); line-height: 1.55;
+    .dc-table td {
+      padding: 13px 20px; border-bottom: 1px solid var(--line);
+      font-family: 'DM Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.08em; color: var(--muted);
+      vertical-align: top; line-height: 1.65;
     }
-    .voltage-table td.phase { color: var(--accent); font-family: 'DM Mono', monospace; font-size: 11px; }
-    .voltage-table td.good { color: var(--text); font-weight: 400; }
-    .voltage-table td.dim { color: var(--meta); }
-    .voltage-table tr:last-child td { border-bottom: none; }
+    .dc-table td.name { color: var(--text); font-weight: 400; }
+    .dc-table td.good { color: var(--accent); }
+    .dc-table td.dim  { color: var(--soft); }
+    .dc-table tr:hover td { background: rgba(198,210,255,.02); }
 
-    /* ROI */
+    /* ── ASCII box ── */
+    .ascii-box {
+      border: 1px solid var(--line-med); padding: 40px; margin-top: 64px;
+    }
+    .ascii-label {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); display: block; margin-bottom: 24px;
+    }
+    .ascii-pre {
+      font-family: 'DM Mono', monospace; font-size: 11.5px;
+      line-height: 1.7; color: var(--muted);
+      white-space: pre; overflow-x: auto;
+    }
+
+    /* ── ROI ── */
     .roi-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
-      background: var(--line); border: 1px solid var(--line); margin-bottom: 32px;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      background: var(--line-med); gap: 1px;
+      border: 1px solid var(--line-med); margin-bottom: 1px;
     }
-    .roi-cell { background: var(--bg); padding: 28px 24px; }
-    .roi-cell-label {
+    .roi-cell { background: var(--bg); padding: 40px 32px; }
+    .roi-label {
+      font-family: 'DM Mono', monospace; font-size: 9.5px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted); display: block; margin-bottom: 12px;
+    }
+    .roi-val {
+      display: block;
       font-family: 'DM Mono', monospace;
-      font-size: 10px; font-weight: 300; letter-spacing: .16em;
-      text-transform: uppercase; color: var(--meta); margin-bottom: 10px;
+      font-size: clamp(20px, 2.2vw, 30px); font-weight: 300;
+      letter-spacing: 0.06em; color: var(--accent); margin-bottom: 8px;
     }
-    .roi-cell-val {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: clamp(22px, 2.5vw, 34px); font-weight: 100;
-      letter-spacing: .03em; color: var(--accent); line-height: 1.1;
+    .roi-sub {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12px; line-height: 1.65;
+      color: var(--soft); word-break: keep-all;
     }
-    .roi-cell-sub { font-size: 13px; font-weight: 400; color: var(--body); margin-top: 6px; line-height: 1.55; }
 
-    .savings-list { display: flex; flex-direction: column; gap: 0; }
+    .savings-list {
+      border: 1px solid var(--line-med); border-top: none;
+    }
     .saving-row {
       display: grid; grid-template-columns: 1fr auto;
-      gap: 24px; align-items: baseline;
-      padding: 14px 0; border-bottom: 1px solid var(--line);
+      gap: 32px; padding: 18px 32px;
+      border-top: 1px solid var(--line); align-items: center;
     }
-    .saving-row:last-child { border-bottom: none; }
-    .saving-row .sr-label { font-size: 14px; font-weight: 400; color: var(--body); }
-    .saving-row .sr-val {
-      font-family: 'DM Mono', monospace; font-size: 13px;
-      font-weight: 300; color: var(--accent); white-space: nowrap;
+    .sr-label {
+      font-family: 'DM Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.1em; color: var(--muted);
+    }
+    .sr-val {
+      font-family: 'DM Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.1em; color: var(--accent);
+      text-align: right; white-space: nowrap;
     }
 
-    /* Roadmap */
-    .roadmap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--line); }
-    .phase { padding: 28px 24px; border-right: 1px solid var(--line); }
-    .phase:last-child { border-right: none; }
+    /* ── Roadmap ── */
+    .roadmap-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      background: var(--line-med); gap: 1px;
+      border: 1px solid var(--line-med);
+    }
+    .phase-col { background: var(--bg); padding: 40px 32px; }
     .phase-num {
+      display: block;
       font-family: 'DM Mono', monospace;
-      font-size: 10px; font-weight: 300; letter-spacing: .18em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+      font-size: clamp(32px, 3vw, 52px); font-weight: 300;
+      letter-spacing: -0.02em; color: rgba(198,210,255,.1);
+      line-height: 1; margin-bottom: 8px;
     }
     .phase-period {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.14em; color: var(--accent);
+      display: block; margin-bottom: 20px;
+    }
+    .phase-title {
+      font-weight: 100; font-size: 18px;
+      letter-spacing: 0.04em; margin-bottom: 20px;
+    }
+    .phase-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .phase-list li {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12px; letter-spacing: 0.02em;
+      color: var(--soft); padding-left: 16px;
+      position: relative; line-height: 1.65; word-break: keep-all;
+    }
+    .phase-list li::before {
+      content: '→'; position: absolute; left: 0;
+      color: rgba(198,210,255,.28);
       font-family: 'DM Mono', monospace;
-      font-size: 11px; font-weight: 300; color: var(--meta);
-      margin-bottom: 16px; letter-spacing: .06em;
     }
-    .phase h3 {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 15px; font-weight: 400; letter-spacing: .03em;
-      color: var(--text); margin-bottom: 12px; line-height: 1.3;
-    }
-    .phase ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-    .phase ul li {
-      font-size: 13px; font-weight: 400; color: var(--body); line-height: 1.6;
-      padding-left: 12px; position: relative;
-    }
-    .phase ul li::before { content: '–'; position: absolute; left: 0; color: var(--accent); }
 
-    /* ODM table */
-    .odm-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .odm-table th {
+    /* ── Contact / Footer ── */
+    .contact {
+      padding: 160px 24px; border-top: 1px solid var(--line); text-align: center;
+    }
+    .contact-title {
+      font-weight: 100;
+      font-size: clamp(32px, 5vw, 80px);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      line-height: 1.1; margin-bottom: 44px;
+    }
+    .contact-email {
       font-family: 'DM Mono', monospace;
-      font-size: 10px; font-weight: 300; letter-spacing: .14em;
-      text-transform: uppercase; color: var(--meta);
-      padding: 10px 16px; text-align: left;
-      border-bottom: 1px solid var(--line-strong);
+      font-size: clamp(13px, 1.4vw, 18px);
+      letter-spacing: 0.14em; color: var(--accent);
+      border-bottom: 1px solid rgba(198,210,255,.3);
+      padding-bottom: 2px; transition: opacity .2s;
     }
-    .odm-table td {
-      padding: 14px 16px; color: var(--body); font-weight: 400;
-      border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.6;
-    }
-    .odm-table td.name { color: var(--text); font-weight: 400; }
-    .odm-table td.highlight-row { color: var(--accent); }
-    .odm-table tr:last-child td { border-bottom: none; }
+    .contact-email:hover { opacity: .7; }
 
-    @media (max-width: 768px) {
-      .problem-grid { grid-template-columns: 1fr; }
-      .track-grid { grid-template-columns: 1fr; }
-      .power-compare { grid-template-columns: 1fr; }
-      .roi-grid { grid-template-columns: 1fr 1fr; }
-      .roadmap { grid-template-columns: 1fr 1fr; }
-      .dc-hero-kpis { gap: 24px; }
+    footer { padding: 28px 24px; border-top: 1px solid var(--line); }
+    .footer-in {
+      width: var(--w); margin: 0 auto;
+      display: flex; justify-content: space-between;
     }
-    @media (max-width: 480px) {
-      .roi-grid { grid-template-columns: 1fr; }
-      .roadmap { grid-template-columns: 1fr; }
-      .phase { border-right: none; border-bottom: 1px solid var(--line); }
-      .phase:last-child { border-bottom: none; }
+    .footer-copy {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.16em; color: var(--soft);
     }
+
+    /* ── Reveal ── */
+    .reveal {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .7s, transform .7s;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1000px) {
+      .prob-grid    { grid-template-columns: 1fr; }
+      .track-grid   { grid-template-columns: 1fr; }
+      .power-grid   { grid-template-columns: 1fr; }
+      .dc-metrics   { grid-template-columns: repeat(2, 1fr); }
+      .roi-grid     { grid-template-columns: repeat(2, 1fr); }
+      .roadmap-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .hero-metrics { flex-direction: column; }
+      .hero-metric + .hero-metric { border-left: none; border-top: 1px solid var(--line-med); }
+      .dc-metrics   { grid-template-columns: 1fr; }
+      .roi-grid     { grid-template-columns: 1fr; }
+      .roadmap-grid { grid-template-columns: 1fr; }
+      .callout-grid { grid-template-columns: 1fr; }
+      .nav-links li:nth-child(n+4) { display: none; }
+      .dc-table { font-size: 9.5px; }
+      .dc-table td, .dc-table th { padding: 10px 12px; }
+    }
+
+    /* ── Density comparison ── */
+    .density-compare {
+      display: grid;
+      grid-template-columns: 1fr 52px 1fr;
+      border: 1px solid var(--line-med);
+      align-items: stretch;
+      margin-bottom: 1px;
+    }
+    .density-before { background: var(--bg); padding: 44px 36px; }
+    .density-after  {
+      background: rgba(198,210,255,.04);
+      border-left: 1px solid rgba(198,210,255,.15);
+      padding: 44px 36px;
+    }
+    .density-arrow-col {
+      display: flex; align-items: center; justify-content: center;
+      border-left: 1px solid var(--line-med);
+      border-right: 1px solid rgba(198,210,255,.15);
+      font-family: 'DM Mono', monospace; font-size: 16px;
+      color: rgba(198,210,255,.35);
+    }
+    .density-col-label {
+      font-family: 'DM Mono', monospace; font-size: 9.5px;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); display: block; margin-bottom: 16px;
+    }
+    .density-big {
+      font-family: 'Josefin Sans', sans-serif; font-weight: 100;
+      font-size: clamp(40px, 5vw, 72px);
+      letter-spacing: 0.06em; line-height: 1;
+      display: block; margin-bottom: 14px;
+    }
+    .density-big-dim    { color: var(--muted); }
+    .density-big-accent { color: var(--accent); }
+    .density-desc {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13px; line-height: 1.8;
+      color: var(--muted); word-break: keep-all; margin-bottom: 20px;
+    }
+    .density-count {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.12em; color: var(--soft);
+      padding: 6px 12px; border: 1px solid var(--line-med);
+      display: inline-block;
+    }
+    .density-count-hi {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.12em; color: var(--accent);
+      padding: 6px 12px; border: 1px solid rgba(198,210,255,.3);
+      display: inline-block;
+    }
+    .density-result {
+      border: 1px solid rgba(198,210,255,.2); border-top: none;
+      background: rgba(198,210,255,.05);
+      padding: 28px 36px;
+      display: flex; align-items: center; gap: 28px;
+      margin-bottom: 64px;
+    }
+    .density-result-val {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(40px, 4.5vw, 64px); font-weight: 300;
+      letter-spacing: 0.04em; color: var(--accent); white-space: nowrap;
+    }
+    .density-result-text {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 14px; line-height: 1.8; color: var(--muted);
+      word-break: keep-all;
+    }
+    .density-result-text strong { color: var(--text); font-weight: 400; }
+
+    /* ── Rack diagram ── */
+    .rack-diagram {
+      border: 1px solid var(--line-med);
+      overflow: hidden;
+      margin-top: 64px;
+    }
+    .rack-label {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); padding: 18px 24px 14px;
+      border-bottom: 1px solid var(--line-med);
+      background: rgba(198,210,255,.03);
+    }
+    .rack-row {
+      display: grid;
+      grid-template-columns: 44px 1fr auto;
+      gap: 20px; align-items: center;
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--line);
+      font-family: 'DM Mono', monospace;
+    }
+    .rack-row:last-child { border-bottom: none; }
+    .rack-row-power  { background: rgba(198,210,255,.05); }
+    .rack-row-bar    {
+      background: rgba(198,210,255,.07);
+      border-color: rgba(198,210,255,.18);
+    }
+    .rack-row-busbar { background: rgba(198,210,255,.03); }
+    .rack-row-dim    { opacity: .5; }
+    .rack-badge {
+      font-size: 9px; letter-spacing: 0.1em; color: var(--accent);
+      border: 1px solid rgba(198,210,255,.25);
+      padding: 3px 5px; text-align: center; white-space: nowrap;
+    }
+    .rack-name  { font-size: 11.5px; letter-spacing: 0.08em; color: var(--text); }
+    .rack-note  { font-size: 10px; letter-spacing: 0.08em; color: var(--muted); text-align: right; }
+    .rack-conn  { color: var(--accent); }
   </style>
 </head>
 <body>
-  <canvas id="starfield" aria-hidden="true"></canvas>
 
-  <header class="hd">
-    <div class="w hd-in">
-      <a class="logo" href="/">LEPUS LAB</a>
-      <div class="hnav">
-        <a href="/">Home</a>
-        <a href="/career">Career</a>
-        <a href="/brand">Brand</a>
-        <button class="tbtn" data-theme-toggle>
-          <span class="theme-toggle-label">Theme: System</span>
-        </button>
+  <!-- ── Nav ── -->
+  <header class="nav" role="banner">
+    <div class="nav-in">
+      <div class="nav-brand">
+        <a class="nav-brand-home" href="index.html">LEPUS LAB</a>
+        <span class="nav-brand-sep">/</span>
+        <span class="nav-brand-page">DATACENTER</span>
+      </div>
+      <div class="nav-right">
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#power">Power</a></li>
+            <li><a href="#roi">ROI</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <a class="nav-back" href="index.html">← Home</a>
       </div>
     </div>
   </header>
 
   <main>
 
-    <!-- ── HERO ── -->
-    <section class="w dc-hero">
-      <div class="dc-hero-eyebrow">Research / Infrastructure Architecture</div>
-      <h1>Legacy DC<br>Efficiency<br>Architecture</h1>
-      <p class="dc-hero-sub">
-        리퀴드쿨링으로 전환하기 어려운 레거시 데이터센터에서, OCP 철학과 19인치 레거시 랙을 결합한 에어쿨링 최적화 전략.
-        커스텀 전원 아키텍처와 ODM 협력을 통해 PUE 30~45% 절감을 목표로 합니다.
-      </p>
-      <div class="dc-hero-kpis">
-        <div class="kpi">
-          <span class="kpi-val">1.30</span>
-          <span class="kpi-label">Target PUE</span>
+    <!-- ── Hero ── -->
+    <section class="hero" aria-labelledby="dc-h1">
+      <p class="hero-eyebrow">Research · Infrastructure Architecture</p>
+      <h1 id="dc-h1" class="hero-h1">Legacy DC<br>Efficiency</h1>
+      <p class="hero-phrase">Architecture without liquid cooling</p>
+      <div class="hero-metrics">
+        <div class="hero-metric">
+          <span class="hm-val">1.30</span>
+          <span class="hm-lbl">Target PUE</span>
         </div>
-        <div class="kpi">
-          <span class="kpi-val">30–45%</span>
-          <span class="kpi-label">Cooling Energy Reduction</span>
+        <div class="hero-metric">
+          <span class="hm-val">30–45%</span>
+          <span class="hm-lbl">Cooling Energy Reduction</span>
         </div>
-        <div class="kpi">
-          <span class="kpi-val">1.3yr</span>
-          <span class="kpi-label">ROI Period (10 racks)</span>
+        <div class="hero-metric">
+          <span class="hm-val">1.5yr</span>
+          <span class="hm-lbl">ROI Period (100 racks)</span>
         </div>
-        <div class="kpi">
-          <span class="kpi-val">₩130M</span>
-          <span class="kpi-label">Annual Savings / 10 racks</span>
+        <div class="hero-metric">
+          <span class="hm-val">₩860M</span>
+          <span class="hm-lbl">Annual Savings / 100 racks</span>
         </div>
       </div>
     </section>
 
-    <!-- ── 01 PROBLEM ── -->
-    <section class="w dc-section">
-      <div class="dc-section-label">01 / Problem Statement</div>
-      <h2>레거시 DC의<br>구조적 비효율</h2>
-      <div class="problem-grid">
-        <div class="prob-card">
-          <div class="prob-card-num">01</div>
-          <h3>에어플로우 혼합</h3>
-          <p>핫아일/콜드아일 컨테인먼트 미적용으로 냉기와 열기가 혼합되어 냉각 효율이 급락합니다. OEM 서버의 IO/전원 혼재 배치가 케이블 관통을 만들어 기류를 방해합니다.</p>
-          <div class="stat">PUE 1.65 – 1.80 (레거시 평균)</div>
+    <!-- ── 01 Problem ── -->
+    <section id="problem" class="section">
+      <div class="sec-w">
+        <div class="sec-meta reveal">
+          <span class="sec-num">01</span>
+          <div class="sec-rule"></div>
+          <span class="sec-name">Problem Statement</span>
         </div>
-        <div class="prob-card">
-          <div class="prob-card-num">02</div>
-          <h3>전원 아키텍처 비효율</h3>
-          <p>40대 서버 랙에 PSU 80개가 각각 AC→DC 변환 손실을 발생시킵니다. HA 리던던시로 인해 각 PSU가 30~40% 저부하로 운영되어 효율이 최적 구간을 벗어납니다.</p>
-          <div class="stat">PSU 수 80개 → 중앙화 후 7–8개</div>
+        <h2 class="sec-h2 reveal">레거시 DC의<br>구조적 비효율</h2>
+        <div class="prob-grid reveal">
+          <div class="prob-card">
+            <span class="prob-num">01</span>
+            <h3 class="prob-title">에어플로우 혼합</h3>
+            <p class="prob-desc">핫아일/콜드아일 컨테인먼트 미적용으로 냉기와 열기가 혼합되어 냉각 효율이 급락합니다. OEM 서버의 IO/전원 혼재 배치가 케이블 관통을 만들어 기류를 방해합니다.</p>
+            <div class="prob-stat">PUE 1.65 – 1.80 (레거시 평균)</div>
+          </div>
+          <div class="prob-card">
+            <span class="prob-num">02</span>
+            <h3 class="prob-title">전원 아키텍처 비효율</h3>
+            <p class="prob-desc">40대 서버 랙에 PSU 80개가 각각 AC→DC 변환 손실을 발생시킵니다. HA 리던던시로 인해 각 PSU가 30~40% 저부하로 운영되어 효율이 최적 구간을 벗어납니다.</p>
+            <div class="prob-stat">PSU 수 80개 → 중앙화 후 7–8개</div>
+          </div>
+          <div class="prob-card">
+            <span class="prob-num">03</span>
+            <h3 class="prob-title">테크니션 작업 환경</h3>
+            <p class="prob-desc">OEM 서버의 IO 포트가 리어(핫아일 쪽)에 배치되어, 최대 52°C 환경에서 작업이 불가피합니다. OSHA 기준 작업 가능 시간이 25%로 제한됩니다.</p>
+            <div class="prob-stat">핫아일 최대 52°C vs OSHA 권고 30°C</div>
+          </div>
         </div>
-        <div class="prob-card">
-          <div class="prob-card-num">03</div>
-          <h3>테크니션 작업 환경</h3>
-          <p>OEM 서버의 IO 포트가 리어(핫아일 쪽)에 배치되어, 핫아일 온도 최대 52°C 환경에서 작업이 불가피합니다. OSHA 기준 작업 가능 시간이 25%로 제한됩니다.</p>
-          <div class="stat">핫아일 최대 52°C vs OSHA 권고 30°C</div>
-        </div>
-      </div>
 
-      <div style="margin-top: 24px; padding: 28px; background: var(--bg-soft); border: 1px solid var(--line);">
-        <div class="dc-section-label" style="margin-bottom: 12px;">왜 리퀴드쿨링으로 전환이 어려운가</div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-          <div style="font-size: 14px; font-weight: 400; color: var(--body);">
-            <span style="color: var(--text); display: block; margin-bottom: 4px; font-size: 14px;">시설 구조</span>
-            바닥 배관·방수 처리 없는 기존 시설에서 리퀴드쿨링 도입은 대규모 공사가 필요
-          </div>
-          <div style="font-size: 14px; font-weight: 400; color: var(--body);">
-            <span style="color: var(--text); display: block; margin-bottom: 4px; font-size: 14px;">임차 시설</span>
-            건물주 동의 없이 배관 공사 불가 — 임차 DC의 현실적 제약
-          </div>
-          <div style="font-size: 14px; font-weight: 400; color: var(--body);">
-            <span style="color: var(--text); display: block; margin-bottom: 4px; font-size: 14px;">투자 여력</span>
-            리퀴드쿨링 전환 CAPEX가 막대하여 중소규모 DC 오퍼레이터에게 진입 장벽
-          </div>
-          <div style="font-size: 14px; font-weight: 400; color: var(--body);">
-            <span style="color: var(--text); display: block; margin-bottom: 4px; font-size: 14px;">장비 호환성</span>
-            기존 서버에 콜드플레이트 미장착 — 장비 교체 없이 전환 불가능
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── 02 ARCHITECTURE ── -->
-    <section class="w dc-section">
-      <div class="dc-section-label">02 / Architecture Approach</div>
-      <h2>2-Track<br>Bridge Architecture</h2>
-      <p style="font-size: 15px; color: var(--muted); line-height: 1.8; max-width: 680px; margin-bottom: 32px;">
-        OCP/Meta가 추구하는 <strong style="color: var(--text);">프론트 IO / 리어 전원</strong> 철학을 19인치 레거시 환경에 맞게 재해석합니다.
-        리퀴드쿨링 없이, 기존 19인치 랙 자산을 그대로 활용하면서 에어쿨링 효율을 극대화하는 브릿지 아키텍처입니다.
-      </p>
-      <div class="track-grid">
-        <div class="track-card">
-          <span class="track-badge">Track A — Long Term</span>
-          <h3>커스텀 샤시</h3>
-          <p>OCP Inspired 19인치 호환 커스텀 샤시. 프론트 IO + 리어 전원 탭-오프 구조로 테크니션이 콜드아일에서 모든 작업을 완결합니다.</p>
-          <div class="track-items">
-            <div class="track-item">프론트 IO + 리어 전원 배치로 핫아일 작업 제거</div>
-            <div class="track-item">PSU 내장 없음 → 버스바 탭-오프 커넥터로 수전</div>
-            <div class="track-item">19인치 폼팩터 유지 — 기존 랙 자산 활용</div>
-            <div class="track-item">대만 ODM(MiTAC, AIC, Wiwynn)과 공동 개발</div>
-            <div class="track-item">개발 리드타임: 12~24개월 / NRE 1회성</div>
-          </div>
-        </div>
-        <div class="track-card">
-          <span class="track-badge">Track B — Fast Entry</span>
-          <h3>레거시 랙 버스바 키트</h3>
-          <p>기존 19인치 랙을 개조하는 레트로핏 키트. Track A 샤시 개발 전에 시장 검증과 초기 수익을 확보하며 업셀링 경로를 만듭니다.</p>
-          <div class="track-items">
-            <div class="track-item">2U Power Shelf + 0U 수직 DC 버스바 구성</div>
-            <div class="track-item">기존 AC PDU와 병존 → 점진적 전환 가능</div>
-            <div class="track-item">12V 시작으로 인증 리스크 최소화</div>
-            <div class="track-item">Legrand ORV3 레퍼런스 설계 기반</div>
-            <div class="track-item">Track A 도입 고객으로 업셀링 GTM</div>
+        <div class="callout reveal">
+          <span class="callout-label">왜 리퀴드쿨링으로 전환이 어려운가</span>
+          <div class="callout-grid">
+            <div>
+              <span class="callout-item-title">시설 구조</span>
+              <p class="callout-item-body">바닥 배관·방수 처리 없는 기존 시설에서 리퀴드쿨링 도입은 대규모 공사가 필요</p>
+            </div>
+            <div>
+              <span class="callout-item-title">임차 시설</span>
+              <p class="callout-item-body">건물주 동의 없이 배관 공사 불가 — 임차 DC의 현실적 제약</p>
+            </div>
+            <div>
+              <span class="callout-item-title">투자 여력</span>
+              <p class="callout-item-body">리퀴드쿨링 전환 CAPEX가 막대하여 중소규모 DC 오퍼레이터에게 진입 장벽</p>
+            </div>
+            <div>
+              <span class="callout-item-title">장비 호환성</span>
+              <p class="callout-item-body">기존 서버에 콜드플레이트 미장착 — 장비 교체 없이 전환 불가능</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ── 03 POWER ── -->
-    <section class="w dc-section">
-      <div class="dc-section-label">03 / Power Architecture</div>
-      <h2>PSU 중앙화<br>N+1 아키텍처</h2>
-      <div class="power-compare">
-        <div class="pwr-box">
-          <div class="pwr-box-label">전통 OEM 방식 (40대 서버 랙)</div>
-          <h3>개별 듀얼 PSU</h3>
-          <div class="pwr-stat-row">
-            <span class="label">총 PSU 수</span>
-            <span class="val">80개 (서버당 2개)</span>
-          </div>
-          <div class="pwr-stat-row">
-            <span class="label">AC→DC 변환 횟수</span>
-            <span class="val">80회 / 랙</span>
-          </div>
-          <div class="pwr-stat-row">
-            <span class="label">PSU 부하율</span>
-            <span class="val">30–40% (저효율 구간)</span>
-          </div>
-          <div class="pwr-stat-row">
-            <span class="label">PSU 부품비 (20서버)</span>
-            <span class="val">₩10M – 17M</span>
-          </div>
+    <!-- ── 02 Architecture ── -->
+    <section id="architecture" class="section">
+      <div class="sec-w">
+        <div class="sec-meta reveal">
+          <span class="sec-num">02</span>
+          <div class="sec-rule"></div>
+          <span class="sec-name">Architecture Approach</span>
         </div>
-        <div class="pwr-box highlight">
-          <div class="pwr-box-label">OCP Power Shelf N+1 방식</div>
-          <h3>랙 레벨 중앙화</h3>
-          <div class="pwr-stat-row">
-            <span class="label">총 PSU 수</span>
-            <span class="val good">7–8개 (N+1 리던던시)</span>
+        <h2 class="sec-h2 reveal">2-Track<br>Bridge Architecture</h2>
+        <p class="sec-lead reveal">OCP/Meta가 추구하는 <strong>프론트 IO / 리어 전원</strong> 철학을 19인치 레거시 환경에 맞게 재해석합니다. 리퀴드쿨링 없이, 기존 19인치 랙 자산을 그대로 활용하면서 에어쿨링 효율을 극대화하는 브릿지 아키텍처입니다.</p>
+        <div class="track-grid reveal">
+          <div class="track-card">
+            <span class="track-badge">Track A — Long Term</span>
+            <h3 class="track-title">커스텀 샤시</h3>
+            <p class="track-desc">OCP Inspired 19인치 호환 커스텀 샤시. 프론트 IO + 리어 전원 탭-오프 구조로 테크니션이 콜드아일에서 모든 작업을 완결합니다.</p>
+            <div class="track-list">
+              <div class="track-item">프론트 IO + 리어 전원 배치로 핫아일 작업 제거</div>
+              <div class="track-item">PSU 내장 없음 → 버스바 탭-오프 커넥터로 수전</div>
+              <div class="track-item">19인치 폼팩터 유지 — 기존 랙 자산 활용</div>
+              <div class="track-item">대만 ODM (MiTAC, AIC, Wiwynn)과 공동 개발</div>
+              <div class="track-item">개발 리드타임: 12~24개월 / NRE 1회성</div>
+            </div>
           </div>
-          <div class="pwr-stat-row">
-            <span class="label">AC→DC 변환 횟수</span>
-            <span class="val good">1회 / 랙</span>
+          <div class="track-card">
+            <span class="track-badge">Track B — Fast Entry</span>
+            <h3 class="track-title">레거시 랙 버스바 키트</h3>
+            <p class="track-desc">기존 19인치 랙을 개조하는 레트로핏 키트. Track A 샤시 개발 전에 시장 검증과 초기 수익을 확보하며 업셀링 경로를 만듭니다.</p>
+            <div class="track-list">
+              <div class="track-item">2U Power Shelf + 0U 수직 DC 버스바 구성</div>
+              <div class="track-item">기존 AC PDU와 병존 → 점진적 전환 가능</div>
+              <div class="track-item">12V 시작으로 인증 리스크 최소화</div>
+              <div class="track-item">Legrand ORV3 레퍼런스 설계 기반</div>
+              <div class="track-item">Track A 도입 고객으로 업셀링 GTM</div>
+            </div>
           </div>
-          <div class="pwr-stat-row">
-            <span class="label">PSU 부하율</span>
-            <span class="val good">80–90% (최적 효율 구간)</span>
-          </div>
-          <div class="pwr-stat-row">
-            <span class="label">PSU 부품비 (20서버)</span>
-            <span class="val good">₩4M – 9M (≈ ₩7M 절감)</span>
-          </div>
-        </div>
-      </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 24px; background: var(--bg-soft); border: 1px solid var(--line);">
-        <div>
-          <div class="dc-section-label" style="margin-bottom: 8px;">전력 손실 절감</div>
-          <div style="font-family: 'Josefin Sans', sans-serif; font-size: 32px; font-weight: 100; color: var(--accent);">33%</div>
-          <div style="font-size: 13px; font-weight: 400; color: var(--meta);">PSU 전력 손실 (RTB House 실측)</div>
-        </div>
-        <div>
-          <div class="dc-section-label" style="margin-bottom: 8px;">CPU 온도 개선</div>
-          <div style="font-family: 'Josefin Sans', sans-serif; font-size: 32px; font-weight: 100; color: var(--accent);">−15°C</div>
-          <div style="font-size: 13px; font-weight: 400; color: var(--meta);">동일 워크로드 기준 (Schneider 분석)</div>
-        </div>
-        <div>
-          <div class="dc-section-label" style="margin-bottom: 8px;">서버 팬 부하 절감</div>
-          <div style="font-family: 'Josefin Sans', sans-serif; font-size: 32px; font-weight: 100; color: var(--accent);">20W</div>
-          <div style="font-size: 13px; font-weight: 400; color: var(--meta);">서버당 팬 전력 절감 (인렛 온도 저감 효과)</div>
-        </div>
-        <div>
-          <div class="dc-section-label" style="margin-bottom: 8px;">Meta OCP 도입 효과</div>
-          <div style="font-family: 'Josefin Sans', sans-serif; font-size: 32px; font-weight: 100; color: var(--accent);">38%</div>
-          <div style="font-size: 13px; font-weight: 400; color: var(--meta);">에너지 효율 향상 / 운영비 24% 절감</div>
         </div>
       </div>
     </section>
 
-    <!-- ── 04 VOLTAGE ── -->
-    <section class="w dc-section">
-      <div class="dc-section-label">04 / AC → DC Transition Methodology</div>
-      <h2>전압 전략<br>12V → 48V</h2>
-      <p style="font-size: 15px; color: var(--muted); line-height: 1.8; max-width: 680px; margin-bottom: 32px;">
-        서버에 내장된 개별 AC-DC PSU를 제거하고 랙 레벨 DC 버스바로 전환하는 과정에서,
-        <strong style="color: var(--text);">12V로 시작하여 48V를 2세대 목표로</strong> 단계적으로 이행합니다.
-        물리 원칙상 48V는 동일 전력에서 전류를 1/4로 줄여 버스바 도전 손실을 1/16까지 감소시키지만,
-        레거시 호환성과 인증 리스크를 고려한 현실적 순서가 중요합니다.
-      </p>
-      <table class="voltage-table">
-        <thead>
-          <tr>
-            <th>항목</th>
-            <th>12V (Phase 1)</th>
-            <th>48V (Phase 2)</th>
-            <th>선택 근거</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>동일 전력 시 전류</td>
-            <td class="good">기준</td>
-            <td>1/4 (유리)</td>
-            <td class="dim">물리 원칙 (P=IV)</td>
-          </tr>
-          <tr>
-            <td>버스바 도전 손실 (P=I²R)</td>
-            <td class="good">기준</td>
-            <td>1/16 (유리)</td>
-            <td class="dim">고전류 경로 손실 감소</td>
-          </tr>
-          <tr>
-            <td>레거시 장비 호환성</td>
-            <td class="good">높음</td>
-            <td>낮음</td>
-            <td class="dim">기존 서버 병존 필요</td>
-          </tr>
-          <tr>
-            <td>안전 인증 복잡도</td>
-            <td class="good">낮음 (KC/UL 단순)</td>
-            <td>높음 (고전압 안전)</td>
-            <td class="dim">12V 선행 진입 근거</td>
-          </tr>
-          <tr>
-            <td>서버 내부 VRM</td>
-            <td class="good">불필요</td>
-            <td>추가 VRM 필요</td>
-            <td class="dim">샤시 설계 복잡도</td>
-          </tr>
-          <tr>
-            <td>OCP 생태계 표준</td>
-            <td class="dim">성숙</td>
-            <td class="good">Open Rack V3 추진 중</td>
-            <td class="dim">장기 방향성 확인</td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- ── 03 Power ── -->
+    <section id="power" class="section">
+      <div class="sec-w">
+        <div class="sec-meta reveal">
+          <span class="sec-num">03</span>
+          <div class="sec-rule"></div>
+          <span class="sec-name">Power Architecture</span>
+        </div>
+        <h2 class="sec-h2 reveal">PSU 중앙화<br>N+1 아키텍처</h2>
+        <div class="power-grid reveal">
+          <div class="pwr-card">
+            <span class="pwr-label">전통 OEM 방식 (40대 서버 랙)</span>
+            <h3 class="pwr-title">개별 듀얼 PSU</h3>
+            <div class="pwr-row"><span class="pwr-row-label">총 PSU 수</span><span class="pwr-row-val">80개 (서버당 2개)</span></div>
+            <div class="pwr-row"><span class="pwr-row-label">AC→DC 변환 횟수</span><span class="pwr-row-val">80회 / 랙</span></div>
+            <div class="pwr-row"><span class="pwr-row-label">PSU 부하율</span><span class="pwr-row-val">30–40% (저효율 구간)</span></div>
+            <div class="pwr-row"><span class="pwr-row-label">PSU 부품비 (20서버)</span><span class="pwr-row-val">₩10M – 17M</span></div>
+          </div>
+          <div class="pwr-card pwr-card-hi">
+            <span class="pwr-label">OCP Power Shelf N+1 방식</span>
+            <h3 class="pwr-title">랙 레벨 중앙화</h3>
+            <div class="pwr-row"><span class="pwr-row-label">총 PSU 수</span><span class="pwr-row-val good">7–8개 (N+1 리던던시)</span></div>
+            <div class="pwr-row"><span class="pwr-row-label">AC→DC 변환 횟수</span><span class="pwr-row-val good">1회 / 랙</span></div>
+            <div class="pwr-row"><span class="pwr-row-label">PSU 부하율</span><span class="pwr-row-val good">80–90% (최적 효율 구간)</span></div>
+            <div class="pwr-row"><span class="pwr-row-label">PSU 부품비 (20서버)</span><span class="pwr-row-val good">₩4M – 9M (≈ ₩7M 절감)</span></div>
+          </div>
+        </div>
+        <div class="dc-metrics reveal">
+          <div class="dc-metric">
+            <span class="dc-metric-label">전력 손실 절감</span>
+            <span class="dc-metric-val">33%</span>
+            <span class="dc-metric-note">PSU 전력 손실 (RTB House 실측)</span>
+          </div>
+          <div class="dc-metric">
+            <span class="dc-metric-label">CPU 온도 개선</span>
+            <span class="dc-metric-val">−15°C</span>
+            <span class="dc-metric-note">동일 워크로드 기준 (Schneider 분석)</span>
+          </div>
+          <div class="dc-metric">
+            <span class="dc-metric-label">서버 팬 부하 절감</span>
+            <span class="dc-metric-val">20W</span>
+            <span class="dc-metric-note">서버당 팬 전력 절감 (인렛 온도 저감 효과)</span>
+          </div>
+          <div class="dc-metric">
+            <span class="dc-metric-label">Meta OCP 도입 효과</span>
+            <span class="dc-metric-val">38%</span>
+            <span class="dc-metric-note">에너지 효율 향상 / 운영비 24% 절감</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <div style="margin-top: 28px; padding: 24px; border-left: 2px solid var(--accent); background: var(--accent-soft);">
-        <div style="font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px;">19인치 버스바 레트로핏 구성</div>
-        <pre style="font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); line-height: 1.8; overflow-x: auto; white-space: pre-wrap;">┌─────────────────────────────────────┐
-│  [2U] AC→DC Power Shelf             │ ← 33kW, N+1, 핫스왑 PSU 6~8모듈
-├─────────────────────────────────────┤
-│  서버 슬롯 1  ←── 블라인드 메이트   │
-│  서버 슬롯 2  ←── 탭-오프 커넥터   │
-│  서버 슬롯 N  ←── (ODM 공동 개발)  │
-├───────────── [DC 버스바] ───────────┤
-│  [0U 수직] 슬림 절연 구리 버스바    │ ← 리어 마운팅, 에어플로우 최소 방해
-└─────────────────────────────────────┘</pre>
+    <!-- ── 04 Voltage ── -->
+    <section class="section">
+      <div class="sec-w">
+        <div class="sec-meta reveal">
+          <span class="sec-num">04</span>
+          <div class="sec-rule"></div>
+          <span class="sec-name">AC → DC Transition</span>
+        </div>
+        <h2 class="sec-h2 reveal">전압 전략<br>12V → 48V</h2>
+        <p class="sec-lead reveal">서버에 내장된 개별 AC-DC PSU를 제거하고 랙 레벨 DC 버스바로 전환하는 과정에서, <strong>12V로 시작하여 48V를 2세대 목표로</strong> 단계적으로 이행합니다. 48V는 동일 전력에서 전류를 1/4로 줄여 버스바 도전 손실을 1/16까지 감소시키지만, 레거시 호환성과 인증 리스크를 고려한 현실적 순서가 중요합니다.</p>
+        <table class="dc-table reveal">
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th>12V (Phase 1)</th>
+              <th>48V (Phase 2)</th>
+              <th>선택 근거</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>동일 전력 시 전류</td><td class="good">기준</td><td>1/4 (유리)</td><td class="dim">물리 원칙 (P=IV)</td></tr>
+            <tr><td>버스바 도전 손실 (P=I²R)</td><td class="good">기준</td><td>1/16 (유리)</td><td class="dim">고전류 경로 손실 감소</td></tr>
+            <tr><td>레거시 장비 호환성</td><td class="good">높음</td><td>낮음</td><td class="dim">기존 서버 병존 필요</td></tr>
+            <tr><td>안전 인증 복잡도</td><td class="good">낮음 (KC/UL 단순)</td><td>높음 (고전압 안전)</td><td class="dim">12V 선행 진입 근거</td></tr>
+            <tr><td>서버 내부 VRM</td><td class="good">불필요</td><td>추가 VRM 필요</td><td class="dim">샤시 설계 복잡도</td></tr>
+            <tr><td>OCP 생태계 표준</td><td class="dim">성숙</td><td class="good">Open Rack V3 추진 중</td><td class="dim">장기 방향성 확인</td></tr>
+          </tbody>
+        </table>
+        <div class="rack-diagram reveal">
+          <div class="rack-label">19인치 버스바 레트로핏 구성</div>
+          <div class="rack-row rack-row-power">
+            <span class="rack-badge">2U</span>
+            <span class="rack-name">AC→DC Power Shelf</span>
+            <span class="rack-note">33kW · N+1 · Hot-swap PSU 6–8 modules</span>
+          </div>
+          <div class="rack-row rack-row-server">
+            <span class="rack-badge">1U</span>
+            <span class="rack-name">Server Slot 1</span>
+            <span class="rack-note rack-conn">← Blind-mate</span>
+          </div>
+          <div class="rack-row rack-row-server">
+            <span class="rack-badge">1U</span>
+            <span class="rack-name">Server Slot 2</span>
+            <span class="rack-note rack-conn">← Tap-off connector</span>
+          </div>
+          <div class="rack-row rack-row-server rack-row-dim">
+            <span class="rack-badge">⋮</span>
+            <span class="rack-name">Server Slot N</span>
+            <span class="rack-note">ODM co-developed</span>
+          </div>
+          <div class="rack-row rack-row-bar">
+            <span class="rack-badge">──</span>
+            <span class="rack-name">DC Bus Bar</span>
+            <span class="rack-note">Rear mounting</span>
+          </div>
+          <div class="rack-row rack-row-busbar">
+            <span class="rack-badge">0U</span>
+            <span class="rack-name">슬림 절연 구리 버스바 (수직)</span>
+            <span class="rack-note">에어플로우 최소 방해</span>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- ── 05 ODM ── -->
-    <section class="w dc-section">
-      <div class="dc-section-label">05 / ODM Collaboration</div>
-      <h2>대만 ODM<br>파트너 전략</h2>
-      <p style="font-size: 15px; color: var(--muted); line-height: 1.8; max-width: 680px; margin-bottom: 32px;">
-        OCP 오픈 네트워크 스위치 최초 설계를 Accton과 함께 개발한 것처럼, 본 아키텍처도 OCP 생태계 핵심인 대만 ODM과의 공동 개발이 중심입니다.
-        커스텀 탭-오프 커넥터 스펙을 ODM과 선합의하는 것이 핵심 선결 과제입니다.
-      </p>
-      <table class="odm-table">
-        <thead>
-          <tr>
-            <th>업체</th>
-            <th>특기</th>
-            <th>OCP 참여</th>
-            <th>본 프로젝트 적합성</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="name highlight-row">MiTAC Computing</td>
-            <td>OCP 서버, 에어+리퀴드 포트폴리오</td>
-            <td>OCP EMEA 참여</td>
-            <td class="good">1U 숏뎁스 프론트액세스 제품 보유 — 방향성 가장 일치</td>
-          </tr>
-          <tr>
-            <td class="name">AIC (Aeon Information Center)</td>
-            <td>OCP 샤시 전문</td>
-            <td>OCP 정회원</td>
-            <td>샤시 커스텀 경험 풍부, 19인치 변형 개발 가능</td>
-          </tr>
-          <tr>
-            <td class="name">Wiwynn (Wistron 계열)</td>
-            <td>서버 ODM, OCP 핵심</td>
-            <td>OCP 정회원</td>
-            <td>Meta 주요 공급사 — 대규모 레퍼런스</td>
-          </tr>
-          <tr>
-            <td class="name">Quanta</td>
-            <td>Meta OCP 서버 주요 ODM</td>
-            <td>OCP 정회원</td>
-            <td>대형 물량 대응, 초기 소량 MOQ 협의 필요</td>
-          </tr>
-        </tbody>
-      </table>
-      <div style="margin-top: 20px; padding: 20px; background: var(--bg-soft); border: 1px solid var(--line);">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; font-size: 13px;">
-          <div><span style="color: var(--text); display: block; margin-bottom: 4px;">개발 리드타임</span><span style="color: var(--body);">최소 9~18개월 (MOQ 협의 포함)</span></div>
-          <div><span style="color: var(--text); display: block; margin-bottom: 4px;">커넥터 선결 과제</span><span style="color: var(--body);">탭-오프 커넥터 스펙 ODM과 선합의 필수</span></div>
-          <div><span style="color: var(--text); display: block; margin-bottom: 4px;">비용 구조</span><span style="color: var(--body);">NRE 1회성 + 양산 단가 — 규모 확대 시 ROI 단축</span></div>
-          <div><span style="color: var(--text); display: block; margin-bottom: 4px;">인증 전략</span><span style="color: var(--body);">12V 시작 → KC/UL/CE 단순화, 48V는 2세대에서</span></div>
+    <section class="section">
+      <div class="sec-w">
+        <div class="sec-meta reveal">
+          <span class="sec-num">05</span>
+          <div class="sec-rule"></div>
+          <span class="sec-name">ODM Collaboration</span>
         </div>
+        <h2 class="sec-h2 reveal">대만 ODM<br>파트너 전략</h2>
+        <p class="sec-lead reveal">OCP 오픈 네트워크 스위치 최초 설계를 Accton과 함께 개발한 것처럼, 본 아키텍처도 OCP 생태계 핵심인 대만 ODM과의 공동 개발이 중심입니다. <strong>커스텀 탭-오프 커넥터 스펙을 ODM과 선합의</strong>하는 것이 핵심 선결 과제입니다.</p>
+        <p class="sec-lead reveal">OCP 생태계의 핵심인 대만 ODM은 본 아키텍처의 이상적인 협력 파트너입니다. <strong>MiTAC</strong>은 1U 숏뎁스 프론트액세스 제품을 이미 보유해 방향성이 가장 가깝고, <strong>AIC</strong>와 <strong>Wiwynn</strong>은 OCP 샤시 커스텀 경험과 대규모 Meta 레퍼런스를 갖추고 있습니다. 공동 개발의 핵심 선결 과제는 <strong>탭-오프 커넥터 스펙을 ODM과 선합의</strong>하는 것이며, NRE 1회성 계약을 통해 진행됩니다.</p>
       </div>
     </section>
 
     <!-- ── 06 ROI ── -->
-    <section class="w dc-section">
-      <div class="dc-section-label">06 / ROI Analysis</div>
-      <h2>투자 수익<br>분석</h2>
-      <div class="roi-grid">
-        <div class="roi-cell">
-          <div class="roi-cell-label">순 초기 투자 (10랙)</div>
-          <div class="roi-cell-val">₩170–300M</div>
-          <div class="roi-cell-sub">OEM PSU 미구매 절감 상쇄 반영<br>(v1 대비 ~55% 감소)</div>
+    <section id="roi" class="section">
+      <div class="sec-w">
+        <div class="sec-meta reveal">
+          <span class="sec-num">06</span>
+          <div class="sec-rule"></div>
+          <span class="sec-name">ROI Analysis</span>
         </div>
-        <div class="roi-cell">
-          <div class="roi-cell-label">연간 절감액 (10랙)</div>
-          <div class="roi-cell-val">₩130M</div>
-          <div class="roi-cell-sub">냉각·전원·팬 절감 합산</div>
+        <h2 class="sec-h2 reveal">투자 수익 분석</h2>
+
+        <!-- Density x2 narrative -->
+        <div class="density-compare reveal">
+          <div class="density-before">
+            <span class="density-col-label">현행 — 국내 레거시 현실</span>
+            <span class="density-big density-big-dim">8–10대</span>
+            <p class="density-desc">현대 CPU 서버는 1kW+가 일반적. 개별 PSU 발열과 케이블 혼잡으로 에어플로우가 막혀 랙당 집적도가 제한됩니다.</p>
+            <span class="density-count">100랙 → 800–900대 수용</span>
+          </div>
+          <div class="density-arrow-col">→</div>
+          <div class="density-after">
+            <span class="density-col-label">PSU 중앙화 + 프론트 IO 적용 후</span>
+            <span class="density-big density-big-accent">18–20대</span>
+            <p class="density-desc">PSU를 랙 레벨로 분리하면 서버 내부 발열이 줄고 케이블 혼잡이 해소되어 에어플로우가 최적화됩니다.</p>
+            <span class="density-count-hi">50랙 → 동일 900대 수용</span>
+          </div>
         </div>
-        <div class="roi-cell">
-          <div class="roi-cell-label">ROI 기간</div>
-          <div class="roi-cell-val">1.3–2.3yr</div>
-          <div class="roi-cell-sub">10랙 기준<br>50랙: ~1년 / 100랙+: ~0.8년</div>
+        <div class="density-result reveal">
+          <span class="density-result-val">×2</span>
+          <p class="density-result-text">랙당 전력집적도 2배 향상. 동일한 900대 서버가 <strong>100랙 → 50랙</strong>에 수용됩니다. 서버룸을 <strong>50%만 사용</strong>하거나 같은 공간에 <strong>2배의 컴퓨트를 확장</strong>할 수 있습니다. 코로케이션 환경에서는 연간 50랙 임대비 절감(₩540M)이 직접적인 비용 이익으로 전환됩니다.</p>
         </div>
-        <div class="roi-cell">
-          <div class="roi-cell-label">냉각 에너지 절감</div>
-          <div class="roi-cell-val">30–45%</div>
-          <div class="roi-cell-sub">컨테인먼트 + 온도 상향 운영<br>(NAB 은행 사례: PUE 2.0→1.4)</div>
+
+        <div class="roi-grid reveal">
+          <div class="roi-cell">
+            <span class="roi-label">순 초기 투자 (100랙)</span>
+            <span class="roi-val">₩1.2B–1.5B</span>
+            <p class="roi-sub">PSU 미구매 절감(₩900M) 상쇄 반영. 규모 경제로 10랙 단위 대비 단가 30% 절감</p>
+          </div>
+          <div class="roi-cell">
+            <span class="roi-label">연간 절감액 (100랙)</span>
+            <span class="roi-val">₩860M</span>
+            <p class="roi-sub">전력 절감 ₩304M + 코로케이션 50랙 임대비 ₩540M (₩900K/랙/월 기준)</p>
+          </div>
+          <div class="roi-cell">
+            <span class="roi-label">ROI 기간</span>
+            <span class="roi-val">1.5–2.0yr</span>
+            <p class="roi-sub">100랙 기준, 코로케이션 포함<br>자체 시설 (임대비 미포함): 약 4.0yr</p>
+          </div>
+          <div class="roi-cell">
+            <span class="roi-label">냉각 에너지 절감</span>
+            <span class="roi-val">30–45%</span>
+            <p class="roi-sub">컨테인먼트 + 온도 상향 운영 (NAB 은행 사례: PUE 2.0→1.4)</p>
+          </div>
         </div>
-      </div>
-      <div class="savings-list">
-        <div class="saving-row">
-          <span class="sr-label">PSU 중앙화 전력 손실 절감</span>
-          <span class="sr-val">33% / 랙</span>
-        </div>
-        <div class="saving-row">
-          <span class="sr-label">OEM 듀얼 PSU 미구매 절감 (10랙)</span>
-          <span class="sr-val">₩110 – 180M</span>
-        </div>
-        <div class="saving-row">
-          <span class="sr-label">OCP 샤시 BOM 단순화 단가 절감 (200대)</span>
-          <span class="sr-val">₩100 – 200M</span>
-        </div>
-        <div class="saving-row">
-          <span class="sr-label">GEICO OCP ORV3 전환 — 컴퓨트 코어당 단가</span>
-          <span class="sr-val">50%↓ 절감</span>
-        </div>
-        <div class="saving-row">
-          <span class="sr-label">서버당 팬 전력 절감 (인렛 온도 저감)</span>
-          <span class="sr-val">20W / 서버</span>
+        <div class="savings-list reveal">
+          <div class="saving-row"><span class="sr-label">전력 절감 — PUE 1.65→1.30 (900kW IT 기준, ₩110/kWh)</span><span class="sr-val">₩304M / 년</span></div>
+          <div class="saving-row"><span class="sr-label">코로케이션 랙 임대비 절감 (50랙 × ₩900K/월)</span><span class="sr-val">₩540M / 년</span></div>
+          <div class="saving-row"><span class="sr-label">OEM 듀얼 PSU 미구매 절감 (100랙, 일회성)</span><span class="sr-val">₩900M</span></div>
+          <div class="saving-row"><span class="sr-label">OCP 샤시 BOM 단순화 절감 (200대, 일회성)</span><span class="sr-val">₩100 – 200M</span></div>
+          <div class="saving-row"><span class="sr-label">서버당 팬 전력 절감 (인렛 온도 저감, RTB House 실측)</span><span class="sr-val">20W / 서버</span></div>
+          <div class="saving-row"><span class="sr-label">GEICO OCP ORV3 전환 — 컴퓨트 코어당 단가 (공개 발표)</span><span class="sr-val">50%↓</span></div>
         </div>
       </div>
     </section>
 
-    <!-- ── 07 ROADMAP ── -->
-    <section class="w dc-section">
-      <div class="dc-section-label">07 / Implementation Roadmap</div>
-      <h2>4단계<br>구현 로드맵</h2>
-      <div class="roadmap">
-        <div class="phase">
-          <div class="phase-num">Phase 1</div>
-          <div class="phase-period">0 – 6개월</div>
-          <h3>파일럿 & 기술 검증</h3>
-          <ul>
-            <li>Track B 버스바 키트 파일럿 (10~20랙)</li>
-            <li>실측 PUE · 전력 절감 수치 확보</li>
-            <li>ODM 1차 접촉 (Wiwynn / MiTAC / AIC RFQ)</li>
-            <li>탭-오프 커넥터 스펙 초안 확정</li>
-            <li>핫아일 컨테인먼트 구조 도면</li>
-          </ul>
+    <!-- ── 07 Roadmap ── -->
+    <section class="section">
+      <div class="sec-w">
+        <div class="sec-meta reveal">
+          <span class="sec-num">07</span>
+          <div class="sec-rule"></div>
+          <span class="sec-name">Implementation Roadmap</span>
         </div>
-        <div class="phase">
-          <div class="phase-num">Phase 2</div>
-          <div class="phase-period">6 – 12개월</div>
-          <h3>Track B 상용화</h3>
-          <ul>
-            <li>버스바 키트 KC 인증 (UL/CE 병행)</li>
-            <li>랙 타입별 호환 가이드 제품화</li>
-            <li>국내 DC 운영사 · SI 업체 채널 구축</li>
-            <li>Track A 샤시 ODM NRE 계약 착수</li>
-            <li>레퍼런스 사이트 확보</li>
-          </ul>
-        </div>
-        <div class="phase">
-          <div class="phase-num">Phase 3</div>
-          <div class="phase-period">12 – 24개월</div>
-          <h3>Track A 샤시 출시</h3>
-          <ul>
-            <li>OCP Inspired 19인치 호환 샤시 양산</li>
-            <li>BIOS/BMC OEM 락인 제거</li>
-            <li>Track B 도입 고객 업셀링</li>
-            <li>MOQ 협의 · 양산 단가 확정</li>
-          </ul>
-        </div>
-        <div class="phase">
-          <div class="phase-num">Phase 4</div>
-          <div class="phase-period">24개월~</div>
-          <h3>스케일업 & 48V 전환</h3>
-          <ul>
-            <li>100랙+ 레퍼런스 (ROI 0.8년 사례)</li>
-            <li>OCP 48V 생태계 성숙도 재평가</li>
-            <li>48V 2세대 샤시 개발 검토</li>
-            <li>동남아·일본 레거시 DC 시장 진입</li>
-          </ul>
+        <h2 class="sec-h2 reveal">4단계 구현 로드맵</h2>
+        <div class="roadmap-grid reveal">
+          <div class="phase-col">
+            <span class="phase-num">01</span>
+            <span class="phase-period">0 – 6개월</span>
+            <h3 class="phase-title">파일럿 &amp; 기술 검증</h3>
+            <ul class="phase-list">
+              <li>Track B 버스바 키트 파일럿 (10~20랙)</li>
+              <li>실측 PUE · 전력 절감 수치 확보</li>
+              <li>ODM 1차 접촉 (Wiwynn / MiTAC / AIC RFQ)</li>
+              <li>탭-오프 커넥터 스펙 초안 확정</li>
+              <li>핫아일 컨테인먼트 구조 도면</li>
+            </ul>
+          </div>
+          <div class="phase-col">
+            <span class="phase-num">02</span>
+            <span class="phase-period">6 – 12개월</span>
+            <h3 class="phase-title">Track B 상용화</h3>
+            <ul class="phase-list">
+              <li>버스바 키트 KC 인증 (UL/CE 병행)</li>
+              <li>랙 타입별 호환 가이드 제품화</li>
+              <li>국내 DC 운영사 · SI 업체 채널 구축</li>
+              <li>Track A 샤시 ODM NRE 계약 착수</li>
+              <li>레퍼런스 사이트 확보</li>
+            </ul>
+          </div>
+          <div class="phase-col">
+            <span class="phase-num">03</span>
+            <span class="phase-period">12 – 24개월</span>
+            <h3 class="phase-title">Track A 샤시 출시</h3>
+            <ul class="phase-list">
+              <li>OCP Inspired 19인치 호환 샤시 양산</li>
+              <li>BIOS/BMC OEM 락인 제거</li>
+              <li>Track B 도입 고객 업셀링</li>
+              <li>MOQ 협의 · 양산 단가 확정</li>
+            </ul>
+          </div>
+          <div class="phase-col">
+            <span class="phase-num">04</span>
+            <span class="phase-period">24개월~</span>
+            <h3 class="phase-title">스케일업 &amp; 48V 전환</h3>
+            <ul class="phase-list">
+              <li>100랙+ 레퍼런스 (ROI 0.8년 사례)</li>
+              <li>OCP 48V 생태계 성숙도 재평가</li>
+              <li>48V 2세대 샤시 개발 검토</li>
+              <li>동남아·일본 레거시 DC 시장 진입</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ── CONTACT ── -->
-    <div id="contact" class="w contact-sec" style="margin-bottom: 0; padding-bottom: 80px;">
-      <h2>이 아키텍처에 대해<br>이야기해봅시다</h2>
-      <div class="contact-right">
-        <a class="em-link" href="mailto:contact@lepuslab.dev">contact@lepuslab.dev</a>
-        <p class="loc">Seoul, Republic of Korea</p>
-        <p class="loc">레거시 데이터센터 효율화, 전원 아키텍처 설계, ODM 협력 개발에 대한 파트너십과 컨설팅 문의를 환영합니다.</p>
-        <a href="/" class="bl">← Back to Home</a>
-      </div>
-    </div>
+    <!-- ── Contact ── -->
+    <section id="contact" class="contact">
+      <h2 class="contact-title reveal">이 아키텍처에 대해<br>이야기해봅시다</h2>
+      <a class="contact-email reveal" href="mailto:contact@lepuslab.dev">contact@lepuslab.dev</a>
+    </section>
 
   </main>
 
   <footer>
-    <div class="w ft">
-      <span class="ft-logo">LEPUS LAB</span>
-      <span>© 2026 LEPUS LAB. All rights reserved.</span>
+    <div class="footer-in">
+      <span class="footer-copy">© 2026 LEPUS LAB</span>
+      <span class="footer-copy">Yongin-si, Korea</span>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      }),
+      { threshold: 0.08 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>

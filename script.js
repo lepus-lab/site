@@ -48,20 +48,30 @@ function normalizePreference(themePreference) {
   return themePreference.charAt(0).toUpperCase() + themePreference.slice(1);
 }
 
-let starFill = "rgba(255,255,255,0.88)";
-let linkStrokeBase = "198,210,255";
+let starRgb = "194,200,212";
+let glowRgb = "198,210,255";
+let starAlpha = 0.42;
+let glowAlpha = 0.055;
 let activeThemePreference = readStoredThemePreference();
 
 function refreshStarPalette() {
   const styles = getComputedStyle(root);
-  const starRgb = styles.getPropertyValue("--star-rgb").trim();
-  const linkRgb = styles.getPropertyValue("--link-rgb").trim();
+  const nextStarRgb = styles.getPropertyValue("--star-rgb").trim();
+  const nextGlowRgb = styles.getPropertyValue("--link-rgb").trim();
+  const nextStarAlpha = Number.parseFloat(styles.getPropertyValue("--star-alpha").trim());
+  const nextGlowAlpha = Number.parseFloat(styles.getPropertyValue("--starfield-glow-alpha").trim());
 
-  if (starRgb) {
-    starFill = `rgba(${starRgb},0.88)`;
+  if (nextStarRgb) {
+    starRgb = nextStarRgb;
   }
-  if (linkRgb) {
-    linkStrokeBase = linkRgb;
+  if (nextGlowRgb) {
+    glowRgb = nextGlowRgb;
+  }
+  if (Number.isFinite(nextStarAlpha)) {
+    starAlpha = nextStarAlpha;
+  }
+  if (Number.isFinite(nextGlowAlpha)) {
+    glowAlpha = nextGlowAlpha;
   }
 }
 
@@ -125,61 +135,70 @@ if (canvas && ctx) {
   let width = 0;
   let height = 0;
   let stars = [];
-  const STAR_COUNT = 95;
-  const LINK_DISTANCE = 135;
 
   function createStar() {
     return {
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.14,
-      vy: (Math.random() - 0.5) * 0.14,
-      r: Math.random() * 1.4 + 0.4
+      r: Math.random() * 1.35 + 0.2,
+      vx: (Math.random() - 0.5) * 0.05,
+      vy: Math.random() * 0.08 + 0.01,
+      a: Math.random() * 0.32 + 0.12,
+      tw: Math.random() * Math.PI * 2,
+      tws: Math.random() * 0.03 + 0.008
     };
   }
 
   function resize() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-    stars = Array.from({ length: STAR_COUNT }, createStar);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const starCount = Math.max(64, Math.floor(width / 20));
+    stars = Array.from({ length: starCount }, createStar);
   }
 
-  function step() {
+  function step(now = 0) {
     ctx.clearRect(0, 0, width, height);
+
+    const glow = ctx.createRadialGradient(
+      width * 0.5,
+      height * 0.35,
+      0,
+      width * 0.5,
+      height * 0.35,
+      Math.max(width, height) * 0.8
+    );
+    glow.addColorStop(0, `rgba(${glowRgb},${glowAlpha})`);
+    glow.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, width, height);
 
     for (const star of stars) {
       star.x += star.vx;
       star.y += star.vy;
+      star.tw += star.tws;
 
-      if (star.x < 0 || star.x > width) {
-        star.vx *= -1;
+      if (star.x < -2) {
+        star.x = width + 2;
       }
-      if (star.y < 0 || star.y > height) {
-        star.vy *= -1;
+      if (star.x > width + 2) {
+        star.x = -2;
+      }
+      if (star.y > height + 2) {
+        star.x = Math.random() * width;
+        star.y = -2;
       }
 
+      const alpha = star.a + Math.sin(star.tw + now * 0.0002) * 0.1;
       ctx.beginPath();
       ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-      ctx.fillStyle = starFill;
+      ctx.fillStyle = `rgba(${starRgb},${Math.max(0.05, Math.min(starAlpha, alpha))})`;
       ctx.fill();
-    }
-
-    for (let i = 0; i < stars.length; i += 1) {
-      for (let j = i + 1; j < stars.length; j += 1) {
-        const dx = stars[i].x - stars[j].x;
-        const dy = stars[i].y - stars[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < LINK_DISTANCE) {
-          const alpha = (1 - dist / LINK_DISTANCE) * 0.16;
-          ctx.beginPath();
-          ctx.moveTo(stars[i].x, stars[i].y);
-          ctx.lineTo(stars[j].x, stars[j].y);
-          ctx.strokeStyle = `rgba(${linkStrokeBase},${alpha})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        }
-      }
     }
 
     requestAnimationFrame(step);

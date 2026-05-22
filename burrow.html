@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LEPUS LAB — Burrow</title>
+
+  <link rel="canonical" href="https://lepuslab.dev/burrow">
+  <meta name="description" content="Burrow는 Lepus Lab의 하드웨어 아키텍처 제품입니다. 자연어 요구사항에서 아키텍처 옵션, 블럭도, BOM, 인터페이스 계획까지 구조화합니다.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lepuslab.dev/burrow">
+  <meta property="og:title" content="LEPUS LAB — Burrow">
+  <meta property="og:description" content="Architecture-first hardware design for embedded and edge AI teams.">
+  <meta property="og:image" content="https://lepuslab.dev/og-image.svg">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LEPUS LAB — Burrow">
+  <meta name="twitter:description" content="Architecture-first hardware design for embedded and edge AI teams.">
+  <meta name="twitter:image" content="https://lepuslab.dev/og-image.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&amp;family=Josefin+Sans:wght@100;300;400&amp;display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="burrow.css">
+</head>
+<body class="burrow-page">
+  <canvas id="starfield" aria-hidden="true"></canvas>
+
+  <header class="hd">
+    <div class="w hd-in">
+      <a class="logo" href="index.html">LEPUS LAB</a>
+      <div class="hd-actions">
+        <nav class="hnav" aria-label="Primary">
+          <a href="index.html#services">Products</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#deliverables">Outputs</a>
+          <a href="#design">Design</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <button class="tbtn" data-theme-toggle>
+          <span class="theme-toggle-label">Theme: System</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="w burrow-hero">
+      <div class="burrow-hero-shell">
+        <div class="burrow-hero-copy">
+          <p class="burrow-eyebrow">Applied AI Product · Early Access</p>
+          <div class="burrow-lockup">
+            <div class="burrow-mark" aria-hidden="true">
+              <svg viewBox="0 0 56 56" fill="none">
+                <path d="M13.3 19.1 L22.8 21.5 L32.4 28.5 L44.6 26.1" class="burrow-mark-line"/>
+                <path d="M22.8 21.5 L17.8 37.1 L34.5 37.1 L51.5 41.8" class="burrow-mark-line burrow-mark-line-dim"/>
+                <path d="M32.4 28.5 L40.9 14.6" class="burrow-mark-line burrow-mark-line-dim"/>
+                <circle class="burrow-mark-dot burrow-mark-dot-dim" cx="5" cy="21.5" r="0.9"/>
+                <circle class="burrow-mark-dot burrow-mark-dot-dim" cx="46.8" cy="17.1" r="0.9"/>
+                <circle class="burrow-mark-dot burrow-mark-dot-dim" cx="51.5" cy="12.3" r="0.7"/>
+                <circle class="burrow-mark-dot" cx="13.3" cy="19.1" r="1.2"/>
+                <circle class="burrow-mark-dot" cx="22.8" cy="21.5" r="1.2"/>
+                <circle class="burrow-mark-dot" cx="32.4" cy="28.5" r="1.8"/>
+                <circle class="burrow-mark-dot" cx="40.9" cy="14.6" r="1.3"/>
+                <circle class="burrow-mark-dot" cx="44.6" cy="26.1" r="1.2"/>
+                <circle class="burrow-mark-dot" cx="17.8" cy="37.1" r="1.2"/>
+                <circle class="burrow-mark-dot" cx="22.8" cy="41.8" r="1.2"/>
+                <circle class="burrow-mark-dot" cx="34.5" cy="37.1" r="1.2"/>
+                <circle class="burrow-mark-dot" cx="51.5" cy="41.8" r="1.2"/>
+              </svg>
+            </div>
+            <div class="burrow-lockup-copy">
+              <span class="burrow-super">LEPUS LAB PRODUCT SYSTEM</span>
+              <span class="burrow-word">BURROW</span>
+              <span class="burrow-subword">Architecture-first hardware design agent</span>
+            </div>
+          </div>
+          <h1 class="burrow-title">Natural language in.<br>Architecture clarity out.</h1>
+          <p class="burrow-sub">
+            Burrow turns a rough system brief into structured hardware architecture options for embedded and edge AI teams.
+            It frames the problem before schematic capture, so design review starts from clear trade-offs instead of disconnected notes.
+          </p>
+          <div class="cap-stack burrow-chip-row">
+            <span>Architecture Options</span>
+            <span>Block Diagram</span>
+            <span>BOM Direction</span>
+            <span>Interface Planning</span>
+            <span>Grounded Catalog</span>
+          </div>
+          <div class="burrow-actions">
+            <a class="hero-link hero-link-inline burrow-primary-link" href="#contact">Request Early Access</a>
+            <a class="hero-link hero-link-inline burrow-secondary-link" href="#workflow">See Workflow</a>
+          </div>
+          <div class="burrow-kpi-grid">
+            <article class="burrow-kpi-card">
+              <span class="burrow-kpi-label">Input</span>
+              <strong class="burrow-kpi-value">System brief</strong>
+              <p class="burrow-kpi-copy">목적, 제약, 주요 인터페이스만으로 시작합니다.</p>
+            </article>
+            <article class="burrow-kpi-card">
+              <span class="burrow-kpi-label">Engine</span>
+              <strong class="burrow-kpi-value">Option framing</strong>
+              <p class="burrow-kpi-copy">비용, 성능, 통합 복잡도를 병렬로 비교합니다.</p>
+            </article>
+            <article class="burrow-kpi-card">
+              <span class="burrow-kpi-label">Output</span>
+              <strong class="burrow-kpi-value">Review-ready artifacts</strong>
+              <p class="burrow-kpi-copy">블럭도와 BOM 방향을 같은 화면에서 읽습니다.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="burrow-hero-visual">
+          <span class="burrow-visual-label burrow-visual-label-top">Lepus Constellation</span>
+          <span class="burrow-visual-label burrow-visual-label-bottom">Burrow Product Surface</span>
+          <div class="burrow-preview-grid">
+            <article class="burrow-preview burrow-preview-brief">
+              <span class="burrow-preview-label">Prompt</span>
+              <p>
+                Edge vision control board.<br>
+                Multi-camera input, battery-backed power path,<br>
+                compact carrier-class architecture.
+              </p>
+            </article>
+            <article class="burrow-preview burrow-preview-flow">
+              <span class="burrow-preview-label">System Flow</span>
+              <div class="burrow-flow-steps">
+                <span>Brief</span>
+                <span>Options</span>
+                <span>Diagram</span>
+                <span>Export</span>
+              </div>
+            </article>
+            <article class="burrow-preview burrow-preview-options">
+              <span class="burrow-preview-label">Option Matrix</span>
+              <ul class="burrow-preview-list">
+                <li><strong>Balanced</strong><span>carrier logic + power supervisor + IO path</span></li>
+                <li><strong>Compact</strong><span>reduced expansion, tighter power envelope</span></li>
+                <li><strong>Performance</strong><span>more IO headroom, easier future growth</span></li>
+              </ul>
+            </article>
+            <article class="burrow-preview burrow-preview-outputs">
+              <span class="burrow-preview-label">Artifacts</span>
+              <div class="burrow-output-stack">
+                <span>Block Diagram</span>
+                <span>BOM Direction</span>
+                <span>Interface Map</span>
+                <span>IPC Header Draft</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="w section" id="overview">
+      <div class="section-head">
+        <div class="section-label">
+          <span class="section-num">01</span>
+          <span class="section-name">Positioning</span>
+        </div>
+        <h2 class="section-title">Burrow는 회로도 도구 이전의 제품입니다.</h2>
+      </div>
+      <div class="burrow-principle-grid">
+        <article class="burrow-principle-card">
+          <span class="burrow-principle-num">A1</span>
+          <h3>Structure Before Detail</h3>
+          <p>부품 선택을 곧바로 고정하기보다, 먼저 시스템 구조와 역할 분리를 분명히 합니다.</p>
+        </article>
+        <article class="burrow-principle-card">
+          <span class="burrow-principle-num">A2</span>
+          <h3>Grounded Design Direction</h3>
+          <p>설계 방향은 카탈로그와 제약을 기반으로 잡고, 설명 가능한 옵션만 남깁니다.</p>
+        </article>
+        <article class="burrow-principle-card">
+          <span class="burrow-principle-num">A3</span>
+          <h3>Review-Ready Outputs</h3>
+          <p>옵션 비교, 블럭도, BOM 방향, 인터페이스 계획을 같은 대화 흐름에서 읽게 만듭니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="w section" id="workflow">
+      <div class="section-head">
+        <div class="section-label">
+          <span class="section-num">02</span>
+          <span class="section-name">Workflow</span>
+        </div>
+        <h2 class="section-title">설계 브리프를 구조화된 제품 출력으로 바꾸는 네 단계.</h2>
+      </div>
+      <div class="burrow-workflow-shell">
+        <div class="burrow-workflow-track" aria-hidden="true"></div>
+        <article class="burrow-step-card">
+          <span class="burrow-step-num">01</span>
+          <h3>Describe Intent</h3>
+          <p>프로젝트 목표, 전원 조건, 주요 IO, 통합 제약을 자연어로 전달합니다.</p>
+        </article>
+        <article class="burrow-step-card">
+          <span class="burrow-step-num">02</span>
+          <h3>Frame Options</h3>
+          <p>비용, 성능, 확장성 관점의 아키텍처 옵션을 동시에 만들고 차이를 설명합니다.</p>
+        </article>
+        <article class="burrow-step-card">
+          <span class="burrow-step-num">03</span>
+          <h3>Review System Shape</h3>
+          <p>블럭도, 인터페이스 연결, 전원 경로를 읽으면서 구조적 누락을 먼저 줄입니다.</p>
+        </article>
+        <article class="burrow-step-card">
+          <span class="burrow-step-num">04</span>
+          <h3>Export Direction</h3>
+          <p>다이어그램, BOM 방향, IPC 헤더 초안 같은 후속 설계 입력물을 바로 가져갑니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="w section" id="deliverables">
+      <div class="section-head">
+        <div class="section-label">
+          <span class="section-num">03</span>
+          <span class="section-name">Outputs</span>
+        </div>
+        <h2 class="section-title">Burrow가 만드는 것은 텍스트가 아니라 설계 대화의 기준선입니다.</h2>
+      </div>
+      <div class="burrow-deliverable-layout">
+        <div class="burrow-deliverable-grid">
+          <article class="burrow-deliverable-card">
+            <span class="burrow-deliverable-label">Artifact</span>
+            <h3>Architecture Options</h3>
+            <p>옵션별로 시스템 역할 분리와 트레이드오프를 명시합니다.</p>
+          </article>
+          <article class="burrow-deliverable-card">
+            <span class="burrow-deliverable-label">Artifact</span>
+            <h3>Block Diagram</h3>
+            <p>전원, 제어, 주변장치 관계를 리뷰 가능한 블럭도로 정리합니다.</p>
+          </article>
+          <article class="burrow-deliverable-card">
+            <span class="burrow-deliverable-label">Artifact</span>
+            <h3>BOM Direction</h3>
+            <p>정확한 구매 리스트 이전 단계에서, 부품군과 역할을 선명하게 만듭니다.</p>
+          </article>
+          <article class="burrow-deliverable-card">
+            <span class="burrow-deliverable-label">Artifact</span>
+            <h3>Interface Draft</h3>
+            <p>소프트웨어 팀과 논의할 IPC, 상태 조회, 제어 포인트를 먼저 구조화합니다.</p>
+          </article>
+        </div>
+        <article class="burrow-output-board">
+          <div class="burrow-output-head">
+            <span class="burrow-output-eyebrow">Review Surface</span>
+            <h3>One page, multiple decisions.</h3>
+          </div>
+          <div class="burrow-output-columns">
+            <div class="burrow-output-column">
+              <span class="burrow-output-label">Architecture</span>
+              <ul>
+                <li>Compute node</li>
+                <li>Power path</li>
+                <li>Control plane</li>
+                <li>Peripheral groups</li>
+              </ul>
+            </div>
+            <div class="burrow-output-column">
+              <span class="burrow-output-label">Tradeoffs</span>
+              <ul>
+                <li>Board complexity</li>
+                <li>Thermal headroom</li>
+                <li>Expansion path</li>
+                <li>Integration effort</li>
+              </ul>
+            </div>
+            <div class="burrow-output-column">
+              <span class="burrow-output-label">Exports</span>
+              <ul>
+                <li>Diagram HTML</li>
+                <li>Mermaid view</li>
+                <li>BOM direction</li>
+                <li>IPC header draft</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="burrow-design-stage" id="design">
+      <div class="burrow-design-shell">
+        <div class="burrow-design-copy">
+          <div class="section-label">
+            <span class="section-num">04</span>
+            <span class="section-name">Design Surface</span>
+          </div>
+          <h2 class="burrow-design-title">Burrow의 디자인은 설명이 아니라 한 화면 전체에서 읽혀야 합니다.</h2>
+          <p class="burrow-design-body">
+            레퍼스랩의 별자리 메타포를 그대로 가져오되, Burrow에서는 시스템 브리프, 옵션 비교, 리뷰 출력물이 하나의 제품 화면으로 이어지게 구성합니다.
+            사용자는 소개 문장을 읽기 전에, 이 화면만 보고도 Burrow가 무엇을 정리해주는지 감을 잡아야 합니다.
+          </p>
+          <div class="burrow-design-tags">
+            <span>Constellation-led grid</span>
+            <span>Review-first layout</span>
+            <span>Artifact framing</span>
+          </div>
+          <div class="burrow-design-notes">
+            <article>
+              <span class="burrow-design-note-label">Signal</span>
+              <h3>Structure over decoration</h3>
+              <p>시각 장치는 제품 설명을 돕는 범위에서만 쓰고, 핵심은 브리프와 출력의 관계를 선명하게 보이게 하는 데 둡니다.</p>
+            </article>
+            <article>
+              <span class="burrow-design-note-label">Intent</span>
+              <h3>One surface, multiple decisions</h3>
+              <p>옵션 비교, 블럭도, 인터페이스, 후속 산출물이 따로 놀지 않도록 한 장의 서피스 안에서 묶어 읽게 만듭니다.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="burrow-design-board" aria-label="Burrow design surface preview">
+          <div class="burrow-design-orbit" aria-hidden="true">
+            <div class="burrow-design-orbit-line burrow-design-orbit-line-a"></div>
+            <div class="burrow-design-orbit-line burrow-design-orbit-line-b"></div>
+            <span class="burrow-design-orbit-dot burrow-design-orbit-dot-a"></span>
+            <span class="burrow-design-orbit-dot burrow-design-orbit-dot-b"></span>
+            <span class="burrow-design-orbit-dot burrow-design-orbit-dot-c"></span>
+            <span class="burrow-design-orbit-dot burrow-design-orbit-dot-d"></span>
+            <span class="burrow-design-orbit-dot burrow-design-orbit-dot-e"></span>
+          </div>
+
+          <article class="burrow-design-panel burrow-design-panel-brief">
+            <span class="burrow-design-panel-label">System Brief</span>
+            <h3>Edge sensor board for compact field deployment</h3>
+            <p>Low-power compute, dual camera path, battery-backed recovery, telemetry-ready interface plan.</p>
+          </article>
+
+          <article class="burrow-design-panel burrow-design-panel-options">
+            <span class="burrow-design-panel-label">Option Matrix</span>
+            <ul>
+              <li><strong>Balanced</strong><span>carrier logic + supervisor + serviceable expansion</span></li>
+              <li><strong>Compact</strong><span>reduced IO path, tighter power budget</span></li>
+              <li><strong>Growth</strong><span>more thermal and interface headroom</span></li>
+            </ul>
+          </article>
+
+          <article class="burrow-design-panel burrow-design-panel-diagram">
+            <span class="burrow-design-panel-label">Review Map</span>
+            <div class="burrow-design-diagram">
+              <span>Compute</span>
+              <span>Power</span>
+              <span>Control</span>
+              <span>Sensors</span>
+              <span>IPC</span>
+              <span>Exports</span>
+            </div>
+          </article>
+
+          <article class="burrow-design-panel burrow-design-panel-outputs">
+            <span class="burrow-design-panel-label">Outputs</span>
+            <div class="burrow-design-output-stack">
+              <span>Architecture options</span>
+              <span>Block diagram</span>
+              <span>BOM direction</span>
+              <span>Interface draft</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="w section section-contact">
+      <div class="contact-shell burrow-contact-shell">
+        <div class="contact-copy">
+          <div class="section-label">
+            <span class="section-num">05</span>
+            <span class="section-name">Contact</span>
+          </div>
+          <h2 class="contact-title">Burrow를 레퍼스랩 서비스로 함께 다듬고 싶다면.</h2>
+          <p class="contact-text">
+            Early access, pilot deployment, product positioning, and hardware architecture workflow discussions.
+            Burrow is being shaped as a service surface for real embedded product teams.
+          </p>
+        </div>
+        <div class="contact-right">
+          <a class="em-link" href="mailto:contact@lepuslab.dev?subject=Burrow%20Early%20Access">contact@lepuslab.dev</a>
+          <p class="loc">Seoul, Republic of Korea</p>
+          <div class="contact-links">
+            <a href="index.html#services" class="bl">Back to Products</a>
+            <a href="brand.html" class="bl">Brand Identity</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="w ft">
+      <span class="ft-logo">LEPUS LAB</span>
+      <span>© 2026 LEPUS LAB. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
