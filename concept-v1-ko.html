@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LEPUS LAB — 개념 V1 (한국어)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Josefin+Sans:wght@100;300;400&family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:          #090b12;
+      --bg-mid:      #0d1020;
+      --text:        #f0f2ff;
+      --muted:       rgba(240,242,255,.55);
+      --soft:        rgba(240,242,255,.32);
+      --accent:      #c6d2ff;
+      --accent-glow: rgba(198,210,255,.12);
+      --line:        rgba(255,255,255,.07);
+      --line-med:    rgba(255,255,255,.13);
+      --w:           min(1160px, 100% - 48px);
+      --nav-h:       58px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html  { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans KR', 'Josefin Sans', system-ui, sans-serif;
+      font-weight: 300;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ──────────────────────────────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      background: rgba(9,11,18,.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-in {
+      width: var(--w);
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 0.32em;
+      color: var(--text);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      font-size: 10.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .lang-switch {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: var(--soft);
+      border: 1px solid var(--line-med);
+      padding: 4px 10px;
+      transition: color .2s, border-color .2s;
+    }
+    .lang-switch:hover { color: var(--accent); border-color: rgba(198,210,255,.3); }
+
+    /* ── Hero ─────────────────────────────── */
+    .hero {
+      min-height: calc(100svh - var(--nav-h));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 45%,
+          rgba(100,120,255,.07), transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      font-size: 10.5px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 44px;
+      opacity: 0;
+      animation: fadeUp .9s .15s forwards;
+    }
+
+    /* 영문 헤드라인 — letter-spacing 임팩트는 라틴 알파벳에서 최대 효과 */
+    .hero-word {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: clamp(48px, 10vw, 148px);
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      line-height: 1.0;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeUp .9s .3s forwards;
+    }
+
+    .hero-phrase {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      font-size: clamp(15px, 2vw, 24px);
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-top: 12px;
+      margin-bottom: 56px;
+      opacity: 0;
+      animation: fadeUp .9s .45s forwards;
+    }
+
+    .hero-vis {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto 52px;
+      opacity: 0;
+      animation: fadeUp 1s .65s forwards;
+    }
+
+    .hero-vis svg { width: 100%; height: auto; overflow: visible; }
+
+    .hero-desc {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      font-size: clamp(13px, 1.3vw, 15px);
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.85;
+      word-break: keep-all;
+      opacity: 0;
+      animation: fadeUp .9s .85s forwards;
+    }
+
+    .hero-scroll {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 36px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--soft);
+      opacity: 0;
+      animation: fadeUp .9s 1s forwards;
+    }
+
+    .scroll-arrow { display: inline-block; animation: bounce 2s ease-in-out infinite; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(5px); }
+    }
+
+    /* ── SVG Constellation ────────────────── */
+    .cst-line {
+      stroke: var(--accent);
+      stroke-opacity: .22;
+      stroke-width: 1;
+      stroke-dasharray: 250;
+      stroke-dashoffset: 250;
+      animation: drawLine 1.2s ease forwards;
+    }
+    @keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+    .cst-node { opacity: 0; animation: starFade .4s ease forwards; }
+    @keyframes starFade { to { opacity: 1; } }
+
+    .cst-bright { fill: var(--accent); filter: drop-shadow(0 0 6px rgba(198,210,255,.7)); }
+    .cst-mid    { fill: var(--accent); filter: drop-shadow(0 0 3px rgba(198,210,255,.45)); }
+    .cst-dim    { fill: rgba(198,210,255,.38); }
+
+    .cst-pulse      { animation: starFade .4s ease forwards, starPulse 3.5s ease-in-out infinite; }
+    .cst-pulse-slow { animation: starFade .4s ease forwards, starPulse 5s ease-in-out infinite; }
+    @keyframes starPulse {
+      0%, 100% { opacity: .65; }
+      50%       { opacity: 1;   }
+    }
+
+    /* ── Statement ────────────────────────── */
+    .statement {
+      padding: 128px 24px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .stmt-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 52px;
+    }
+
+    .stmt-text {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      font-size: clamp(22px, 3.6vw, 52px);
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      max-width: 820px;
+      margin: 0 auto 72px;
+      word-break: keep-all;
+    }
+
+    .stmt-text em { font-style: normal; color: var(--accent); }
+
+    .metrics {
+      display: flex;
+      justify-content: center;
+      border: 1px solid var(--line-med);
+    }
+
+    .metric {
+      padding: 28px 56px;
+      text-align: center;
+      flex: 1;
+      max-width: 240px;
+    }
+    .metric + .metric { border-left: 1px solid var(--line-med); }
+
+    .metric-val {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(24px, 2.8vw, 40px);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .metric-lbl {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+
+    /* ── Section base ─────────────────────── */
+    .section {
+      padding: 120px 24px;
+      border-top: 1px solid var(--line);
+    }
+    .sec-w { width: var(--w); margin: 0 auto; }
+
+    .sec-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 56px;
+    }
+
+    .sec-num  { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; color: var(--accent); }
+    .sec-rule { height: 1px; width: 60px; background: var(--line-med); }
+    .sec-name { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+
+    .sec-title {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      font-size: clamp(22px, 3.2vw, 46px);
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      max-width: 680px;
+      margin-bottom: 72px;
+      word-break: keep-all;
+    }
+
+    /* ── Stack grid ───────────────────────── */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--line-med);
+      gap: 1px;
+      border: 1px solid var(--line-med);
+    }
+
+    .stack-col {
+      background: var(--bg);
+      padding: 40px 32px 44px;
+      transition: background .25s;
+    }
+    .stack-col:hover { background: rgba(13,16,28,.85); }
+
+    .stack-name {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      font-size: 18px;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 28px;
+    }
+
+    .stack-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    .stack-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      padding: 5px 10px;
+      border: 1px solid var(--line-med);
+    }
+
+    /* ── Burrow product ───────────────────── */
+    .product-wrap { padding: 0 24px 120px; }
+
+    .product-card {
+      width: var(--w);
+      margin: 0 auto;
+      background: rgba(198,210,255,.035);
+      border: 1px solid rgba(198,210,255,.14);
+      padding: 72px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .product-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .product-name {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: clamp(52px, 7vw, 96px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 28px;
+    }
+
+    .product-desc {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.85;
+      color: var(--muted);
+      margin-bottom: 40px;
+      max-width: 420px;
+      word-break: keep-all;
+    }
+
+    .product-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      transition: opacity .2s;
+    }
+    .product-cta:hover { opacity: .7; }
+
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(198,210,255,.13);
+    }
+
+    .spec-cell { background: rgba(9,11,18,.88); padding: 28px 32px; }
+
+    .spec-val {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(20px, 2vw, 30px);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .spec-key {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+
+    /* ── Work list ────────────────────────── */
+    .work-list { display: flex; flex-direction: column; }
+
+    .work-row {
+      display: grid;
+      grid-template-columns: 72px 1fr auto auto;
+      gap: 32px;
+      align-items: center;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+      transition: opacity .2s;
+    }
+    .work-row:hover { opacity: .72; }
+
+    .work-idx { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: var(--soft); }
+
+    .work-name {
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      font-size: clamp(13px, 1.5vw, 18px);
+      letter-spacing: 0.04em;
+      color: var(--text);
+    }
+
+    .work-cat {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .work-yr {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--soft);
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* ── Contact ──────────────────────────── */
+    .contact {
+      padding: 160px 24px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .contact-title {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      font-size: clamp(32px, 5vw, 80px);
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      word-break: keep-all;
+      margin-bottom: 48px;
+    }
+
+    .contact-email {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(13px, 1.4vw, 18px);
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      border-bottom: 1px solid rgba(198,210,255,.3);
+      padding-bottom: 2px;
+      transition: opacity .2s;
+    }
+    .contact-email:hover { opacity: .7; }
+
+    /* ── Footer ───────────────────────────── */
+    footer { padding: 28px 24px; border-top: 1px solid var(--line); }
+    .footer-in {
+      width: var(--w);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+    }
+    .footer-copy {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: var(--soft);
+    }
+
+    /* ── Scroll reveal ────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .75s, transform .75s;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ── Responsive ───────────────────────── */
+    @media (max-width: 900px) {
+      .stack-grid   { grid-template-columns: repeat(2, 1fr); }
+      .product-card { grid-template-columns: 1fr; gap: 48px; padding: 48px 36px; }
+      .work-row     { grid-template-columns: 52px 1fr; }
+      .work-cat, .work-yr { display: none; }
+    }
+    @media (max-width: 600px) {
+      .stack-grid { grid-template-columns: 1fr; }
+      .metrics    { flex-direction: column; }
+      .metric + .metric { border-left: none; border-top: 1px solid var(--line-med); }
+      .nav-links li:nth-child(n+3) { display: none; }
+    }
+
+    .concept-banner {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(198,210,255,.1);
+      border: 1px solid rgba(198,210,255,.25);
+      padding: 10px 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      backdrop-filter: blur(12px);
+      z-index: 200;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="concept-banner">CONCEPT V1 · KO · LEPUS LAB 리뉴얼</div>
+
+  <!-- ── Nav ── -->
+  <header class="nav" role="banner">
+    <div class="nav-in">
+      <a class="nav-logo" href="#">LEPUS LAB</a>
+      <div class="nav-right">
+        <nav aria-label="주요 메뉴">
+          <ul class="nav-links">
+            <li><a href="#stack">스택</a></li>
+            <li><a href="#products">제품</a></li>
+            <li><a href="#work">작업</a></li>
+            <li><a href="#contact">문의</a></li>
+          </ul>
+        </nav>
+        <a class="lang-switch" href="concept-v1.html">English</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Hero ── -->
+  <section class="hero" aria-labelledby="hero-h1">
+    <p class="hero-eyebrow">아키텍처 리서치 랩 · 용인시 고기리</p>
+
+    <!-- 영문 헤드라인 유지 — letter-spacing 타이포그래픽 임팩트 -->
+    <h1 id="hero-h1" class="hero-word">Architecture</h1>
+    <p class="hero-phrase">응용 AI 시스템을 위한</p>
+
+    <!-- Lepus 별자리 -->
+    <div class="hero-vis" aria-hidden="true">
+      <svg viewBox="0 0 580 310" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(20, -80) scale(1.1)">
+          <line class="cst-line" x1="80"  y1="170" x2="150" y2="150" style="animation-delay:1.0s"/>
+          <line class="cst-line" x1="150" y1="150" x2="230" y2="170" style="animation-delay:1.3s"/>
+          <line class="cst-line" x1="230" y1="170" x2="310" y2="230" style="animation-delay:1.6s"/>
+          <line class="cst-line" x1="310" y1="230" x2="410" y2="210" style="animation-delay:1.9s"/>
+          <line class="cst-line" x1="380" y1="130" x2="410" y2="210" style="animation-delay:2.2s"/>
+          <line class="cst-line" x1="310" y1="230" x2="330" y2="300" style="animation-delay:2.5s"/>
+          <line class="cst-line" x1="330" y1="300" x2="470" y2="340" style="animation-delay:2.8s"/>
+          <line class="cst-line" x1="180" y1="300" x2="230" y2="340" style="animation-delay:3.1s"/>
+          <line class="cst-line" x1="230" y1="340" x2="330" y2="300" style="animation-delay:3.4s"/>
+
+          <circle class="cst-node cst-dim"                cx="80"  cy="170" r="1.5"  style="animation-delay:2.5s"/>
+          <circle class="cst-node cst-mid cst-pulse"      cx="150" cy="150" r="2.2"  style="animation-delay:2.6s"/>
+          <circle class="cst-node cst-mid cst-pulse"      cx="230" cy="170" r="2.2"  style="animation-delay:2.7s"/>
+          <circle class="cst-node cst-bright cst-pulse"   cx="310" cy="230" r="3.5"  style="animation-delay:2.5s"/>
+          <circle class="cst-node cst-mid cst-pulse-slow" cx="380" cy="130" r="2.5"  style="animation-delay:2.8s"/>
+          <circle class="cst-node cst-dim"                cx="430" cy="150" r="1.5"  style="animation-delay:2.9s"/>
+          <circle class="cst-node cst-dim"                cx="470" cy="110" r="1.2"  style="animation-delay:2.9s"/>
+          <circle class="cst-node cst-mid cst-pulse"      cx="410" cy="210" r="2.2"  style="animation-delay:2.65s"/>
+          <circle class="cst-node cst-mid cst-pulse"      cx="230" cy="340" r="2.2"  style="animation-delay:3.0s"/>
+          <circle class="cst-node cst-mid cst-pulse"      cx="180" cy="300" r="2.2"  style="animation-delay:3.0s"/>
+          <circle class="cst-node cst-mid cst-pulse-slow" cx="330" cy="300" r="2.2"  style="animation-delay:2.9s"/>
+          <circle class="cst-node cst-mid cst-pulse"      cx="470" cy="340" r="2.2"  style="animation-delay:3.1s"/>
+        </g>
+      </svg>
+    </div>
+
+    <p class="hero-desc">엣지부터 클라우드까지, 지능형 애플리케이션을 운반하는 기반 시스템을 설계합니다 — 컴퓨트, 네트워크, 스토리지 전 계층에서.</p>
+    <a class="hero-scroll" href="#statement">스크롤하여 더 보기 <span class="scroll-arrow">↓</span></a>
+  </section>
+
+  <!-- ── 문제 제기 ── -->
+  <section id="statement" class="statement">
+    <p class="stmt-label reveal">문제</p>
+    <h2 class="stmt-text reveal">
+      대부분의 AI 배포는 모델이 아닌 — <em>인프라 레이어</em>에서 실패합니다.
+    </h2>
+    <div class="metrics reveal">
+      <div class="metric">
+        <span class="metric-val">Infra</span>
+        <span class="metric-lbl">데이터센터 &amp; 네트워크 레이어</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val">Edge</span>
+        <span class="metric-lbl">디바이스 &amp; 하드웨어 레이어</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val">Arch</span>
+        <span class="metric-lbl">두 레이어를 잇는 설계</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 스택 ── -->
+  <section id="stack" class="section">
+    <div class="sec-w">
+      <div class="sec-meta reveal">
+        <span class="sec-num">01</span>
+        <div class="sec-rule"></div>
+        <span class="sec-name">The Stack</span>
+      </div>
+      <h2 class="sec-title reveal">대부분의 팀이 멈추는 곳 — 모델 아래 시스템 레이어에서 우리는 시작합니다.</h2>
+      <div class="stack-grid reveal">
+        <div class="stack-col">
+          <h3 class="stack-name">하드웨어<br>&amp; 엣지</h3>
+          <div class="stack-tags">
+            <span class="stack-tag">Jetson Orin</span>
+            <span class="stack-tag">TensorRT</span>
+            <span class="stack-tag">CUDA</span>
+            <span class="stack-tag">MIPI / CSI</span>
+            <span class="stack-tag">Real-Time Vision</span>
+          </div>
+        </div>
+        <div class="stack-col">
+          <h3 class="stack-name">네트워크<br>패브릭</h3>
+          <div class="stack-tags">
+            <span class="stack-tag">BlueField DPU</span>
+            <span class="stack-tag">RDMA / RoCE</span>
+            <span class="stack-tag">DOCA</span>
+            <span class="stack-tag">PCIe / Ethernet</span>
+            <span class="stack-tag">SmartNIC</span>
+          </div>
+        </div>
+        <div class="stack-col">
+          <h3 class="stack-name">컴퓨트<br>&amp; 스토리지</h3>
+          <div class="stack-tags">
+            <span class="stack-tag">NVMe-oF</span>
+            <span class="stack-tag">JBOF</span>
+            <span class="stack-tag">AMD EPYC</span>
+            <span class="stack-tag">NUMA Tuning</span>
+            <span class="stack-tag">Disaggregated</span>
+          </div>
+        </div>
+        <div class="stack-col">
+          <h3 class="stack-name">응용<br>AI</h3>
+          <div class="stack-tags">
+            <span class="stack-tag">On-device AI</span>
+            <span class="stack-tag">Core ML</span>
+            <span class="stack-tag">TensorRT</span>
+            <span class="stack-tag">iOS</span>
+            <span class="stack-tag">API Systems</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 버로우 제품 ── -->
+  <section id="products" class="product-wrap">
+    <div class="product-card reveal">
+      <div>
+        <p class="product-tag">제품 · 2025</p>
+        <h2 class="product-name">Burrow</h2>
+        <p class="product-desc">임베디드 시스템 아키텍처를 하드웨어 설계 레벨로 빠르게 전달하는 LLM 기반 에이전트. 개념에서 구현까지 기술적 정밀도를 잃지 않고 이동해야 하는 팀을 위해 만들어졌습니다.</p>
+        <a class="product-cta" href="burrow.html">버로우 살펴보기 →</a>
+      </div>
+      <div class="spec-grid">
+        <div class="spec-cell">
+          <span class="spec-val">LLM</span>
+          <span class="spec-key">에이전트 기반</span>
+        </div>
+        <div class="spec-cell">
+          <span class="spec-val">Embedded</span>
+          <span class="spec-key">시스템 중심</span>
+        </div>
+        <div class="spec-cell">
+          <span class="spec-val">Arch</span>
+          <span class="spec-key">→ HW 핸드오프</span>
+        </div>
+        <div class="spec-cell">
+          <span class="spec-val">Rapid</span>
+          <span class="spec-key">빠른 반복 주기</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 선별된 작업 ── -->
+  <section id="work" class="section">
+    <div class="sec-w">
+      <div class="sec-meta reveal">
+        <span class="sec-num">02</span>
+        <div class="sec-rule"></div>
+        <span class="sec-name">Selected Work</span>
+      </div>
+      <h2 class="sec-title reveal">다양한 레이어. 다양한 문제.</h2>
+      <div class="work-list reveal">
+        <div class="work-row">
+          <span class="work-idx">001</span>
+          <span class="work-name">Real-Time Vision Systems</span>
+          <span class="work-cat">임베디드 · 엣지 AI</span>
+          <span class="work-yr">2025–26</span>
+        </div>
+        <div class="work-row">
+          <span class="work-idx">002</span>
+          <span class="work-name">AI Datacenter Network Architecture</span>
+          <span class="work-cat">네트워크 · 인프라</span>
+          <span class="work-yr">2024–25</span>
+        </div>
+        <div class="work-row">
+          <span class="work-idx">003</span>
+          <span class="work-name">SmartNIC Development</span>
+          <span class="work-cat">하드웨어 · 컴퓨트</span>
+          <span class="work-yr">2024</span>
+        </div>
+        <div class="work-row">
+          <span class="work-idx">004</span>
+          <span class="work-name">On-Device AI Products</span>
+          <span class="work-cat">응용 AI · iOS</span>
+          <span class="work-yr">2023–25</span>
+        </div>
+        <div class="work-row">
+          <span class="work-idx">005</span>
+          <span class="work-name">Storage Performance Modeling</span>
+          <span class="work-cat">스토리지 · 최적화</span>
+          <span class="work-yr">2024</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 문의 ── -->
+  <section id="contact" class="contact">
+    <h2 class="contact-title reveal">함께<br>만들어 갑시다</h2>
+    <a class="contact-email reveal" href="mailto:hello@lepuslab.dev">hello@lepuslab.dev</a>
+  </section>
+
+  <!-- ── 푸터 ── -->
+  <footer>
+    <div class="footer-in">
+      <span class="footer-copy">© 2025 LEPUS LAB</span>
+      <span class="footer-copy">서울, 대한민국</span>
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
