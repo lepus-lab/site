@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LEPUS LAB — Architecture for Applied AI Systems</title>
+  <title>LEPUS LAB — AI 시스템을 위한 아키텍처 연구소</title>
 
-  <link rel="canonical" href="https://lepuslab.dev">
+  <link rel="canonical" href="https://lepuslab.dev/index-ko">
   <meta name="description" content="하드웨어 아키텍처에서 AI 시스템까지, 기술의 전 계층을 탐구하고 설계하는 기술 연구소.">
 
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://lepuslab.dev">
-  <meta property="og:title" content="LEPUS LAB — Architecture for Applied AI Systems">
+  <meta property="og:url" content="https://lepuslab.dev/index-ko">
+  <meta property="og:title" content="LEPUS LAB — AI 시스템을 위한 아키텍처 연구소">
   <meta property="og:description" content="하드웨어 아키텍처에서 AI 시스템까지, 기술의 전 계층을 탐구하고 설계하는 기술 연구소.">
   <meta property="og:image" content="https://lepuslab.dev/og-image.svg">
 
@@ -188,6 +188,7 @@
       line-height: 1.75;
       opacity: 0;
       animation: fadeUp .9s .85s forwards;
+      word-break: keep-all;
     }
 
     .hero-scroll {
@@ -261,6 +262,7 @@
       color: var(--text);
       max-width: 860px;
       margin: 0 auto 72px;
+      word-break: keep-all;
     }
 
     .stmt-text em { font-style: normal; color: var(--accent); }
@@ -319,6 +321,7 @@
       color: var(--text);
       max-width: 680px;
       margin-bottom: 72px;
+      word-break: keep-all;
     }
 
     /* ── Stack grid ───────────────────────── */
@@ -397,6 +400,7 @@
       color: var(--muted);
       margin-bottom: 40px;
       max-width: 420px;
+      word-break: keep-all;
     }
 
     .product-cta {
@@ -484,7 +488,7 @@
     }
     .contact-email:hover { opacity: .7; }
 
-    /* ── Footer ───────────────────────────── */
+    /* ── Footer ── */
     footer { padding: 28px 24px; border-top: 1px solid var(--line); }
     .footer-in {
       width: var(--w);
@@ -631,7 +635,7 @@
             <li><a href="#contact">Contact</a></li>
           </ul>
         </nav>
-        <a class="lang-switch" href="index-ko.html">한국어</a>
+        <a class="lang-switch" href="index.html">English</a>
       </div>
     </div>
   </header>
@@ -640,7 +644,7 @@
 
     <!-- ── Hero ── -->
     <section class="hero" aria-labelledby="hero-h1">
-      <p class="hero-eyebrow">Architecture Research Lab · Yongin-si Gogi-ri</p>
+      <p class="hero-eyebrow">Architecture Research Lab · 대한민국 용인시</p>
 
       <h1 id="hero-h1" class="hero-word">Architecture</h1>
       <p class="hero-phrase">for Applied AI Systems</p>
@@ -674,28 +678,28 @@
         </svg>
       </div>
 
-      <p class="hero-desc">We design the underlying systems that carry intelligent applications from edge to cloud — across compute, network, and storage.</p>
-      <a class="hero-scroll" href="#statement">Scroll to explore <span class="scroll-arrow">↓</span></a>
+      <p class="hero-desc">엣지에서 클라우드까지, 지능형 애플리케이션을 지탱하는 컴퓨팅·네트워크·스토리지 전반의 시스템 구조를 설계합니다.</p>
+      <a class="hero-scroll" href="#statement">스크롤하여 탐색하기 <span class="scroll-arrow">↓</span></a>
     </section>
 
     <!-- ── Problem statement ── -->
     <section id="statement" class="statement">
-      <p class="stmt-label reveal">The challenge</p>
+      <p class="stmt-label reveal">우리의 도전</p>
       <h2 class="stmt-text reveal">
-        Most AI deployments fail at the <em>architecture layer</em> — not the model.
+        대부분의 AI 도입은 모델이 아닌 <em>아키텍처 레이어</em>에서 실패합니다.
       </h2>
       <div class="metrics reveal">
         <div class="metric">
-          <span class="metric-val">Infra</span>
-          <span class="metric-lbl">Datacenter &amp; network layer</span>
+          <span class="metric-val">인프라</span>
+          <span class="metric-lbl">데이터센터 및 네트워크 레이어</span>
         </div>
         <div class="metric">
-          <span class="metric-val">Edge</span>
-          <span class="metric-lbl">Device &amp; hardware layer</span>
+          <span class="metric-val">엣지</span>
+          <span class="metric-lbl">디바이스 및 하드웨어 레이어</span>
         </div>
         <div class="metric">
-          <span class="metric-val">Arch</span>
-          <span class="metric-lbl">The design between both</span>
+          <span class="metric-val">설계</span>
+          <span class="metric-lbl">두 지점 사이의 시스템 아키텍처</span>
         </div>
       </div>
     </section>
@@ -708,9 +712,9 @@
           <div class="sec-rule"></div>
           <span class="sec-name">The Stack</span>
         </div>
-        <h2 class="sec-title reveal">We build where most teams stop — at the system layer beneath the model.</h2>
+        <h2 class="sec-title reveal">우리는 대부분의 팀이 멈추는 곳, 모델 아래의 시스템 레이어를 구축합니다.</h2>
 
-        <p class="stack-intro reveal">From data generation to processing and storage, we explore architectures spanning from edge to cloud, more efficient infrastructure, and scalable directions for CPU-based inference.</p>
+        <p class="stack-intro reveal">데이터가 생성되고 처리되며 전달되어 저장되기까지, AI 시스템의 엣지부터 클라우드까지의 아키텍처와 더 효율적인 클라우드 인프라, 그리고 CPU 기반 인퍼런스까지 확장 가능한 방향을 함께 고민합니다.</p>
 
         <div class="keyword-strip reveal">
           <span class="keyword-pill">Embedded Systems</span>
@@ -723,7 +727,7 @@
         <!-- Layer overview -->
         <div class="stack-grid reveal">
           <div class="stack-col">
-            <h3 class="stack-name">Hardware<br>&amp; Edge</h3>
+            <h3 class="stack-name">하드웨어<br>&amp; 엣지</h3>
             <div class="stack-tags">
               <span class="stack-tag">Jetson Orin</span>
               <span class="stack-tag">TensorRT</span>
@@ -733,7 +737,7 @@
             </div>
           </div>
           <div class="stack-col">
-            <h3 class="stack-name">Network<br>Fabric</h3>
+            <h3 class="stack-name">네트워크<br>패브릭</h3>
             <div class="stack-tags">
               <span class="stack-tag">BlueField DPU</span>
               <span class="stack-tag">RDMA / RoCE</span>
@@ -743,7 +747,7 @@
             </div>
           </div>
           <div class="stack-col">
-            <h3 class="stack-name">Compute<br>&amp; Storage</h3>
+            <h3 class="stack-name">컴퓨팅<br>&amp; 스토리지</h3>
             <div class="stack-tags">
               <span class="stack-tag">NVMe-oF</span>
               <span class="stack-tag">JBOF</span>
@@ -753,7 +757,7 @@
             </div>
           </div>
           <div class="stack-col">
-            <h3 class="stack-name">Applied<br>AI</h3>
+            <h3 class="stack-name">AI 응용<br>&amp; 제품</h3>
             <div class="stack-tags">
               <span class="stack-tag">On-device AI</span>
               <span class="stack-tag">Core ML</span>
@@ -769,7 +773,7 @@
           <div class="cap-card">
             <span class="cap-idx">A1</span>
             <h3 class="cap-h3">Embedded &amp; Edge Systems</h3>
-            <p class="cap-p">Design and optimize input paths and processing structures for AI systems operating in edge environments, from sensor input to real-time inference.</p>
+            <p class="cap-p">센서 입력부터 실시간 추론까지, 엣지 환경에서 동작하는 AI 시스템의 입력 경로와 처리 구조를 설계하고 최적화합니다.</p>
             <div class="cap-chips">
               <span class="cap-chip">Jetson Orin</span>
               <span class="cap-chip">TensorRT</span>
@@ -780,7 +784,7 @@
           <div class="cap-card">
             <span class="cap-idx">A2</span>
             <h3 class="cap-h3">Compute &amp; Network Infrastructure</h3>
-            <p class="cap-p">Design network and system architectures so that data generated at the edge flows seamlessly to cloud compute and GPU resources.</p>
+            <p class="cap-p">엣지에서 생성된 데이터가 클라우드 컴퓨트와 GPU 자원으로 자연스럽게 이어지도록, 네트워크와 시스템 구조를 설계합니다.</p>
             <div class="cap-chips">
               <span class="cap-chip">BlueField DPU</span>
               <span class="cap-chip">RDMA / RoCE</span>
@@ -791,7 +795,7 @@
           <div class="cap-card">
             <span class="cap-idx">A3</span>
             <h3 class="cap-h3">Storage Architecture</h3>
-            <p class="cap-p">Analyze bottlenecks between compute and storage based on AI workload flows and organize them into operational architectures.</p>
+            <p class="cap-p">AI 워크로드의 흐름을 기준으로, 컴퓨트와 스토리지 사이의 구조와 병목을 분석하고 운영 가능한 아키텍처로 정리합니다.</p>
             <div class="cap-chips">
               <span class="cap-chip">NVMe-oF</span>
               <span class="cap-chip">JBOF</span>
@@ -802,7 +806,7 @@
           <div class="cap-card">
             <span class="cap-idx">A4</span>
             <h3 class="cap-h3">Infrastructure Optimization</h3>
-            <p class="cap-p">Based on experience in SmartNIC development and AMD EPYC performance engineering, we design infrastructure advancement, system tuning, and scalable CPU-based inference environments.</p>
+            <p class="cap-p">SmartNIC 개발과 AMD EPYC 기반 성능 엔지니어링 경험을 바탕으로, 인프라 고도화와 시스템 튜닝, 그리고 최근 확대되는 CPU 기반 인퍼런스 환경까지 현실적인 방향으로 설계합니다.</p>
             <div class="cap-chips">
               <span class="cap-chip">SmartNIC</span>
               <span class="cap-chip">AMD EPYC</span>
@@ -813,7 +817,7 @@
           <div class="cap-card cap-card-wide">
             <span class="cap-idx">A5</span>
             <h3 class="cap-h3">Applied AI Products</h3>
-            <p class="cap-p">Design AI structures that lead to actual products and user experiences, from on-device inference to service-level systems.</p>
+            <p class="cap-p">온디바이스 추론부터 서비스 레벨 시스템까지, 실제 제품과 사용자 경험으로 이어지는 AI 구조를 설계합니다.</p>
             <div class="cap-chips">
               <span class="cap-chip">On-device AI</span>
               <span class="cap-chip">Core ML</span>
@@ -829,27 +833,27 @@
     <section id="products" class="product-wrap">
       <div class="product-card reveal">
         <div>
-          <p class="product-tag">Project · 2026</p>
+          <p class="product-tag">프로젝트 · 2026</p>
           <h2 class="product-name">Burrow</h2>
-          <p class="product-desc">An LLM-based agent that bridges embedded system architecture to hardware design level — rapidly. Built for teams who need to move from concept to implementation without losing technical fidelity.</p>
-          <span class="product-coming">Coming Soon</span>
+          <p class="product-desc">임베디드 시스템 아키텍처와 하드웨어 설계 레벨을 연결하는 LLM 기반 에이전트. 기술적 신뢰도를 유지하며 컨셉에서 구현까지 빠르게 이동하고자 하는 팀을 위해 구축되었습니다.</p>
+          <span class="product-coming">출시 예정</span>
         </div>
         <div class="spec-grid">
           <div class="spec-cell">
             <span class="spec-val">LLM</span>
-            <span class="spec-key">Agent-powered</span>
+            <span class="spec-key">에이전트 기반</span>
           </div>
           <div class="spec-cell">
-            <span class="spec-val">Embedded</span>
-            <span class="spec-key">Systems focus</span>
+            <span class="spec-val">임베디드</span>
+            <span class="spec-key">시스템 중심</span>
           </div>
           <div class="spec-cell">
-            <span class="spec-val">Arch</span>
-            <span class="spec-key">→ HW handoff</span>
+            <span class="spec-val">설계</span>
+            <span class="spec-key">하드웨어 핸드오프</span>
           </div>
           <div class="spec-cell">
-            <span class="spec-val">Rapid</span>
-            <span class="spec-key">Iteration cycle</span>
+            <span class="spec-val">반복</span>
+            <span class="spec-key">빠른 사이클</span>
           </div>
         </div>
       </div>
@@ -863,7 +867,7 @@
           <div class="sec-rule"></div>
           <span class="sec-name">Selected Work</span>
         </div>
-        <h2 class="sec-title reveal">Different layers. Different problems.</h2>
+        <h2 class="sec-title reveal">다양한 계층, 다양한 문제들.</h2>
         <div class="work-list reveal">
           <div class="work-row">
             <span class="work-idx">001</span>
@@ -901,7 +905,7 @@
 
     <!-- ── Contact ── -->
     <section id="contact" class="contact">
-      <h2 class="contact-title reveal">Let's build<br>what's next</h2>
+      <h2 class="contact-title reveal">다음 세대를<br>함께 구축합시다</h2>
       <a class="contact-email reveal" href="mailto:contact@lepuslab.dev">contact@lepuslab.dev</a>
     </section>
 
@@ -911,7 +915,7 @@
   <footer>
     <div class="footer-in">
       <span class="footer-copy">© 2026 LEPUS LAB</span>
-      <span class="footer-copy">Yongin-si, Korea</span>
+      <span class="footer-copy">대한민국 용인시</span>
     </div>
   </footer>
 
