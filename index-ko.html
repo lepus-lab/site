@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LEPUS LAB — AI 시스템을 위한 아키텍처 연구소</title>
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="ko" href="index-ko.html">
+  <link rel="alternate" hreflang="x-default" href="index.html">
+  <script src="lang-redirect.js"></script>
 
   <link rel="canonical" href="https://lepuslab.dev/index-ko">
   <meta name="description" content="하드웨어 아키텍처에서 AI 시스템까지, 기술의 전 계층을 탐구하고 설계하는 기술 연구소.">
@@ -274,7 +278,7 @@
     }
 
     .metric {
-      padding: 28px 56px;
+      padding: 28px 32px;
       text-align: center;
       flex: 1;
       max-width: 240px;
@@ -289,6 +293,7 @@
       letter-spacing: 0.06em;
       color: var(--accent);
       margin-bottom: 8px;
+      white-space: nowrap;
     }
     .metric-lbl {
       font-family: 'DM Mono', monospace;
@@ -632,6 +637,7 @@
             <li><a href="#products">Products</a></li>
             <li><a href="datacenter.html">Datacenter</a></li>
             <li><a href="career.html">Career</a></li>
+            <li><a href="vela.html">Vela</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </nav>
@@ -644,7 +650,7 @@
 
     <!-- ── Hero ── -->
     <section class="hero" aria-labelledby="hero-h1">
-      <p class="hero-eyebrow">Architecture Research Lab · 대한민국 용인시</p>
+      <p class="hero-eyebrow">Architecture Research Lab · 용인시 고기로</p>
 
       <h1 id="hero-h1" class="hero-word">Architecture</h1>
       <p class="hero-phrase">for Applied AI Systems</p>
@@ -678,7 +684,7 @@
         </svg>
       </div>
 
-      <p class="hero-desc">엣지에서 클라우드까지, 지능형 애플리케이션을 지탱하는 컴퓨팅·네트워크·스토리지 전반의 시스템 구조를 설계합니다.</p>
+      <p class="hero-desc">엣지 컴퓨팅, 비전 시스템, 클라우드 시스템의 효율적인 리소스 밸런싱을 위한 구조를 고민 설계합니다.</p>
       <a class="hero-scroll" href="#statement">스크롤하여 탐색하기 <span class="scroll-arrow">↓</span></a>
     </section>
 
@@ -690,16 +696,16 @@
       </h2>
       <div class="metrics reveal">
         <div class="metric">
-          <span class="metric-val">인프라</span>
-          <span class="metric-lbl">데이터센터 및 네트워크 레이어</span>
-        </div>
-        <div class="metric">
           <span class="metric-val">엣지</span>
-          <span class="metric-lbl">디바이스 및 하드웨어 레이어</span>
+          <span class="metric-lbl">엣지 컴퓨팅 · 비전 시스템</span>
         </div>
         <div class="metric">
           <span class="metric-val">설계</span>
-          <span class="metric-lbl">두 지점 사이의 시스템 아키텍처</span>
+          <span class="metric-lbl">엣지와 클라우드를 잇는 시스템 아키텍처</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val">클라우드</span>
+          <span class="metric-lbl">클라우드 컴퓨팅 · 스토리지</span>
         </div>
       </div>
     </section>
@@ -712,7 +718,7 @@
           <div class="sec-rule"></div>
           <span class="sec-name">The Stack</span>
         </div>
-        <h2 class="sec-title reveal">우리는 대부분의 팀이 멈추는 곳, 모델 아래의 시스템 레이어를 구축합니다.</h2>
+        <h2 class="sec-title reveal">우리는 대부분의 팀이 멈추는 곳, 모델 아래의 시스템 레이어를 고민하고 설계합니다.</h2>
 
         <p class="stack-intro reveal">데이터가 생성되고 처리되며 전달되어 저장되기까지, AI 시스템의 엣지부터 클라우드까지의 아키텍처와 더 효율적인 클라우드 인프라, 그리고 CPU 기반 인퍼런스까지 확장 가능한 방향을 함께 고민합니다.</p>
 
