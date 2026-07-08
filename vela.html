@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vela — a LepusLab project</title>
+<title>Vela — LepusLab Edge Vision Platform</title>
+<meta name="description" content="Vela is LepusLab's edge vision platform: a native C++/CUDA runtime that uses Jetson vision IP and ML acceleration to run multi-model computer vision on the device.">
 <link rel="alternate" hreflang="en" href="vela.html">
 <link rel="alternate" hreflang="ko" href="vela-ko.html">
 <link rel="alternate" hreflang="x-default" href="vela.html">
@@ -56,14 +57,16 @@ body{background:var(--midnight);color:var(--sailcloth);font-family:var(--ui);lin
 .hero-mark{width:96px;height:96px;position:relative;z-index:1;filter:drop-shadow(0 10px 32px rgba(95,211,230,.25))}
 .wordmark{font-family:var(--display);font-weight:300;font-size:clamp(2.9rem,9.2vw,5.3rem);letter-spacing:.05em;line-height:1;margin:22px 0 0 .05em;position:relative;z-index:1}
 .tagline{font-family:var(--display);font-weight:400;font-size:clamp(1.1rem,2.7vw,1.5rem);letter-spacing:.01em;margin-top:20px;z-index:1;position:relative}
-.mission{color:var(--slate);max-width:56ch;margin:16px auto 0;font-size:1.06rem;z-index:1;position:relative}
+.mission{color:var(--slate);max-width:60ch;margin:16px auto 0;font-size:1.06rem;z-index:1;position:relative}
+.herostack{margin-top:26px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.herostack span{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:var(--slate);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
 
 /* ---- sections ---- */
 section.block{padding:78px 0;border-top:1px solid var(--line)}
 .kicker{display:flex;align-items:baseline;gap:14px;margin-bottom:26px}
 .kicker .no{font-family:var(--mono);font-size:.78rem;color:var(--slate-dim);letter-spacing:.1em}
 .kicker h2{font-family:var(--display);font-weight:500;font-size:1.45rem;letter-spacing:-.01em}
-.lede{font-size:1.12rem;max-width:62ch}
+.lede{font-size:1.12rem;max-width:64ch}
 .lede.big{font-size:1.3rem;line-height:1.5}
 .lede b{color:var(--sailcloth)}
 
@@ -84,26 +87,46 @@ section.block{padding:78px 0;border-top:1px solid var(--line)}
 .pillar.hot{background:linear-gradient(100deg,#16294f,#1a2f57)}
 .pillar.hot .pn{color:var(--golden)}
 
-/* audience */
-.aud{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
-.aud span{font-family:var(--ui);font-weight:600;font-size:.86rem;padding:8px 15px;border-radius:999px;background:var(--indigo);box-shadow:inset 0 0 0 1px var(--line)}
+/* pipeline diagram */
+.pipeline{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.stage{flex:1 1 132px;min-width:132px;border:1px solid var(--line);border-radius:14px;padding:16px 14px;background:var(--indigo)}
+.stage .sn{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;color:var(--regor);text-transform:uppercase}
+.stage h4{font-family:var(--display);font-weight:500;font-size:.96rem;margin:8px 0 4px;line-height:1.2}
+.stage p{color:var(--slate);font-size:.78rem;line-height:1.5}
+.stage.key{background:var(--sail-grad);border-color:transparent}
+.stage.key .sn{color:#06202f}
+.stage.key h4{color:#04121f}
+.stage.key p{color:#0a2536}
+.pipe-note{margin-top:16px;font-size:.9rem}
+
+/* runtimes */
+.runtimes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
+.rt{border:1px solid var(--line);border-radius:16px;padding:20px;background:var(--indigo)}
+.rt .rn{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--regor);text-transform:uppercase;margin-bottom:10px}
+.rt h4{font-family:var(--display);font-weight:500;font-size:1rem;margin-bottom:6px}
+.rt p{color:var(--slate);font-size:.86rem}
+
+/* use case */
+.usecase{margin-top:26px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:
+  radial-gradient(120% 140% at 100% 0,rgba(95,211,230,.12),transparent 60%),var(--indigo)}
+.usecase .uc-head{padding:26px 26px 20px;border-bottom:1px solid var(--line)}
+.usecase .uc-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--regor)}
+.usecase .uc-head h3{font-family:var(--display);font-weight:500;font-size:1.3rem;margin:10px 0 8px}
+.usecase .uc-head p{color:var(--slate);font-size:.98rem;max-width:60ch}
+.uc-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.uc-cell{padding:22px 26px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.uc-cell:nth-child(2n){border-right:0}
+.uc-cell h4{font-family:var(--display);font-weight:500;font-size:1rem;margin-bottom:5px}
+.uc-cell p{color:var(--slate);font-size:.88rem}
+.aud{display:flex;flex-wrap:wrap;gap:10px;padding:20px 26px}
+.aud span{font-family:var(--ui);font-weight:600;font-size:.82rem;padding:7px 14px;border-radius:999px;background:rgba(10,23,48,.5);box-shadow:inset 0 0 0 1px var(--line)}
 
 /* proof */
-.proof{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+.proof{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:30px}
 .stat{border:1px solid var(--line);border-radius:16px;padding:22px;background:var(--indigo)}
 .stat .big{font-family:var(--display);font-weight:300;font-size:2rem;letter-spacing:.02em;color:var(--regor)}
 .stat .lbl{color:var(--slate);font-size:.86rem;margin-top:4px}
 .stat .fn{color:var(--slate-dim);font-size:.72rem;margin-top:8px}
-
-/* voice */
-.voice{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
-.vrule{border:1px solid var(--line);border-radius:14px;padding:18px 20px;background:var(--indigo)}
-.vrule b{font-family:var(--display);font-weight:500}
-.vrule p{color:var(--slate);font-size:.92rem;margin-top:4px}
-.taglines{margin-top:30px;display:flex;flex-direction:column;gap:12px}
-.tagrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.tagrow .t{font-family:var(--display);font-weight:400;font-size:1.2rem}
-.tagrow .role{font-family:var(--mono);font-size:.7rem;color:var(--slate-dim);letter-spacing:.1em;text-transform:uppercase}
 
 /* footer */
 footer{padding:60px 0 72px;border-top:1px solid var(--line);text-align:center}
@@ -118,9 +141,9 @@ footer{padding:60px 0 72px;border-top:1px solid var(--line);text-align:center}
 .reveal.visible{opacity:1;transform:none}
 
 @media(max-width:720px){
-  .family,.voice{grid-template-columns:1fr}
-  .proof{grid-template-columns:1fr}
+  .family,.runtimes,.proof,.uc-grid{grid-template-columns:1fr}
   .pillar{grid-template-columns:1fr;gap:8px}
+  .uc-cell{border-right:0}
 }
 @media(prefers-reduced-motion:reduce){.reveal{transition:none;opacity:1;transform:none}}
 </style>
@@ -146,7 +169,7 @@ footer{padding:60px 0 72px;border-top:1px solid var(--line);text-align:center}
 <!-- ===== hero ===== -->
 <header class="hero">
   <div class="starfield"></div>
-  <div class="eyebrow" style="position:relative;z-index:1">LepusLab · Constellation Family</div>
+  <div class="eyebrow" style="position:relative;z-index:1">LepusLab · Edge Vision Platform</div>
   <svg class="hero-mark" viewBox="0 0 120 120" style="margin-top:18px" aria-label="Vela">
     <defs><linearGradient id="g" x1="42" y1="20" x2="96" y2="104" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6FDAEC"/><stop offset=".55" stop-color="#34A8C6"/><stop offset="1" stop-color="#1E6E8C"/></linearGradient></defs>
     <path d="M56 26 C 92 40, 104 74, 82 104" fill="none" stroke="#7FE3F1" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
@@ -156,97 +179,109 @@ footer{padding:60px 0 72px;border-top:1px solid var(--line);text-align:center}
     <path d="M42 5 L44 13 L52 16 L44 19 L42 27 L40 19 L32 16 L40 13 Z" fill="#EAF8FC"/>
   </svg>
   <div class="wordmark">Vela</div>
-  <div class="tagline">Catch the whole field.</div>
-  <p class="mission">A panoramic camera that records the entire pitch, follows the play on its own, and renders match-quality footage overnight — on the device you already own.</p>
+  <div class="tagline">Vision that runs where it happens.</div>
+  <p class="mission">Vela is LepusLab's edge vision platform — a native C++/CUDA runtime for real-time, multi-model computer vision that runs entirely on the device. Capture, stitch, inference, and decision all happen on the edge. No cloud, no upload, no per-frame bill.</p>
+  <div class="herostack">
+    <span>Jetson Orin</span><span>C++ / CUDA</span><span>TensorRT</span><span>Zero-copy NVMM</span><span>Multi-model</span>
+  </div>
 </header>
 
-<!-- ===== 01 the problem ===== -->
+<!-- ===== 01 what Vela is ===== -->
 <section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">01</span><h2>The footage shouldn't be hostage</h2></div>
-  <p class="lede big">The footage belongs to whoever filmed it. So Vela never locks your match in someone else's cloud, and never ties you to a subscription. <b>The night the match ends, the finished cut comes together in your hands.</b></p>
+  <div class="kicker"><span class="no">01</span><h2>The whole pipeline, at the edge</h2></div>
+  <p class="lede big">Most vision AI ships pixels to the cloud and waits. Vela keeps the entire pipeline — dual-camera capture, panorama stitching, multi-model inference, and the decision it drives — <b>on the device itself.</b> It is designed to use Jetson's vision IP and ML accelerators fully, without a server in the loop.</p>
 </div></section>
 
-<!-- ===== 02 the difference ===== -->
+<!-- ===== 02 platform pillars ===== -->
 <section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">02</span><h2>What makes it Vela</h2></div>
+  <div class="kicker"><span class="no">02</span><h2>What the platform gives you</h2></div>
   <div class="pillars">
     <div class="pillar">
       <div class="pn">I.</div>
-      <div><h3>It sees the whole field</h3><p>Two 4K lenses become one panorama. Within it, an AI virtual camera tracks the play on its own, so there's nobody behind the camera and nothing out of frame.</p></div>
+      <div><h3>One pipeline, three runtimes</h3><p>The same tuned vision pipeline runs unchanged on PyTorch in the lab, on CoreML/ANE on an iPhone, and on CUDA/TensorRT on the device. Write the logic once; deploy it to whatever silicon the use case needs.</p></div>
     </div>
     <div class="pillar hot">
       <div class="pn">II.</div>
-      <div><h3>It renders at home, overnight</h3><p>No render farm, no cloud bill. Plug Vela in after the match and it processes the high-quality cut on its own silicon while it charges. The match-quality footage is waiting by morning.</p></div>
+      <div><h3>A zero-copy native engine</h3><p>The production engine is C++/CUDA end to end. Frames stay in GPU memory (NVMM / DMABUF) from sensor to encoder — no copies, no GIL, no Python in the hot path. That headroom is what lets one Orin stitch 4K and run several models at once.</p></div>
     </div>
     <div class="pillar">
       <div class="pn">III.</div>
-      <div><h3>It's yours the rest of the week</h3><p>A camera plays one match a week and sleeps the other six days. Vela doesn't. Between games it's a quiet edge-AI node in your home — a panoramic pair of eyes and real compute you actually own.</p></div>
+      <div><h3>Many models, one budget</h3><p>YOLO-family models run in a mixed FP16 and INT8 pipeline, with tiled inference and lightweight post-processing staged under a fixed frame budget. The scheduler is tuned to extract as much useful ML throughput as Jetson can provide.</p></div>
+    </div>
+    <div class="pillar">
+      <div class="pn">IV.</div>
+      <div><h3>Local-first by design</h3><p>Everything works with no internet. The device serves its own stream and control over BLE and Wi-Fi Direct, so a remote field with no signal is just another deployment — and there is no cloud invoice per hour of footage.</p></div>
     </div>
   </div>
-  <p class="muted" style="margin-top:18px;font-size:.92rem">The subscription is small on purpose: it funds better stitching and analysis models and keeps your device in tune. The heavy lifting stays on hardware you've already paid for.</p>
 </div></section>
 
-<!-- ===== 03 proof ===== -->
+<!-- ===== 03 the pipeline ===== -->
 <section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">03</span><h2>The shape of the promise</h2></div>
+  <div class="kicker"><span class="no">03</span><h2>The pipeline, stage by stage</h2></div>
+  <p class="lede muted">From two lenses to a local stream, every stage runs on the device. Only a small downscaled frame ever leaves GPU memory — the model reads it to decide, and the full-resolution path stays zero-copy.</p>
+  <div class="pipeline">
+    <div class="stage"><div class="sn">01 · Capture</div><h4>Dual 4K</h4><p>Two MIPI sensors, hardware-synced via NVIDIA Argus.</p></div>
+    <div class="stage"><div class="sn">02 · Warp</div><h4>Undistort + stitch</h4><p>CUDA dewarp and panorama stitch — one wide frame, without CPU round trips.</p></div>
+    <div class="stage key"><div class="sn">03 · Inference</div><h4>Mixed pipeline</h4><p>YOLO FP16 and INT8 models, tiled inference, and lightweight post-processing share one frame budget.</p></div>
+    <div class="stage"><div class="sn">04 · Compose</div><h4>ROI stream</h4><p>Analysis output shapes the real-time region-of-interest stream on the device.</p></div>
+    <div class="stage"><div class="sn">05 · Encode</div><h4>NVENC H.264</h4><p>Hardware-encoded on-device, patent-clean codec path.</p></div>
+    <div class="stage"><div class="sn">06 · Serve</div><h4>Local stream</h4><p>RTSP + HLS over Wi-Fi Direct, straight to the phone in your hand.</p></div>
+  </div>
+  <p class="muted pipe-note">Built and running in C++/CUDA. Detection and stream composition moved into the native engine to reduce copy and GIL overhead, allowing tiled inference and post-processing to stay inside a 30 fps frame budget.</p>
+</div></section>
+
+<!-- ===== 04 one pipeline three runtimes ===== -->
+<section class="block"><div class="wrap reveal">
+  <div class="kicker"><span class="no">04</span><h2>Portable across the edge</h2></div>
+  <p class="lede muted">The vision logic is the source of truth. It gets a detection backend and a video path per runtime — the tracking, scheduling, and event math stay identical everywhere.</p>
+  <div class="runtimes">
+    <div class="rt"><div class="rn">Lab bench</div><h4>PyTorch · MPS</h4><p>Tune and validate the pipeline live, measure recall and latency. The reference the other two derive from.</p></div>
+    <div class="rt"><div class="rn">On-device</div><h4>CoreML · ANE</h4><p>The same logic is validated on mobile neural hardware, keeping the phone-side and edge-device analysis paths aligned.</p></div>
+    <div class="rt"><div class="rn">Production</div><h4>CUDA · TensorRT</h4><p>4K input, stitching, multi-model inference, and NVENC output run on Jetson Orin.</p></div>
+  </div>
+</div></section>
+
+<!-- ===== 05 first use case: sports ===== -->
+<section class="block"><div class="wrap reveal">
+  <div class="kicker"><span class="no">05</span><h2>Initial focus: sports venues</h2></div>
+  <p class="lede muted">Vela starts in sports because the environment is demanding: wide fields of view, long recording windows, low latency, and unreliable networks. The focus is not a single match feature, but a stable edge vision pipeline that can be operated on site.</p>
+  <div class="usecase">
+    <div class="uc-head">
+      <div class="uc-tag">Application · Sports</div>
+      <h3>Field-ready edge vision hardware</h3>
+      <p>Dual 4K inputs are stitched into a wide view, then analyzed and streamed locally on the device. The system is built to operate without a server installation or cloud upload path.</p>
+    </div>
+    <div class="uc-grid">
+      <div class="uc-cell"><h4>Wide-view capture</h4><p>Dual 4K inputs are corrected and stitched locally to preserve a stable wide field of view.</p></div>
+      <div class="uc-cell"><h4>On-device analysis</h4><p>YOLO FP16 and INT8 models are routed through TensorRT to use Jetson's ML acceleration efficiently.</p></div>
+      <div class="uc-cell"><h4>Local operation</h4><p>BLE and Wi-Fi Direct control and streaming reduce dependence on venue network conditions.</p></div>
+      <div class="uc-cell"><h4>Deployable hardware</h4><p>The platform is shaped for repeat installation, recovery, and rental workflows across real venues.</p></div>
+    </div>
+    <div class="aud"><span>Grassroots clubs</span><span>Youth academies</span><span>Futsal and venue operators</span><span>Sports video crews</span><span>Equipment rental teams</span><span>Coaches and analysts</span></div>
+  </div>
+</div></section>
+
+<!-- ===== 06 proof ===== -->
+<section class="block"><div class="wrap reveal">
+  <div class="kicker"><span class="no">06</span><h2>The shape of the engineering</h2></div>
   <div class="proof">
-    <div class="stat"><div class="big">~64%</div><div class="lbl">lower 3-year cost than the cloud-subscription incumbent</div><div class="fn">LepusLab TCO model · estimate</div></div>
-    <div class="stat"><div class="big">$0</div><div class="lbl">cloud compute to process your match — it runs on your Vela</div><div class="fn">on-device deferred rendering</div></div>
-    <div class="stat"><div class="big">by&nbsp;morning</div><div class="lbl">match-quality cut ready after an overnight render</div><div class="fn">Orin-class edge compute</div></div>
-  </div>
-</div></section>
-
-<!-- ===== 04 who it's for ===== -->
-<section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">04</span><h2>Who it's for</h2></div>
-  <p class="lede muted">Clubs and academies that want pro-grade footage without pro-grade bills — and the people on the touchline who'd rather watch the game than run the camera.</p>
-  <div class="aud"><span>Grassroots clubs</span><span>Youth academies</span><span>Coaches</span><span>Parents</span><span>Semi-pro sides</span><span>Tinkerers &amp; builders</span></div>
-</div></section>
-
-<!-- ===== 05 the family ===== -->
-<section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">05</span><h2>One sky, one family</h2></div>
-  <p class="lede muted">LepusLab names its work after the constellations. Two of them tell the whole story.</p>
-  <div class="family">
-    <div class="fam">
-      <div class="lat">Lepus · the hare</div>
-      <h3>The watcher</h3>
-      <p>A hare's eyes sit wide on its head — it sees almost all the way around without turning. That instinct to take in the whole field at once is where LepusLab starts.</p>
-    </div>
-    <div class="fam">
-      <div class="lat">Vela · the sails</div>
-      <h3>The reach</h3>
-      <p>Vela is Latin for "the sails." It carries that wide-eyed watching out into the open and unfurls it across the pitch — one frame, the entire game.</p>
-    </div>
-  </div>
-</div></section>
-
-<!-- ===== 06 voice & taglines ===== -->
-<section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">06</span><h2>How Vela speaks</h2></div>
-  <div class="voice">
-    <div class="vrule"><b>Plain over clever</b><p>Name what people control. "Render overnight," not "asynchronous post-processing pipeline."</p></div>
-    <div class="vrule"><b>Confident, not loud</b><p>State the difference once, clearly. Let the result do the boasting.</p></div>
-    <div class="vrule"><b>A little astronomical</b><p>Sails, stars, the whole field. The metaphor is there when it earns its place — never as decoration.</p></div>
-    <div class="vrule"><b>Ownership, always</b><p>It's your footage, your device, your compute. The language never hands that back to a cloud.</p></div>
-  </div>
-  <div class="taglines">
-    <div class="tagrow"><span class="t">Catch the whole field.</span><span class="role">primary</span></div>
-    <div class="tagrow"><span class="t">Field by day. Edge by night.</span><span class="role">dual-use</span></div>
-    <div class="tagrow"><span class="t">Your match. Your device. No cloud bill.</span><span class="role">value</span></div>
+    <div class="stat"><div class="big">Dual 4K · 30fps</div><div class="lbl">two original video feeds recorded as-is on the edge</div><div class="fn">MIPI · Argus · NVENC</div></div>
+    <div class="stat"><div class="big">4K Panorama</div><div class="lbl">recorded footage can be rendered on the edge into a high-quality 4K-native panorama</div><div class="fn">CUDA stitch · zero-copy path</div></div>
+    <div class="stat"><div class="big">3.6K · 30fps</div><div class="lbl">the finished panorama outputs at a real-time streaming resolution for on-site viewing</div><div class="fn">local stream · Wi-Fi Direct</div></div>
+    <div class="stat"><div class="big">Edge ML</div><div class="lbl">cloud-free analysis through edge ML orchestration</div><div class="fn">YOLO FP16/INT8 · TensorRT</div></div>
   </div>
 </div></section>
 
 <!-- ===== footer ===== -->
 <footer><div class="wrap">
-  <div class="constell"><span class="n">Lepus</span> ───✦─── <span class="n">Vela</span> ─── <span>the field, unfurled</span></div>
+  <div class="constell"><span class="n">Lepus</span> ───✦─── <span class="n">Vela</span> ─── <span>vision at the edge</span></div>
   <div>
     <a class="foot-link" href="index.html">
       <svg viewBox="0 0 120 120"><line x1="42" y1="13" x2="42" y2="104" stroke="#EAF8FC" stroke-width="4" stroke-linecap="round"/><path d="M42 24 C 70 26, 96 52, 92 90 L 42 102 Z" fill="#5FD3E6"/><path d="M42 6 L44 14 L52 17 L44 20 L42 28 L40 20 L32 17 L40 14 Z" fill="#EAF8FC"/></svg>
       Back to LepusLab
     </a>
   </div>
-  <p class="foot-meta">Vela — a LepusLab project · Brand narrative v1 · 2026</p>
+  <p class="foot-meta">Vela — LepusLab Edge Vision Platform · Brand narrative v2 · 2026</p>
 </div></footer>
 
 <script src="reveal.js" defer></script>

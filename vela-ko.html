@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vela — LepusLab 프로젝트</title>
+<title>Vela — LepusLab 엣지 비전 플랫폼</title>
+<meta name="description" content="Vela는 LepusLab의 엣지 비전 플랫폼입니다. Jetson의 비전 IP와 ML 가속기를 활용해 여러 모델을 기기 위에서 실시간으로 구동하는 네이티브 C++/CUDA 런타임입니다.">
 <link rel="alternate" hreflang="en" href="vela.html">
 <link rel="alternate" hreflang="ko" href="vela-ko.html">
 <link rel="alternate" hreflang="x-default" href="vela.html">
@@ -56,7 +57,9 @@ body{background:var(--midnight);color:var(--sailcloth);font-family:var(--ui);lin
 .hero-mark{width:96px;height:96px;position:relative;z-index:1;filter:drop-shadow(0 10px 32px rgba(95,211,230,.25))}
 .wordmark{font-family:var(--display);font-weight:300;font-size:clamp(2.9rem,9.2vw,5.3rem);letter-spacing:.05em;line-height:1;margin:22px 0 0 .05em;position:relative;z-index:1}
 .tagline{font-family:var(--display);font-weight:400;font-size:clamp(1.1rem,2.7vw,1.5rem);letter-spacing:.01em;margin-top:20px;z-index:1;position:relative}
-.mission{color:var(--slate);max-width:56ch;margin:16px auto 0;font-size:1.06rem;z-index:1;position:relative}
+.mission{color:var(--slate);max-width:46rem;margin:16px auto 0;font-size:1.06rem;z-index:1;position:relative}
+.herostack{margin-top:26px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.herostack span{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:var(--slate);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
 
 /* ---- sections ---- */
 section.block{padding:78px 0;border-top:1px solid var(--line)}
@@ -84,26 +87,46 @@ section.block{padding:78px 0;border-top:1px solid var(--line)}
 .pillar.hot{background:linear-gradient(100deg,#16294f,#1a2f57)}
 .pillar.hot .pn{color:var(--golden)}
 
-/* audience */
-.aud{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
-.aud span{font-family:var(--ui);font-weight:600;font-size:.86rem;padding:8px 15px;border-radius:999px;background:var(--indigo);box-shadow:inset 0 0 0 1px var(--line)}
+/* pipeline diagram */
+.pipeline{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.stage{flex:1 1 132px;min-width:132px;border:1px solid var(--line);border-radius:14px;padding:16px 14px;background:var(--indigo)}
+.stage .sn{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;color:var(--regor);text-transform:uppercase}
+.stage h4{font-family:var(--display);font-weight:500;font-size:.96rem;margin:8px 0 4px;line-height:1.2}
+.stage p{color:var(--slate);font-size:.78rem;line-height:1.5}
+.stage.key{background:var(--sail-grad);border-color:transparent}
+.stage.key .sn{color:#06202f}
+.stage.key h4{color:#04121f}
+.stage.key p{color:#0a2536}
+.pipe-note{margin-top:16px;font-size:.9rem}
+
+/* runtimes */
+.runtimes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
+.rt{border:1px solid var(--line);border-radius:16px;padding:20px;background:var(--indigo)}
+.rt .rn{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--regor);text-transform:uppercase;margin-bottom:10px}
+.rt h4{font-family:var(--display);font-weight:500;font-size:1rem;margin-bottom:6px}
+.rt p{color:var(--slate);font-size:.86rem}
+
+/* use case */
+.usecase{margin-top:26px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:
+  radial-gradient(120% 140% at 100% 0,rgba(95,211,230,.12),transparent 60%),var(--indigo)}
+.usecase .uc-head{padding:26px 26px 20px;border-bottom:1px solid var(--line)}
+.usecase .uc-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--regor)}
+.usecase .uc-head h3{font-family:var(--display);font-weight:500;font-size:1.3rem;margin:10px 0 8px}
+.usecase .uc-head p{color:var(--slate);font-size:.98rem;max-width:52rem}
+.uc-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.uc-cell{padding:22px 26px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.uc-cell:nth-child(2n){border-right:0}
+.uc-cell h4{font-family:var(--display);font-weight:500;font-size:1rem;margin-bottom:5px}
+.uc-cell p{color:var(--slate);font-size:.88rem}
+.aud{display:flex;flex-wrap:wrap;gap:10px;padding:20px 26px}
+.aud span{font-family:var(--ui);font-weight:600;font-size:.82rem;padding:7px 14px;border-radius:999px;background:rgba(10,23,48,.5);box-shadow:inset 0 0 0 1px var(--line)}
 
 /* proof */
-.proof{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+.proof{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:30px}
 .stat{border:1px solid var(--line);border-radius:16px;padding:22px;background:var(--indigo)}
 .stat .big{font-family:var(--display);font-weight:300;font-size:2rem;letter-spacing:.02em;color:var(--regor)}
 .stat .lbl{color:var(--slate);font-size:.86rem;margin-top:4px}
 .stat .fn{color:var(--slate-dim);font-size:.72rem;margin-top:8px}
-
-/* voice */
-.voice{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
-.vrule{border:1px solid var(--line);border-radius:14px;padding:18px 20px;background:var(--indigo)}
-.vrule b{font-family:var(--display);font-weight:500}
-.vrule p{color:var(--slate);font-size:.92rem;margin-top:4px}
-.taglines{margin-top:30px;display:flex;flex-direction:column;gap:12px}
-.tagrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.tagrow .t{font-family:var(--display);font-weight:400;font-size:1.2rem}
-.tagrow .role{font-family:var(--mono);font-size:.7rem;color:var(--slate-dim);letter-spacing:.1em;text-transform:uppercase}
 
 /* footer */
 footer{padding:60px 0 72px;border-top:1px solid var(--line);text-align:center}
@@ -118,9 +141,9 @@ footer{padding:60px 0 72px;border-top:1px solid var(--line);text-align:center}
 .reveal.visible{opacity:1;transform:none}
 
 @media(max-width:720px){
-  .family,.voice{grid-template-columns:1fr}
-  .proof{grid-template-columns:1fr}
+  .family,.runtimes,.proof,.uc-grid{grid-template-columns:1fr}
   .pillar{grid-template-columns:1fr;gap:8px}
+  .uc-cell{border-right:0}
 }
 @media(prefers-reduced-motion:reduce){.reveal{transition:none;opacity:1;transform:none}}
 </style>
@@ -146,7 +169,7 @@ footer{padding:60px 0 72px;border-top:1px solid var(--line);text-align:center}
 <!-- ===== hero ===== -->
 <header class="hero">
   <div class="starfield"></div>
-  <div class="eyebrow" style="position:relative;z-index:1">LepusLab · 별자리 패밀리</div>
+  <div class="eyebrow" style="position:relative;z-index:1">LepusLab · 엣지 비전 플랫폼</div>
   <svg class="hero-mark" viewBox="0 0 120 120" style="margin-top:18px" aria-label="Vela">
     <defs><linearGradient id="g" x1="42" y1="20" x2="96" y2="104" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6FDAEC"/><stop offset=".55" stop-color="#34A8C6"/><stop offset="1" stop-color="#1E6E8C"/></linearGradient></defs>
     <path d="M56 26 C 92 40, 104 74, 82 104" fill="none" stroke="#7FE3F1" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
@@ -156,98 +179,109 @@ footer{padding:60px 0 72px;border-top:1px solid var(--line);text-align:center}
     <path d="M42 5 L44 13 L52 16 L44 19 L42 27 L40 19 L32 16 L40 13 Z" fill="#EAF8FC"/>
   </svg>
   <div class="wordmark">Vela</div>
-  <div class="tagline">경기장 전체를, 한 프레임에.</div>
-  <p class="mission">경기장을 통째로 담고, 알아서 플레이를 좇고, 밤사이 경기 품질로 완성합니다. 그것도 당신이 이미 가진 기기 위에서. 그게 Vela입니다.</p>
+  <div class="tagline">현장에서 보고, 현장에서 끝냅니다.</div>
+  <p class="mission">Vela는 LepusLab의 엣지 비전 플랫폼입니다. 여러 ML 모델을 기기 위에서 실시간으로 돌리는 네이티브 C++/CUDA 런타임이죠. 촬영부터 스티칭, 추론, 그리고 그에 따른 판단까지 — 전부 기기 안에서 끝냅니다. 클라우드도, 업로드도, 프레임당 요금도 없습니다.</p>
+  <div class="herostack">
+    <span>Jetson Orin</span><span>C++ / CUDA</span><span>TensorRT</span><span>Zero-copy NVMM</span><span>Multi-model</span>
+  </div>
 </header>
 
-<!-- ===== 01 the problem ===== -->
+<!-- ===== 01 what Vela is ===== -->
 <section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">01</span><h2>경기 영상이 인질이 되어선 안 됩니다</h2></div>
-  <p class="lede big">경기 영상은 찍은 사람의 것이어야 합니다. 그래서 Vela는 영상을 남의 클라우드에 묶어 두지 않고, 구독에 얽매이게 하지도 않습니다. <b>경기가 끝난 그날 밤, 완성본은 당신의 손 안에서 만들어집니다.</b></p>
+  <div class="kicker"><span class="no">01</span><h2>파이프라인 전체를, 엣지에서</h2></div>
+  <p class="lede big">대부분의 비전 AI는 픽셀을 클라우드로 올려 보내고 기다립니다. Vela는 다릅니다 — 듀얼 카메라 촬영, 파노라마 스티칭, 멀티모델 추론, 그리고 거기서 나오는 판단까지, <b>파이프라인 전체를 기기 안에 그대로 둡니다.</b> 서버 없이 Jetson 플랫폼의 Vision IP와 ML 가속기를 최대한 활용하도록 설계했습니다.</p>
 </div></section>
 
-<!-- ===== 02 the difference ===== -->
+<!-- ===== 02 platform pillars ===== -->
 <section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">02</span><h2>무엇이 Vela를 Vela답게 하는가</h2></div>
+  <div class="kicker"><span class="no">02</span><h2>플랫폼이 건네는 것</h2></div>
   <div class="pillars">
     <div class="pillar">
       <div class="pn">I.</div>
-      <div><h3>경기장 전체를 봅니다</h3><p>두 개의 4K 렌즈가 하나의 파노라마로 이어집니다. 그 안에서 AI 가상 카메라가 알아서 플레이를 따라가니, 카메라를 잡는 사람도, 프레임 밖으로 사라지는 장면도 없습니다.</p></div>
+      <div><h3>하나의 파이프라인, 세 런타임</h3><p>똑같이 튜닝한 비전 파이프라인이 손대지 않은 채로 세 곳에서 돕니다 — 랩의 PyTorch, 아이폰의 CoreML/ANE, 그리고 기기의 CUDA/TensorRT. 로직은 한 번만 짜고, 유즈케이스가 요구하는 실리콘 어디에든 얹습니다.</p></div>
     </div>
     <div class="pillar hot">
       <div class="pn">II.</div>
-      <div><h3>집에서, 밤사이 렌더링합니다</h3><p>렌더 팜도, 클라우드 청구서도 없습니다. 경기가 끝나면 Vela를 꽂아 두기만 하세요. 충전하는 동안 자체 칩이 고품질 편집본을 만들어 둡니다. 아침이면, 경기 품질의 영상이 기다리고 있습니다.</p></div>
+      <div><h3>복사 없는 네이티브 엔진</h3><p>프로덕션 엔진은 처음부터 끝까지 C++/CUDA입니다. 프레임은 센서에서 인코더까지 GPU 메모리(NVMM·DMABUF)에 그대로 머뭅니다 — 복사도, GIL도, 핫패스의 파이썬도 없죠. 이렇게 확보한 여유가, Orin 하나로 4K를 스티칭하면서 여러 모델을 동시에 돌리게 해줍니다.</p></div>
     </div>
     <div class="pillar">
       <div class="pn">III.</div>
-      <div><h3>남은 한 주는, 온전히 당신의 것</h3><p>여느 카메라는 일주일에 한 경기를 찍고 나머지 엿새는 잠듭니다. Vela는 다릅니다. 경기가 없는 날엔 집 안의 조용한 엣지-AI가 되죠. 사방을 보는 눈, 그리고 온전히 당신 몫인 연산 자원으로 말이죠.</p></div>
+      <div><h3>여러 모델을, 한 프레임 예산에</h3><p>YOLO 계열 모델을 FP16·INT8로 조합하고, 타일 추론과 후처리를 믹스 파이프라인으로 엮습니다. Jetson의 ML 가속 성능을 프레임 예산 안에서 끝까지 끌어내도록 스케줄링합니다.</p></div>
+    </div>
+    <div class="pillar">
+      <div class="pn">IV.</div>
+      <div><h3>처음부터, 로컬 퍼스트</h3><p>인터넷 없이도 전부 동작합니다. 기기가 스스로 스트림과 제어를 BLE·Wi-Fi Direct로 내보내니, 신호 하나 없는 오지 경기장도 그저 또 하나의 설치 현장일 뿐이죠. 영상 한 시간마다 날아오는 클라우드 청구서도 없습니다.</p></div>
     </div>
   </div>
-  <p class="muted" style="margin-top:18px;font-size:.92rem">구독료를 낮게 잡은 건 의도한 결과입니다. 스티칭·분석 모델을 더 다듬고, 기기 상태를 제때 챙기는 데에만 쓰니까요. 무거운 연산은 이미 값을 치른 하드웨어가 그대로 도맡습니다.</p>
 </div></section>
 
-<!-- ===== 03 proof ===== -->
+<!-- ===== 03 the pipeline ===== -->
 <section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">03</span><h2>약속을, 숫자로</h2></div>
+  <div class="kicker"><span class="no">03</span><h2>파이프라인, 한 단계씩</h2></div>
+  <p class="lede muted">두 개의 렌즈에서 로컬 스트림까지, 모든 단계가 기기 위에서 돕니다. GPU 메모리를 벗어나는 건 작게 줄인 프레임 한 장뿐 — 모델이 그걸 읽어 판단하고, 원본 해상도 경로는 끝까지 복사 없이 흐릅니다.</p>
+  <div class="pipeline">
+    <div class="stage"><div class="sn">01 · 촬영</div><h4>듀얼 4K</h4><p>두 개의 MIPI 센서, NVIDIA Argus로 하드웨어 동기화.</p></div>
+    <div class="stage"><div class="sn">02 · 보정</div><h4>왜곡 보정 + 스티칭</h4><p>CUDA로 왜곡을 펴고 파노라마로 합칩니다. 넓은 한 화면을, CPU 복사 없이.</p></div>
+    <div class="stage key"><div class="sn">03 · 추론</div><h4>믹스 파이프라인</h4><p>YOLO FP16·INT8 모델, 타일 추론, 경량 후처리를 한 프레임 예산 안에 배치합니다.</p></div>
+    <div class="stage"><div class="sn">04 · 구성</div><h4>ROI 스트림</h4><p>분석 결과를 바탕으로 필요한 영역을 실시간 스트림으로 구성합니다.</p></div>
+    <div class="stage"><div class="sn">05 · 인코딩</div><h4>NVENC H.264</h4><p>기기에서 하드웨어 인코딩, 특허 리스크 없는 코덱 경로.</p></div>
+    <div class="stage"><div class="sn">06 · 송출</div><h4>로컬 스트림</h4><p>Wi-Fi Direct로 RTSP+HLS, 손 안의 폰까지 곧바로.</p></div>
+  </div>
+  <p class="muted pipe-note">이미 C++/CUDA로 구현해 돌아가고 있습니다. 디텍터와 스트림 구성 로직을 네이티브 엔진으로 옮겨 복사·GIL 글루를 줄였고, 타일 추론과 후처리가 30fps 프레임 예산 안에서 함께 돕니다.</p>
+</div></section>
+
+<!-- ===== 04 one pipeline three runtimes ===== -->
+<section class="block"><div class="wrap reveal">
+  <div class="kicker"><span class="no">04</span><h2>엣지 어디에서든</h2></div>
+  <p class="lede muted">비전 로직이 원본이자 기준입니다. 런타임마다 탐지 백엔드와 영상 경로만 갈아 끼울 뿐, 추적·스케줄링·이벤트 연산은 어디서나 똑같습니다.</p>
+  <div class="runtimes">
+    <div class="rt"><div class="rn">랩 벤치</div><h4>PyTorch · MPS</h4><p>파이프라인을 실시간으로 튜닝·검증하고 재현율과 지연을 잽니다. 나머지 둘이 여기서 갈라져 나왔습니다.</p></div>
+    <div class="rt"><div class="rn">온디바이스</div><h4>CoreML · ANE</h4><p>같은 로직을 모바일 뉴럴 엔진 위에서 검증합니다. 현장 기기와 폰 사이의 분석 경로를 함께 맞춥니다.</p></div>
+    <div class="rt"><div class="rn">프로덕션</div><h4>CUDA · TensorRT</h4><p>Jetson Orin에서 4K 입력, 스티칭, 멀티모델 추론, NVENC 출력까지 이어집니다.</p></div>
+  </div>
+</div></section>
+
+<!-- ===== 05 first use case: sports ===== -->
+<section class="block"><div class="wrap reveal">
+  <div class="kicker"><span class="no">05</span><h2>초기 적용 영역: 스포츠 현장</h2></div>
+  <p class="lede muted">Vela는 넓은 시야, 긴 녹화 시간, 낮은 지연, 현장 네트워크 제약이 동시에 걸리는 스포츠 환경을 첫 적용 영역으로 삼았습니다. 특정 경기 기능보다 엣지 비전 파이프라인의 안정성과 운영성을 먼저 검증합니다.</p>
+  <div class="usecase">
+    <div class="uc-head">
+      <div class="uc-tag">응용 · 스포츠</div>
+      <h3>현장형 엣지 비전 장비</h3>
+      <p>듀얼 4K 입력을 하나의 넓은 화면으로 합치고, 필요한 분석과 스트리밍을 기기 안에서 처리합니다. 서버 설치나 클라우드 업로드 없이 운영하는 구조입니다.</p>
+    </div>
+    <div class="uc-grid">
+      <div class="uc-cell"><h4>넓은 시야 캡처</h4><p>듀얼 4K 입력을 로컬에서 보정·스티칭해 넓은 화면을 안정적으로 확보합니다.</p></div>
+      <div class="uc-cell"><h4>온디바이스 분석</h4><p>YOLO FP16·INT8 모델과 TensorRT 경로를 조합해 Jetson의 ML 가속 성능을 활용합니다.</p></div>
+      <div class="uc-cell"><h4>로컬 운영</h4><p>BLE와 Wi-Fi Direct 기반 제어·스트리밍으로 현장 네트워크 부담을 낮춥니다.</p></div>
+      <div class="uc-cell"><h4>장비화 가능한 구조</h4><p>클럽, 시설, 촬영 업체, 렌탈 업체가 반복 설치·회수하기 쉬운 엣지 장비를 지향합니다.</p></div>
+    </div>
+    <div class="aud"><span>동호회 클럽</span><span>유소년 아카데미</span><span>풋살장·구장 대여 업체</span><span>스포츠 촬영 전문 업체</span><span>장비 렌탈 업체</span><span>코치·분석가</span></div>
+  </div>
+</div></section>
+
+<!-- ===== 06 proof ===== -->
+<section class="block"><div class="wrap reveal">
+  <div class="kicker"><span class="no">06</span><h2>엔지니어링을, 숫자로</h2></div>
   <div class="proof">
-    <div class="stat"><div class="big">~64%</div><div class="lbl">기존 클라우드 구독 제품보다 낮은 3년 총소유비용</div><div class="fn">LepusLab TCO 모델 · 추정치</div></div>
-    <div class="stat"><div class="big">$0</div><div class="lbl">경기를 처리하는 데 드는 클라우드 비용. Vela가 알아서 하니까요</div><div class="fn">온디바이스 지연 렌더링</div></div>
-    <div class="stat"><div class="big">아침이면</div><div class="lbl">하룻밤 렌더링으로 완성되는 경기 품질 영상</div><div class="fn">Orin급 엣지 연산</div></div>
-  </div>
-</div></section>
-
-<!-- ===== 04 who it's for ===== -->
-<section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">04</span><h2>누구를 위한 카메라인가</h2></div>
-  <p class="lede muted">프로급 비용 없이 프로급 영상을 바라는 클럽과 아카데미를 위해. 그리고 카메라를 붙들기보다 경기를 즐기고 싶은, 터치라인 위 모든 사람을 위해.</p>
-  <div class="aud"><span>동호회 클럽</span><span>유소년 아카데미</span><span>코치</span><span>학부모</span><span>세미프로 팀</span><span>메이커 &amp; 빌더</span></div>
-  <p class="muted" style="margin-top:22px;font-size:1rem">우리는 당신이 이미 들인 장비를 끝까지 활용합니다. 화려한 기능까지 다 필요한 게 아니라면 — 그거면 충분합니다. Vela와 함께하시죠.</p>
-</div></section>
-
-<!-- ===== 05 the family ===== -->
-<section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">05</span><h2>하나의 하늘, 하나의 패밀리</h2></div>
-  <p class="lede muted">LepusLab은 모든 작업에 별자리의 이름을 붙입니다. 그중 두 별자리가, 이 이야기의 처음과 끝입니다.</p>
-  <div class="family">
-    <div class="fam">
-      <div class="lat">Lepus · 토끼자리</div>
-      <h3>지켜보는 눈</h3>
-      <p>토끼의 두 눈은 머리 양옆에 넓게 자리합니다. 고개 한 번 돌리지 않고도 거의 사방을 보죠. 전체를 한눈에 담으려는 그 본능에서 LepusLab은 시작됐습니다.</p>
-    </div>
-    <div class="fam">
-      <div class="lat">Vela · 돛자리</div>
-      <h3>뻗어 나가는 돛</h3>
-      <p>Vela는 라틴어로 "돛". 그 넓은 시야를 탁 트인 곳으로 실어 나르고, 경기장 위에 활짝 펼칩니다. 한 프레임에, 경기 전부를.</p>
-    </div>
-  </div>
-</div></section>
-
-<!-- ===== 06 voice & taglines ===== -->
-<section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">06</span><h2>Vela는 이렇게 말합니다</h2></div>
-  <div class="voice">
-    <div class="vrule"><b>영리함보다 명료함</b><p>사람들이 직접 다루는 말로 적습니다. "비동기 후처리 파이프라인"이 아니라, "밤사이 렌더링".</p></div>
-    <div class="vrule"><b>요란함 대신 당당함</b><p>차이는 한 번만, 분명하게. 나머지 자랑은 결과에 맡깁니다.</p></div>
-    <div class="vrule"><b>조금은 천문학적으로</b><p>돛, 별, 그리고 경기장 전체. 은유는 제값을 할 때만 꺼냅니다. 장식으로는 결코.</p></div>
-    <div class="vrule"><b>끝까지, 소유</b><p>당신의 영상, 당신의 기기, 당신의 연산. 이 말들은 그 무엇도 클라우드에 되돌려주지 않습니다.</p></div>
-  </div>
-  <div class="taglines">
-    <div class="tagrow"><span class="t">경기장 전체를, 한 프레임에.</span><span class="role">주력</span></div>
-    <div class="tagrow"><span class="t">낮에는 필드, 밤에는 엣지.</span><span class="role">이중 용도</span></div>
-    <div class="tagrow"><span class="t">당신의 경기, 당신의 기기. 클라우드 요금은 없습니다.</span><span class="role">가치</span></div>
+    <div class="stat"><div class="big">Dual 4K · 30fps</div><div class="lbl">두 원본 영상을 엣지에서 그대로 저장</div><div class="fn">MIPI · Argus · NVENC</div></div>
+    <div class="stat"><div class="big">4K Panorama</div><div class="lbl">저장된 영상을 4K 원본 그대로 고품질 파노라마로 엣지에서 생성</div><div class="fn">CUDA stitch · zero-copy path</div></div>
+    <div class="stat"><div class="big">3.6K · 30fps</div><div class="lbl">완성된 파노라마를 현장에서 실시간 스트리밍 가능한 해상도로 출력</div><div class="fn">local stream · Wi-Fi Direct</div></div>
+    <div class="stat"><div class="big">Edge ML</div><div class="lbl">엣지 ML 오케스트레이션으로 클라우드 없이 분석</div><div class="fn">YOLO FP16/INT8 · TensorRT</div></div>
   </div>
 </div></section>
 
 <!-- ===== footer ===== -->
 <footer><div class="wrap">
-  <div class="constell"><span class="n">Lepus</span> ───✦─── <span class="n">Vela</span> ─── <span>펼쳐진 경기장</span></div>
+  <div class="constell"><span class="n">Lepus</span> ───✦─── <span class="n">Vela</span> ─── <span>엣지 위의 비전</span></div>
   <div>
     <a class="foot-link" href="index-ko.html">
       <svg viewBox="0 0 120 120"><line x1="42" y1="13" x2="42" y2="104" stroke="#EAF8FC" stroke-width="4" stroke-linecap="round"/><path d="M42 24 C 70 26, 96 52, 92 90 L 42 102 Z" fill="#5FD3E6"/><path d="M42 6 L44 14 L52 17 L44 20 L42 28 L40 20 L32 17 L40 14 Z" fill="#EAF8FC"/></svg>
       LepusLab으로 돌아가기
     </a>
   </div>
-  <p class="foot-meta">Vela — LepusLab 프로젝트 · 브랜드 내러티브 v1 · 2026</p>
+  <p class="foot-meta">Vela — LepusLab 엣지 비전 플랫폼 · 브랜드 내러티브 v2 · 2026</p>
 </div></footer>
 
 <script src="reveal.js" defer></script>
