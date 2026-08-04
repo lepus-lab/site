@@ -261,9 +261,30 @@ footer{padding:60px 0 72px;border-top:1px solid var(--line);text-align:center}
   </div>
 </div></section>
 
-<!-- ===== 06 proof ===== -->
+<!-- ===== 06 second use case: industrial reconciliation ===== -->
 <section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">06</span><h2>The shape of the engineering</h2></div>
+  <div class="kicker"><span class="no">06</span><h2>The second pipeline: the factory floor</h2></div>
+  <p class="lede muted">The platform is not tied to sports. On a production line the same edge runs a different model: a controller declares what the process is doing — running, stopped, step complete — while a camera and a vision-language model observe what is physically happening. Vela reconciles the two and surfaces where they diverge.</p>
+  <div class="usecase">
+    <div class="uc-head">
+      <div class="uc-tag">Application · Industrial</div>
+      <h3>An independent eye on the line</h3>
+      <p>Declared state from the controller and observed state from the camera are normalized into one schema and compared in near real time. Divergence that persists is raised as a process fault or a safety risk — a second, independent check on top of the PLC, never a replacement for it.</p>
+    </div>
+    <div class="uc-grid">
+      <div class="uc-cell"><h4>Declared vs. observed</h4><p>PLC tags and camera observation are projected onto a common state model, so "the controller says running" can be tested against "the line is actually moving."</p></div>
+      <div class="uc-cell"><h4>Divergence, classified</h4><p>State mismatch, motion after a stop command, stalled progress, or an open guard during a run are sorted into process faults and safety-priority events.</p></div>
+      <div class="uc-cell"><h4>Cause, not just an alarm</h4><p>Confirmed divergence is escalated to an on-edge vision-language model that reads the scene, proposes a likely cause, and filters false alarms.</p></div>
+      <div class="uc-cell"><h4>Vendor-neutral, edge-resident</h4><p>It speaks OPC-UA and Modbus TCP and pairs cleanly with open controllers like OpenPLC and Codesys — all on the same edge box, with no cloud in the loop.</p></div>
+    </div>
+    <div class="aud"><span>Manufacturing lines</span><span>Process safety</span><span>Retrofit integrators</span><span>OT &amp; controls engineers</span><span>OpenPLC / Codesys stacks</span><span>Line supervisors</span></div>
+  </div>
+  <p class="pipe-note muted">Positioned as an advisory layer — an independent second monitor that watches and reports, not a safety-rated controller. It reuses the same capture, edge-ML, and orchestration blocks the sports pipeline is built on.</p>
+</div></section>
+
+<!-- ===== 07 proof ===== -->
+<section class="block"><div class="wrap reveal">
+  <div class="kicker"><span class="no">07</span><h2>The shape of the engineering</h2></div>
   <div class="proof">
     <div class="stat"><div class="big">Dual 4K · 30fps</div><div class="lbl">two original video feeds recorded as-is on the edge</div><div class="fn">MIPI · Argus · NVENC</div></div>
     <div class="stat"><div class="big">4K Panorama</div><div class="lbl">recorded footage can be rendered on the edge into a high-quality 4K-native panorama</div><div class="fn">CUDA stitch · zero-copy path</div></div>

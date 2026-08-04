@@ -261,9 +261,30 @@ footer{padding:60px 0 72px;border-top:1px solid var(--line);text-align:center}
   </div>
 </div></section>
 
-<!-- ===== 06 proof ===== -->
+<!-- ===== 06 second use case: industrial reconciliation ===== -->
 <section class="block"><div class="wrap reveal">
-  <div class="kicker"><span class="no">06</span><h2>엔지니어링을, 숫자로</h2></div>
+  <div class="kicker"><span class="no">06</span><h2>두 번째 파이프라인: 생산 현장</h2></div>
+  <p class="lede muted">플랫폼은 스포츠에만 묶여 있지 않습니다. 생산 라인에서는 같은 엣지가 다른 모델을 돌립니다. 컨트롤러(PLC)는 공정이 지금 무엇을 하는지 — 가동 중, 정지, 스텝 완료 — 를 신호로 선언하고, 카메라와 비전-언어 모델은 실제로 무슨 일이 벌어지는지를 관측합니다. Vela는 이 둘을 대조해 서로 어긋나는 지점을 짚어냅니다.</p>
+  <div class="usecase">
+    <div class="uc-head">
+      <div class="uc-tag">응용 · 산업</div>
+      <h3>라인을 지켜보는 독립된 눈</h3>
+      <p>컨트롤러가 선언한 상태와 카메라가 관측한 상태를 하나의 형식으로 정규화해 준실시간으로 대조합니다. 일정 시간 이상 지속되는 불일치는 공정 이상이나 안전 위험으로 올립니다. PLC를 대체하는 게 아니라, 그 위에 얹는 두 번째 독립 점검입니다.</p>
+    </div>
+    <div class="uc-grid">
+      <div class="uc-cell"><h4>선언과 관측의 대조</h4><p>PLC 태그와 카메라 관측을 같은 상태 모델에 투영해, "컨트롤러는 가동이라는데" 를 "라인이 실제로 움직이는가" 와 맞대어 봅니다.</p></div>
+      <div class="uc-cell"><h4>불일치를 분류</h4><p>상태 불일치, 정지 명령 뒤에도 남은 동작, 멈춰 선 공정, 가동 중 열린 안전문 — 이런 신호를 공정 결함과 안전 우선 이벤트로 갈라냅니다.</p></div>
+      <div class="uc-cell"><h4>경보가 아니라 원인</h4><p>확정된 불일치는 엣지의 비전-언어 모델로 넘겨, 장면을 읽고 왜 그런 일이 생겼는지 원인 후보를 제시하며 오검출을 걸러냅니다.</p></div>
+      <div class="uc-cell"><h4>벤더 중립, 엣지 상주</h4><p>OPC-UA·Modbus TCP로 말하고 OpenPLC·Codesys 같은 오픈 컨트롤러와 자연스럽게 붙습니다. 전부 같은 엣지 박스 안에서, 클라우드 없이 돌아갑니다.</p></div>
+    </div>
+    <div class="aud"><span>제조 라인</span><span>공정 안전</span><span>설비 개조 통합</span><span>OT·제어 엔지니어</span><span>OpenPLC·Codesys 스택</span><span>라인 관리자</span></div>
+  </div>
+  <p class="pipe-note muted">이 계층은 감시·통보를 맡는 독립된 2차 모니터로 자리합니다. 안전 인증 제어기를 대체하지 않으며, 스포츠 파이프라인이 쓰는 캡처·엣지 ML·오케스트레이션 블록을 그대로 재사용합니다.</p>
+</div></section>
+
+<!-- ===== 07 proof ===== -->
+<section class="block"><div class="wrap reveal">
+  <div class="kicker"><span class="no">07</span><h2>엔지니어링을, 숫자로</h2></div>
   <div class="proof">
     <div class="stat"><div class="big">Dual 4K · 30fps</div><div class="lbl">두 원본 영상을 엣지에서 그대로 저장</div><div class="fn">MIPI · Argus · NVENC</div></div>
     <div class="stat"><div class="big">4K Panorama</div><div class="lbl">저장된 영상을 4K 원본 그대로 고품질 파노라마로 엣지에서 생성</div><div class="fn">CUDA stitch · zero-copy path</div></div>
